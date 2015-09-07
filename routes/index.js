@@ -4,7 +4,7 @@ var io = require('socket.io');
 
 /* GET home page. */
 router.get('/', function(req, res) {
-  res.render('index', { title: 'Express' });
+  res.render('index', { title: 'Green World' });
 });
 
 module.exports = router;

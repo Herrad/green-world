@@ -7,10 +7,14 @@
   <body>
     <h1><%= title %></h1>
     <p>Welcome to <%= title %></p>
+    <p class="user">User details to come...</p>
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
 	<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
 	<script>
-	  var socket = io();
+		var socket = io();
+		socket.on('user-details', function(data){
+			$('.user').html(data);
+		});
 	</script>
   </body>
 </html>
