@@ -9,7 +9,7 @@ module.exports.listen = function (app) {
     var chunk = {
         blips: []
     };
-    var blipSize = 16;
+    var blipSize = 32;
 
     function updateChunks() {
         chunk = {
@@ -17,9 +17,9 @@ module.exports.listen = function (app) {
         };
         for (var x = 0; x < 1024 / blipSize; x++) {
             for (var y = 0; y < 720 / blipSize; y++) {
-                var r = Math.floor(Math.random() * 100 + 55);
-                var g = Math.floor(Math.random() * 120 + 55);
-                var b = Math.floor(55);
+                var r = Math.floor(Math.random() * 50 + 30);
+                var g = Math.floor(Math.random() * 80 + 55);
+                var b = Math.floor(20);
                 chunk.blips.push({
                     rgb: "rgb(" + r + "," + g + "," + b + ")",
                     x: x * blipSize,
@@ -31,7 +31,7 @@ module.exports.listen = function (app) {
         };
         io.emit('chunk-update', chunk)
     };
-    updateChunks();
+    setInterval(updateChunks, 3000);
 
     return io
 }
