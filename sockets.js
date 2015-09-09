@@ -15,8 +15,8 @@ module.exports.listen = function (app) {
         chunk = {
             blips: []
         };
-        for (var x = 0; x < 1024 / blipSize; x++) {
-            for (var y = 0; y < 720 / blipSize; y++) {
+        for (var x = 0; x < 50; x++) {
+            for (var y = 0; y < 50; y++) {
                 var r = Math.floor(Math.random() * 50 + 30);
                 var g = Math.floor(Math.random() * 80 + 55);
                 var b = Math.floor(20);
@@ -30,6 +30,7 @@ module.exports.listen = function (app) {
             };
         };
         io.emit('chunk-update', chunk)
+        console.log('pushed');
     };
     setInterval(updateChunks, 3000);
 
