@@ -2,7 +2,8 @@ var canvas = document.getElementById('screen');
 var ctx = canvas.getContext('2d');
 
 function init() {
-    var update = createUpdate();
+	var player = createPlayer();
+    var update = createUpdate(player);
     var events = createEventHandler();
 
     events.registerEventHandlers(update);
