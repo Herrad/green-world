@@ -9,7 +9,7 @@ module.exports.listen = function (app) {
     var chunk = {
         blips: []
     };
-    var blipSize = 32;
+    var blipSize = 64;
 
     function updateChunks() {
         chunk = {
@@ -34,6 +34,10 @@ module.exports.listen = function (app) {
     };
     updateChunks();
     setInterval(function(){io.emit('chunk-update', chunk)}, 1000);
+
+    io.on('player-location-update', function(data){
+    	io.emit('player-at', data);
+    })
 
     return io
 }

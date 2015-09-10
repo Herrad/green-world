@@ -1,4 +1,4 @@
-function createUpdate(player) {
+function createUpdate(player, events) {
     var draw = createDraw();
     var chunkCache = [];
     var chunkIds = [];
@@ -36,6 +36,9 @@ function createUpdate(player) {
         },
         updateChunk: function (chunk) {
             cacheChunk(chunk);
+        },
+        drawPlayerAt: function(){
+            otherPlayers.push(data);
         }
     }
 }
