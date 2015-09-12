@@ -38,7 +38,7 @@ function createUpdate(player, outgoingEvents) {
         mainLoop: function () {
             draw.draw(ctx, chunkToDraw, worldCoordinates);
             _.forEach(players, function (player, key) {
-                player.draw(ctx);
+                player.draw(ctx, worldCoordinates);
             });
         },
         updateChunk: function (chunk) {
@@ -51,13 +51,12 @@ function createUpdate(player, outgoingEvents) {
             var hasPlayer = _.some(players, {
                 id: player.id
             });
-            console.log('new player')
-            console.log(player.id)
-            console.log('has player ' + hasPlayer)
+            // console.log('new player')
+            // console.log(player.id)
+            // console.log('has player ' + hasPlayer)
             if (!hasPlayer) {
                 players.push(createPlayer(outgoingEvents, player.id, player.coordinates));
             }
-            console.log(players);
         }
     }
 }

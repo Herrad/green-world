@@ -31,8 +31,8 @@ function createPlayer(outgoingEvents, id, coordinates) {
     var player = {
         id: idToUse,
         coordinates: coordinatesToUse,
-        draw: function (ctx) {
-            ctx.drawImage(imageToDraw, 480 - this.coordinates.x, 328 - this.coordinates.y);
+        draw: function (ctx, worldCoordinates) {
+            ctx.drawImage(imageToDraw, this.coordinates.x - worldCoordinates.x, this.coordinates.y - worldCoordinates.y);
         },
         faceLeft: function () {
             imageToDraw = left
