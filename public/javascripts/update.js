@@ -19,6 +19,7 @@ function createUpdate(player, outgoingEvents, collisionDetection) {
             x: screenCoordinates.x,
             y: screenCoordinates.y
         };
+
         if (e.keyCode == 37 || e.keyCode == 65) { //left
             newCoordinates.x += moveUnits;
             player.faceLeft();
