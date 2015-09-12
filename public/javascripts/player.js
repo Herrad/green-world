@@ -1,13 +1,19 @@
-function createPlayer(outgoingEvents, id, coordinates) {
-    var up = new Image;
-    up.src = "/images/player/up.png"
-    var down = new Image;
-    down.src = "/images/player/down.png"
-    var left = new Image;
-    left.src = "/images/player/left.png"
-    var right = new Image;
-    right.src = "/images/player/right.png"
-    var imageToDraw = down;
+function createPlayer(outgoingEvents, id, coordinates, facing) {
+    var imageToDraw;
+    if (facing) {
+        imageToDraw = new Image
+        imageToDraw.src = facing
+    } else {
+        var up = new Image;
+        up.src = "/images/player/up.png"
+        var down = new Image;
+        down.src = "/images/player/down.png"
+        var left = new Image;
+        left.src = "/images/player/left.png"
+        var right = new Image;
+        right.src = "/images/player/right.png"
+        imageToDraw = down;
+    }
 
     function generateGuid() {
         var result, i, j;
@@ -31,30 +37,39 @@ function createPlayer(outgoingEvents, id, coordinates) {
     var player = {
         id: idToUse,
         coordinates: coordinatesToUse,
+        facing: imageToDraw.src,
         draw: function (ctx, screenCoordinates) {
-        	var xToDraw = this.coordinates.x+screenCoordinates.x;
-        	var yToDraw = this.coordinates.y+screenCoordinates.y;
+            var xToDraw = this.coordinates.x + screenCoordinates.x;
+            var yToDraw = this.coordinates.y + screenCoordinates.y;
             ctx.drawImage(imageToDraw, xToDraw, yToDraw);
-            ctx.fillStyle ="rgb(0,0,0)";
-            ctx.fillText("[x:" + xToDraw + ",y:" + yToDraw + "]", xToDraw, yToDraw);
-            ctx.fillText("[x:" + this.coordinates.x + ",y:" + this.coordinates.y + "]", xToDraw, yToDraw + 35);
         },
         faceLeft: function () {
             imageToDraw = left
+            this.facing = imageToDraw.src
         },
         faceUp: function () {
             imageToDraw = up
+            this.facing = imageToDraw.src
         },
         faceRight: function () {
             imageToDraw = right
+            this.facing = imageToDraw.src
         },
         faceDown: function () {
             imageToDraw = down
+            this.facing = imageToDraw.src
         },
         coordinateChange: function (newCoordinates) {
             this.coordinates = {
                 x: newCoordinates.x,
                 y: newCoordinates.y
+            };
+        },
+        serialise: function () {
+            return {
+                id: this.id,
+                coordinates: this.coordinates,
+                facing: this.facing
             };
         }
     };

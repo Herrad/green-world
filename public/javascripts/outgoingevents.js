@@ -9,7 +9,11 @@ function createOutgoingEvents() {
         // },
         newPlayer: function (player) {
             console.log('emit new player')
-            socket.emit('update-players', player);
+            socket.emit('new-player', player);
+        },
+        locationUpdate: function (player) {
+            socket.emit('location-update', player);
+
         }
     }
 }

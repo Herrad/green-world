@@ -13,6 +13,9 @@ function createIncomingEventHandler() {
 
             socket.on('new-player', function (player) {
                 update.registerNewPlayer(player);
+            });
+            socket.on('player-list-update', function (players) {
+                update.playerList(players);
             })
         }
     }

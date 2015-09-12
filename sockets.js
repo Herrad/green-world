@@ -1,4 +1,5 @@
 var socketio = require('socket.io')
+var players = require('./lib/players')();
 
 module.exports.listen = function (app) {
     io = socketio.listen(app)
@@ -30,13 +31,43 @@ module.exports.listen = function (app) {
     };
     var chunk = updateChunks();
 
+    function generateGuid() {
+        var result, i, j;
+        result = '';
+        for (j = 0; j < 32; j++) {
+            if (j == 8 || j == 12 || j == 16 || j == 20)
+                result = result + '-';
+            i = Math.floor(Math.random() * 16).toString(16).toUpperCase();
+            result = result + i;
+        }
+        return result
+    }
+
     io.sockets.on('connection', function (socket) {
+        socket.handshake.user = generateGuid();
         socket.emit('chunk-update', chunk);
 
-        socket.on('update-players', function (player) {
-            console.log('new-player')
-            io.sockets.emit('new-player', player)
+        socket.on('new-player', function (player) {
+            player.connectionReference = player.connectionReference || socket.handshake.user
+            players.add(player);
         });
+
+        socket.on('location-update', function (player) {
+            var box = {
+                minX: player.coordinates.x - 1024 / 2 - 32,
+                maxX: player.coordinates.x + 1024 / 2 - 32,
+                minY: player.coordinates.y - 720 / 2 - 32,
+                maxY: player.coordinates.y + 720 / 2 - 32
+            }
+            player.connectionReference = player.connectionReference || socket.handshake.user
+            players.update(player);
+            var foundPlayers = players.within(box);
+            socket.emit('player-list-update', foundPlayers);
+        });
+
+        socket.on('disconnect', function () {
+            players.removeByConnection(socket.handshake.user);
+        })
 
     });
 

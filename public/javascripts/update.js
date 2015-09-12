@@ -29,10 +29,17 @@ function createUpdate(player, outgoingEvents) {
         } else {
             return;
         }
-        player.coordinateChange({x:480-screenCoordinates.x, y: 328-screenCoordinates.y});
+        player.coordinateChange({
+            x: 480 - screenCoordinates.x,
+            y: 328 - screenCoordinates.y
+        });
     });
 
     var players = [player];
+
+    setInterval(function () {
+        outgoingEvents.locationUpdate(player.serialise())
+    }, 1000 / 5);
 
     return {
         mainLoop: function () {
@@ -44,19 +51,16 @@ function createUpdate(player, outgoingEvents) {
         updateChunk: function (chunk) {
             cacheChunk(chunk);
         },
-        drawPlayerAt: function () {
-            otherPlayers.push(data);
-        },
-        registerNewPlayer: function (player) {
-            var hasPlayer = _.some(players, {
-                id: player.id
+        playerList: function (newList) {
+            players = [player];
+            _.forEach(newList, function (newPlayer) {
+                if (newPlayer.id === player.id) {
+                    return;
+                }
+                var fullPlayer = createPlayer(outgoingEvents, newPlayer.id, newPlayer.coordinates, newPlayer.facing);
+                players.push(fullPlayer)
             });
-            // console.log('new player')
-            // console.log(player.id)
-            // console.log('has player ' + hasPlayer)
-            if (!hasPlayer) {
-                players.push(createPlayer(outgoingEvents, player.id, player.coordinates));
-            }
+            players = players.reverse();
         }
     }
 }
