@@ -1,4 +1,4 @@
-function createUpdate(player, outgoingEvents) {
+function createUpdate(player, outgoingEvents, collisionDetection) {
     var draw = createDraw();
     var chunkCache = [];
     var chunkIds = [];
@@ -13,21 +13,33 @@ function createUpdate(player, outgoingEvents) {
     }
 
     $('body').on('keydown', function (e) {
-        moveUnits = 5;
+        moveUnits = 10;
+        var newCoordinates = {
+            x: screenCoordinates.x,
+            y: screenCoordinates.y
+        };
         if (e.keyCode == 37 || e.keyCode == 65) { //left
-            screenCoordinates.x += moveUnits;
+            newCoordinates.x += moveUnits;
             player.faceLeft();
         } else if (e.keyCode == 38 || e.keyCode == 87) { //up
-            screenCoordinates.y += moveUnits;
+            newCoordinates.y += moveUnits;
             player.faceUp();
         } else if (e.keyCode == 39 || e.keyCode == 68) { //right
-            screenCoordinates.x -= moveUnits;
+            newCoordinates.x -= moveUnits;
             player.faceRight();
         } else if (e.keyCode == 40 || e.keyCode == 83) { //down
-            screenCoordinates.y -= moveUnits;
+            newCoordinates.y -= moveUnits;
             player.faceDown();
         } else {
             return;
+        }
+        if (collisionDetection.detected(players, {
+                x: 480 - newCoordinates.x,
+                y: 328 - newCoordinates.y
+            }, player)) {
+            return;
+        } else {
+            screenCoordinates = newCoordinates;
         }
         player.coordinateChange({
             x: 480 - screenCoordinates.x,

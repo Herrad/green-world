@@ -6,7 +6,9 @@ function init() {
 
     var player = createPlayer(outgoingEvents);
 
-    var update = createUpdate(player, outgoingEvents);
+    var collisionDetection = createCollisionDetection();
+
+    var update = createUpdate(player, outgoingEvents, collisionDetection);
 
     var incomingEvents = createIncomingEventHandler();
 
@@ -17,7 +19,7 @@ function init() {
         coordinates: player.coordinates
     });
 
-    setInterval(update.mainLoop, 1000/60);
+    setInterval(update.mainLoop, 1000 / 60);
     console.log('initialised');
 }
 
