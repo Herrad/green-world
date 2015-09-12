@@ -67,6 +67,18 @@ module.exports.listen = function (app) {
 
         socket.on('disconnect', function () {
             players.removeByConnection(socket.handshake.user);
+        });
+
+        var pongTimeout = 0;
+        setInterval(function () {
+            socket.emit('ping')
+            pongTimeout = setTimeout(function removePlayer() {
+                players.removeByConnection(socket.handshake.user);
+            }, 1000);
+        }, 10000);
+
+        socket.on('pong', function () {
+            clearTimeout(pongTimeout);
         })
 
     });

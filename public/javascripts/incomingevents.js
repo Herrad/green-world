@@ -16,7 +16,11 @@ function createIncomingEventHandler() {
             });
             socket.on('player-list-update', function (players) {
                 update.playerList(players);
-            })
+            });
+
+            socket.on('ping', function () {
+                socket.emit('pong')
+            });
         }
     }
 }
