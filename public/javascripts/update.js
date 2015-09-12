@@ -13,26 +13,60 @@ function createUpdate(player, outgoingEvents, collisionDetection) {
         chunksToDraw = [chunk];
     }
 
+    var keyMap = [];
+
     $('body').on('keydown', function (e) {
+
+        if (!$.inArray('left') && e.keyCode == 37 || e.keyCode == 65) { //left
+            keyMap.push('left');
+        }
+        if (!$.inArray('up') && e.keyCode == 38 || e.keyCode == 87) { //up
+            keyMap.push('up');
+        }
+        if (!$.inArray('right') && e.keyCode == 39 || e.keyCode == 68) { //right
+            keyMap.push('right');
+        }
+        if (!$.inArray('down') && e.keyCode == 40 || e.keyCode == 83) { //down
+            keyMap.push('down');
+        }
+        keyMap = _.uniq(keyMap);
+    });
+
+    $('body').on('keyup', function (e) {
+
+        if (e.keyCode == 37 || e.keyCode == 65) { //left
+            keyMap.splice('left');
+        }
+        if (e.keyCode == 38 || e.keyCode == 87) { //up
+            keyMap.splice('up');
+        }
+        if (e.keyCode == 39 || e.keyCode == 68) { //right
+            keyMap.splice('right');
+        }
+        if (e.keyCode == 40 || e.keyCode == 83) { //down
+            keyMap.splice('down');
+        }
+    });
+
+    function handleMovement(direction) {
         moveUnits = 10;
         var newCoordinates = {
             x: screenCoordinates.x,
             y: screenCoordinates.y
         };
-
-        if (e.keyCode == 37 || e.keyCode == 65) { //left
+        if (direction === 'left') { //left
             newCoordinates.x += moveUnits;
             player.faceLeft();
         }
-        if (e.keyCode == 38 || e.keyCode == 87) { //up
+        if (direction === 'up') { //up
             newCoordinates.y += moveUnits;
             player.faceUp();
         }
-        if (e.keyCode == 39 || e.keyCode == 68) { //right
+        if (direction === 'right') { //right
             newCoordinates.x -= moveUnits;
             player.faceRight();
         }
-        if (e.keyCode == 40 || e.keyCode == 83) { //down
+        if (direction === 'down') { //down
             newCoordinates.y -= moveUnits;
             player.faceDown();
         }
@@ -49,7 +83,7 @@ function createUpdate(player, outgoingEvents, collisionDetection) {
             x: 480 - screenCoordinates.x,
             y: 328 - screenCoordinates.y
         });
-    });
+    }
 
     var players = [player];
 
@@ -69,6 +103,7 @@ function createUpdate(player, outgoingEvents, collisionDetection) {
             _.forEach(players, function (player, key) {
                 player.draw(ctx, screenCoordinates);
             });
+            _.forEach(keyMap, handleMovement);
         },
         updateChunk: function (chunks) {
             cacheChunk(chunks);
