@@ -1,4 +1,4 @@
-function createEventHandler() {
+function createIncomingEventHandler() {
     return {
         registerEventHandlers: function (update) {
             var socket = io();
@@ -10,6 +10,10 @@ function createEventHandler() {
             socket.on('player-at', function (data) {
                 update.drawPlayerAt(data)
             });
+
+            socket.on('new-player', function (player) {
+                update.registerNewPlayer(player);
+            })
         }
     }
 }

@@ -3,9 +3,6 @@ var socketio = require('socket.io')
 module.exports.listen = function (app) {
     io = socketio.listen(app)
 
-    io.on('connection', function () {
-        io.emit('user-details', "{\"Name\": \"Hello\"}");
-    });
     var chunk = {
         blips: []
     };
@@ -29,15 +26,19 @@ module.exports.listen = function (app) {
                 })
             };
         };
-        io.emit('chunk-update', chunk)
-        console.log('pushed');
+        return chunk;
     };
-    updateChunks();
-    setInterval(function(){io.emit('chunk-update', chunk)}, 1000);
+    var chunk = updateChunks();
 
-    io.on('player-location-update', function(data){
-    	io.emit('player-at', data);
-    })
+    io.sockets.on('connection', function (socket) {
+        socket.emit('chunk-update', chunk);
+
+        socket.on('update-players', function (player) {
+            console.log('new-player')
+            io.sockets.emit('new-player', player)
+        });
+
+    });
 
     return io
 }
