@@ -13,6 +13,7 @@ function createUpdate(player, outgoingEvents, collisionDetection) {
     }
 
     $('body').on('keydown', function (e) {
+        console.log(e);
         moveUnits = 10;
         var newCoordinates = {
             x: screenCoordinates.x,
@@ -21,18 +22,20 @@ function createUpdate(player, outgoingEvents, collisionDetection) {
         if (e.keyCode == 37 || e.keyCode == 65) { //left
             newCoordinates.x += moveUnits;
             player.faceLeft();
-        } else if (e.keyCode == 38 || e.keyCode == 87) { //up
+        }
+        if (e.keyCode == 38 || e.keyCode == 87) { //up
             newCoordinates.y += moveUnits;
             player.faceUp();
-        } else if (e.keyCode == 39 || e.keyCode == 68) { //right
+        }
+        if (e.keyCode == 39 || e.keyCode == 68) { //right
             newCoordinates.x -= moveUnits;
             player.faceRight();
-        } else if (e.keyCode == 40 || e.keyCode == 83) { //down
+        }
+        if (e.keyCode == 40 || e.keyCode == 83) { //down
             newCoordinates.y -= moveUnits;
             player.faceDown();
-        } else {
-            return;
         }
+
         if (collisionDetection.detected(players, {
                 x: 480 - newCoordinates.x,
                 y: 328 - newCoordinates.y
@@ -51,7 +54,7 @@ function createUpdate(player, outgoingEvents, collisionDetection) {
 
     setInterval(function () {
         outgoingEvents.locationUpdate(player.serialise())
-    }, 1000 / 5);
+    }, 1000 / 10);
 
     return {
         mainLoop: function () {
@@ -73,6 +76,16 @@ function createUpdate(player, outgoingEvents, collisionDetection) {
                 players.push(fullPlayer)
             });
             players = players.reverse();
+            if (collisionDetection.detected(players, {
+                    x: 480 - screenCoordinates.x,
+                    y: 328 - screenCoordinates.y
+                }, player)) {
+                player.coordinateChange({
+                    x: 480 - screenCoordinates.x + 64,
+                    y: 328 - screenCoordinates.y + 64
+                });
+
+            }
         }
     }
 }
