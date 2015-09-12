@@ -1,3 +1,3 @@
-FROM 'dockerfile/nodejs'
+FROM node:0.10-onbuild
 
-RUN 'node bin/www'
+EXPOSE 3000
