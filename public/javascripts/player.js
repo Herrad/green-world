@@ -7,7 +7,7 @@ function createPlayer(outgoingEvents, id, coordinates) {
     left.src = "/images/player/left.png"
     var right = new Image;
     right.src = "/images/player/right.png"
-    imageToDraw = down;
+    var imageToDraw = down;
 
     function generateGuid() {
         var result, i, j;
@@ -31,8 +31,13 @@ function createPlayer(outgoingEvents, id, coordinates) {
     var player = {
         id: idToUse,
         coordinates: coordinatesToUse,
-        draw: function (ctx, worldCoordinates) {
-            ctx.drawImage(imageToDraw, this.coordinates.x - worldCoordinates.x, this.coordinates.y - worldCoordinates.y);
+        draw: function (ctx, screenCoordinates) {
+        	var xToDraw = this.coordinates.x+screenCoordinates.x;
+        	var yToDraw = this.coordinates.y+screenCoordinates.y;
+            ctx.drawImage(imageToDraw, xToDraw, yToDraw);
+            ctx.fillStyle ="rgb(0,0,0)";
+            ctx.fillText("[x:" + xToDraw + ",y:" + yToDraw + "]", xToDraw, yToDraw);
+            ctx.fillText("[x:" + this.coordinates.x + ",y:" + this.coordinates.y + "]", xToDraw, yToDraw + 35);
         },
         faceLeft: function () {
             imageToDraw = left
@@ -46,10 +51,10 @@ function createPlayer(outgoingEvents, id, coordinates) {
         faceDown: function () {
             imageToDraw = down
         },
-        coordinateChange: function (worldCoordinates) {
+        coordinateChange: function (newCoordinates) {
             this.coordinates = {
-                x: worldCoordinates.x + 480,
-                y: worldCoordinates.y + 328
+                x: newCoordinates.x,
+                y: newCoordinates.y
             };
         }
     };

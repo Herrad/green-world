@@ -17,7 +17,7 @@ function init() {
         coordinates: player.coordinates
     });
 
-    setInterval(update.mainLoop, 50);
+    setInterval(update.mainLoop, 1000/60);
     console.log('initialised');
 }
 

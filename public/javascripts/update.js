@@ -2,7 +2,7 @@ function createUpdate(player, outgoingEvents) {
     var draw = createDraw();
     var chunkCache = [];
     var chunkIds = [];
-    var worldCoordinates = {
+    var screenCoordinates = {
         x: 0,
         y: 0
     }
@@ -15,30 +15,30 @@ function createUpdate(player, outgoingEvents) {
     $('body').on('keydown', function (e) {
         moveUnits = 5;
         if (e.keyCode == 37 || e.keyCode == 65) { //left
-            worldCoordinates.x += moveUnits;
+            screenCoordinates.x += moveUnits;
             player.faceLeft();
         } else if (e.keyCode == 38 || e.keyCode == 87) { //up
-            worldCoordinates.y += moveUnits;
+            screenCoordinates.y += moveUnits;
             player.faceUp();
         } else if (e.keyCode == 39 || e.keyCode == 68) { //right
-            worldCoordinates.x -= moveUnits;
+            screenCoordinates.x -= moveUnits;
             player.faceRight();
         } else if (e.keyCode == 40 || e.keyCode == 83) { //down
-            worldCoordinates.y -= moveUnits;
+            screenCoordinates.y -= moveUnits;
             player.faceDown();
         } else {
             return;
         }
-        player.coordinateChange(worldCoordinates);
+        player.coordinateChange({x:480-screenCoordinates.x, y: 328-screenCoordinates.y});
     });
 
     var players = [player];
 
     return {
         mainLoop: function () {
-            draw.draw(ctx, chunkToDraw, worldCoordinates);
+            draw.draw(ctx, chunkToDraw, screenCoordinates);
             _.forEach(players, function (player, key) {
-                player.draw(ctx, worldCoordinates);
+                player.draw(ctx, screenCoordinates);
             });
         },
         updateChunk: function (chunk) {
