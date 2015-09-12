@@ -13,7 +13,6 @@ function createOutgoingEvents() {
         },
         locationUpdate: function (player) {
             socket.emit('location-update', player);
-
         }
     }
 }

@@ -1,35 +1,9 @@
 var socketio = require('socket.io')
 var players = require('./lib/players')();
+var chunkList = require('./lib/chunkList')();
 
 module.exports.listen = function (app) {
     io = socketio.listen(app)
-
-    var chunk = {
-        blips: []
-    };
-    var blipSize = 64;
-
-    function updateChunks() {
-        chunk = {
-            blips: []
-        };
-        for (var x = 0; x < 50; x++) {
-            for (var y = 0; y < 50; y++) {
-                var r = Math.floor(Math.random() * 50 + 100);
-                var g = Math.floor(Math.random() * 80 + 100);
-                var b = Math.floor(20);
-                chunk.blips.push({
-                    rgb: "rgb(" + r + "," + g + "," + b + ")",
-                    x: x * blipSize,
-                    y: y * blipSize,
-                    width: blipSize,
-                    height: blipSize
-                })
-            };
-        };
-        return chunk;
-    };
-    var chunk = updateChunks();
 
     function generateGuid() {
         var result, i, j;
@@ -42,10 +16,14 @@ module.exports.listen = function (app) {
         }
         return result
     }
+    var startingChunk = chunkList.findChunkAt({
+        x: 0,
+        y: 0
+    });
 
     io.sockets.on('connection', function (socket) {
         socket.handshake.user = generateGuid();
-        socket.emit('chunk-update', chunk);
+        socket.emit('chunk-update', startingChunk);
 
         socket.on('new-player', function (player) {
             player.connectionReference = player.connectionReference || socket.handshake.user
@@ -63,6 +41,7 @@ module.exports.listen = function (app) {
             players.update(player);
             var foundPlayers = players.within(box);
             socket.emit('player-list-update', foundPlayers);
+            socket.emit('local-chunks', chunkList.getChunksNearby(player.coordinates));
         });
 
         socket.on('disconnect', function () {

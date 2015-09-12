@@ -13,6 +13,10 @@ function createIncomingEventHandler() {
             socket.on('ping', function () {
                 socket.emit('pong')
             });
+
+            socket.on('local-chunks', function (data) {
+                update.chunksArrived(data);
+            });
         }
     }
 }
