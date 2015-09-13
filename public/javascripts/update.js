@@ -43,16 +43,13 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw, movement
                 var fullPlayer = createPlayer(outgoingEvents, newPlayer.id, newPlayer.coordinates, newPlayer.facing);
                 players.push(fullPlayer)
             });
-            players = players.reverse();
-            if (collisionDetection.detected(players, {
-                    x: 480 - screenCoordinates.x,
-                    y: 328 - screenCoordinates.y
-                }, player)) {
-                player.coordinateChange({
-                    x: 480 - screenCoordinates.x + 128,
-                    y: 328 - screenCoordinates.y + 128
-                });
 
+            players = players.reverse();
+            while (collisionDetection.detected(players, player.coordinates, player)) {
+                player.coordinateChange({
+                    x: player.coordinates.x + Math.floor(Math.random() * 512),
+                    y: player.coordinates.y + Math.floor(Math.random() * 512)
+                });
             }
         }
     }
