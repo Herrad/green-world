@@ -3,19 +3,15 @@
   <head>
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script src="/javascripts/jquery.js"></script>
+    <script src="/javascripts/jquery-cookie.js"></script>
+    <script src="/javascripts/redirectIfNameSet.js"></script>
   </head>
   <body>
-    <canvas id="gameScreen"></canvas>
-    <script src="/javascripts/socketio.js"></script>
-    <script src="/javascripts/jquery.js"></script>
-    <script src="/javascripts/lodash.js"></script>
-    <script src="/javascripts/draw.js"></script>
-    <script src="/javascripts/collision.js"></script>
-    <script src="/javascripts/playerMovement.js"></script>
-    <script src="/javascripts/player.js"></script>
-    <script src="/javascripts/incomingevents.js"></script>
-    <script src="/javascripts/outgoingevents.js"></script>
-    <script src="/javascripts/update.js"></script>
-    <script src="/javascripts/game.js"></script>
+    <form id="newCharacter" method="POST" action="/createCharacter">
+      <label for="characterName" value="Enter a name"/>
+      <input name="characterName"/>
+      <input type="submit"/>
+    </form>
   </body>
 </html>

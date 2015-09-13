@@ -31,7 +31,7 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw, movement
                 if (newPlayer.id === player.id) {
                     return;
                 }
-                var fullPlayer = createPlayer(outgoingEvents, newPlayer.id, newPlayer.coordinates, newPlayer.facing);
+                var fullPlayer = createPlayer(outgoingEvents, newPlayer.name, newPlayer.id, newPlayer.coordinates, newPlayer.facing);
                 players.push(fullPlayer)
             });
 

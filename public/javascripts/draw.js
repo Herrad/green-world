@@ -23,6 +23,10 @@ function createDraw(screenDimensions) {
         var xToDraw = player.coordinates.x - screenCoordinates.x;
         var yToDraw = player.coordinates.y - screenCoordinates.y;
         ctx.drawImage(player.imageToDraw, xToDraw, yToDraw);
+        ctx.fillStyle = "rgb(0,0,0)";
+        ctx.font = "30px serif";
+        var xToDrawText = xToDraw + 128 / 2 - (player.name.length / 2) * 15
+        ctx.fillText(player.name, xToDrawText, yToDraw - 20);
     }
 
     return {

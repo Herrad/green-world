@@ -18,7 +18,7 @@ function init() {
 
     var collisionDetection = createCollisionDetection();
 
-    var player = createPlayer(outgoingEvents);
+    var player = createPlayer(outgoingEvents, $.cookie('character-name'));
 
     var playerMovement = createPlayerMovement(player, collisionDetection, gameScreenSize);
 

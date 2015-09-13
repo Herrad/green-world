@@ -1,4 +1,4 @@
-function createPlayer(outgoingEvents, id, coordinates, facing) {
+function createPlayer(outgoingEvents, name, id, coordinates, facing) {
     var imageToDraw;
     if (facing) {
         imageToDraw = new Image
@@ -35,6 +35,7 @@ function createPlayer(outgoingEvents, id, coordinates, facing) {
     var idToUse = id || generateGuid();
 
     var player = {
+        name: name || "No Name",
         id: idToUse,
         coordinates: coordinatesToUse,
         facing: imageToDraw.src,
@@ -64,6 +65,7 @@ function createPlayer(outgoingEvents, id, coordinates, facing) {
         serialise: function () {
             return {
                 id: this.id,
+                name: name,
                 coordinates: this.coordinates,
                 facing: this.facing
             };
