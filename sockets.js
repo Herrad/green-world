@@ -1,6 +1,7 @@
 var socketio = require('socket.io')
 var players = require('./lib/players')();
-var chunkList = require('./lib/chunkList')();
+var biomeGenerator = require('./lib/procedural/biomeGenerator')();
+var chunkList = require('./lib/chunkList')(biomeGenerator);
 
 module.exports.listen = function (app) {
     io = socketio.listen(app)

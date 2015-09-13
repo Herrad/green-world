@@ -48,7 +48,7 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw, screenDi
     });
 
     function handleMovement(direction) {
-        moveUnits = 10;
+        moveUnits = 8;
         var newCoordinates = {
             x: screenCoordinates.x,
             y: screenCoordinates.y
