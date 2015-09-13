@@ -2,44 +2,10 @@ function createPlayerMovement(player, collisionDetection, screenDimensions) {
     var keyMap = [];
 
     function handleMovement(direction, players, screenCoordinates, callback) {
-
         moveUnits = 16;
-        var newCoordinates = {
-            x: screenCoordinates.x,
-            y: screenCoordinates.y
-        };
-        var playerCoordinates = {
-            x: player.coordinates.x,
-            y: player.coordinates.y
-        };
-        if (direction === 'left') { //left
-            playerCoordinates.x -= moveUnits;
-            if (playerCoordinates.x < newCoordinates.x + screenDimensions.width / 5) {
-                newCoordinates.x -= moveUnits;
-            }
-            player.faceLeft();
-        }
-        if (direction === 'up') { //up
-            playerCoordinates.y -= moveUnits;
-            if (playerCoordinates.y < newCoordinates.y + screenDimensions.height / 5) {
-                newCoordinates.y -= moveUnits;
-            }
-            player.faceUp();
-        }
-        if (direction === 'right') { //right
-            playerCoordinates.x += moveUnits;
-            if (playerCoordinates.x > newCoordinates.x + screenDimensions.width - 128 - screenDimensions.width / 5) {
-                newCoordinates.x += moveUnits;
-            }
-            player.faceRight();
-        }
-        if (direction === 'down') { //down
-            playerCoordinates.y += moveUnits;
-            if (playerCoordinates.y > newCoordinates.y + screenDimensions.height - 128 - screenDimensions.height / 5) {
-                newCoordinates.y += moveUnits;
-            }
-            player.faceDown();
-        }
+
+        var playerCoordinates = orientAndMovePlayer(direction, moveUnits)
+        var newCoordinates = moveScreenIfOutsideBounds(screenCoordinates, playerCoordinates, moveUnits);
 
         if (collisionDetection.detected(players, playerCoordinates, player)) {
             return;
@@ -47,6 +13,52 @@ function createPlayerMovement(player, collisionDetection, screenDimensions) {
             callback(newCoordinates);
             player.coordinateChange(playerCoordinates);
         }
+    }
+
+    function orientAndMovePlayer(direction, moveUnits) {
+        var playerCoordinates = {
+            x: player.coordinates.x,
+            y: player.coordinates.y
+        };
+
+        if (direction === 'left') { //left
+            playerCoordinates.x -= moveUnits;
+            player.faceLeft();
+        }
+        if (direction === 'up') { //up
+            playerCoordinates.y -= moveUnits;
+            player.faceUp();
+        }
+        if (direction === 'right') { //right
+            playerCoordinates.x += moveUnits;
+            player.faceRight();
+        }
+        if (direction === 'down') { //down
+            playerCoordinates.y += moveUnits;
+            player.faceDown();
+        }
+
+        return playerCoordinates;
+    }
+
+    function moveScreenIfOutsideBounds(screenCoordinates, playerCoordinates, moveUnits) {
+        var newCoordinates = {
+            x: screenCoordinates.x,
+            y: screenCoordinates.y
+        };
+        if (playerCoordinates.x < newCoordinates.x + screenDimensions.width / 5) {
+            newCoordinates.x -= moveUnits;
+        }
+        if (playerCoordinates.y < newCoordinates.y + screenDimensions.height / 5) {
+            newCoordinates.y -= moveUnits;
+        }
+        if (playerCoordinates.x > newCoordinates.x + screenDimensions.width - 128 - screenDimensions.width / 5) {
+            newCoordinates.x += moveUnits;
+        }
+        if (playerCoordinates.y > newCoordinates.y + screenDimensions.height - 128 - screenDimensions.height / 5) {
+            newCoordinates.y += moveUnits;
+        }
+        return newCoordinates;
     }
 
     return {
