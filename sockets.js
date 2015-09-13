@@ -32,10 +32,10 @@ module.exports.listen = function (app) {
 
         socket.on('location-update', function (player) {
             var box = {
-                minX: player.coordinates.x - 1024 / 2 - 32,
-                maxX: player.coordinates.x + 1024 / 2 - 32,
-                minY: player.coordinates.y - 720 / 2 - 32,
-                maxY: player.coordinates.y + 720 / 2 - 32
+                minX: player.coordinates.x - 2000,
+                maxX: player.coordinates.x + 2000,
+                minY: player.coordinates.y - 2000,
+                maxY: player.coordinates.y + 2000
             }
             player.connectionReference = player.connectionReference || socket.handshake.user
             players.update(player);

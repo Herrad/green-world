@@ -39,8 +39,8 @@ function createPlayer(outgoingEvents, id, coordinates, facing, defaultCoordinate
         coordinates: coordinatesToUse,
         facing: imageToDraw.src,
         draw: function (ctx, screenCoordinates) {
-            var xToDraw = this.coordinates.x + screenCoordinates.x;
-            var yToDraw = this.coordinates.y + screenCoordinates.y;
+            var xToDraw = this.coordinates.x - screenCoordinates.x;
+            var yToDraw = this.coordinates.y - screenCoordinates.y;
             ctx.drawImage(imageToDraw, xToDraw, yToDraw);
         },
         faceLeft: function () {

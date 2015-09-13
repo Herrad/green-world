@@ -1,4 +1,4 @@
-function createUpdate(player, outgoingEvents, collisionDetection, draw) {
+function createUpdate(player, outgoingEvents, collisionDetection, draw, screenDimensions) {
     var chunkCache = [];
     var chunkIds = [];
     var screenCoordinates = {
@@ -53,35 +53,45 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw) {
             x: screenCoordinates.x,
             y: screenCoordinates.y
         };
+        var playerCoordinates = {
+            x: player.coordinates.x,
+            y: player.coordinates.y
+        };
         if (direction === 'left') { //left
-            newCoordinates.x += moveUnits;
+            playerCoordinates.x -= moveUnits;
+            if (playerCoordinates.x < newCoordinates.x + screenDimensions.width / 5) {
+                newCoordinates.x -= moveUnits;
+            }
             player.faceLeft();
         }
         if (direction === 'up') { //up
-            newCoordinates.y += moveUnits;
+            playerCoordinates.y -= moveUnits;
+            if (playerCoordinates.y < newCoordinates.y + screenDimensions.height / 5) {
+                newCoordinates.y -= moveUnits;
+            }
             player.faceUp();
         }
         if (direction === 'right') { //right
-            newCoordinates.x -= moveUnits;
+            playerCoordinates.x += moveUnits;
+            if (playerCoordinates.x > newCoordinates.x + screenDimensions.width - 64 - screenDimensions.width / 5) {
+                newCoordinates.x += moveUnits;
+            }
             player.faceRight();
         }
         if (direction === 'down') { //down
-            newCoordinates.y -= moveUnits;
+            playerCoordinates.y += moveUnits;
+            if (playerCoordinates.y > newCoordinates.y + screenDimensions.height - 64 - screenDimensions.height / 5) {
+                newCoordinates.y += moveUnits;
+            }
             player.faceDown();
         }
 
-        if (collisionDetection.detected(players, {
-                x: 1920 / 2 - 32 - newCoordinates.x,
-                y: 1080 / 2 - 32 - newCoordinates.y
-            }, player)) {
+        if (collisionDetection.detected(players, playerCoordinates, player)) {
             return;
         } else {
             screenCoordinates = newCoordinates;
+            player.coordinateChange(playerCoordinates);
         }
-        player.coordinateChange({
-            x: 1920 / 2 - 32 - screenCoordinates.x,
-            y: 1080 / 2 - 32 - screenCoordinates.y
-        });
     }
 
     var players = [player];

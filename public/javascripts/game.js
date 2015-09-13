@@ -8,8 +8,8 @@ function init() {
     var ctx = canvas.getContext('2d');
 
     var gameScreenSize = {
-        width: gameScreen.width,
-        height: gameScreen.height
+        width: gameScreen.width(),
+        height: gameScreen.height()
     };
 
     var outgoingEvents = createOutgoingEvents(gameScreenSize);
@@ -20,7 +20,7 @@ function init() {
 
     var player = createPlayer(outgoingEvents);
 
-    var update = createUpdate(player, outgoingEvents, collisionDetection, draw);
+    var update = createUpdate(player, outgoingEvents, collisionDetection, draw, gameScreenSize);
 
     var incomingEvents = createIncomingEventHandler();
 
