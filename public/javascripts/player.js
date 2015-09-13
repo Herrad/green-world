@@ -1,4 +1,4 @@
-function createPlayer(outgoingEvents, id, coordinates, facing, defaultCoordinates) {
+function createPlayer(outgoingEvents, id, coordinates, facing) {
     var imageToDraw;
     if (facing) {
         imageToDraw = new Image
@@ -27,7 +27,7 @@ function createPlayer(outgoingEvents, id, coordinates, facing, defaultCoordinate
         return result
     }
 
-    var coordinatesToUse = coordinates || defaultCoordinates || {
+    var coordinatesToUse = coordinates || {
         x: 1920 / 2 - 32,
         y: 1080 / 2 - 32
     }
@@ -38,26 +38,22 @@ function createPlayer(outgoingEvents, id, coordinates, facing, defaultCoordinate
         id: idToUse,
         coordinates: coordinatesToUse,
         facing: imageToDraw.src,
-        draw: function (ctx, screenCoordinates) {
-            var xToDraw = this.coordinates.x - screenCoordinates.x;
-            var yToDraw = this.coordinates.y - screenCoordinates.y;
-            ctx.drawImage(imageToDraw, xToDraw, yToDraw);
-        },
+        imageToDraw: imageToDraw,
         faceLeft: function () {
-            imageToDraw = left
-            this.facing = imageToDraw.src
+            this.imageToDraw = left
+            this.facing = this.imageToDraw.src
         },
         faceUp: function () {
-            imageToDraw = up
-            this.facing = imageToDraw.src
+            this.imageToDraw = up
+            this.facing = this.imageToDraw.src
         },
         faceRight: function () {
-            imageToDraw = right
-            this.facing = imageToDraw.src
+            this.imageToDraw = right
+            this.facing = this.imageToDraw.src
         },
         faceDown: function () {
-            imageToDraw = down
-            this.facing = imageToDraw.src
+            this.imageToDraw = down
+            this.facing = this.imageToDraw.src
         },
         coordinateChange: function (newCoordinates) {
             this.coordinates = {

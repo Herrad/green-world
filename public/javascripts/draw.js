@@ -19,6 +19,12 @@ function createDraw(screenDimensions) {
         };
     }
 
+    function drawPlayer(ctx, player, screenCoordinates) {
+        var xToDraw = player.coordinates.x - screenCoordinates.x;
+        var yToDraw = player.coordinates.y - screenCoordinates.y;
+        ctx.drawImage(player.imageToDraw, xToDraw, yToDraw);
+    }
+
     return {
         drawLoopIteration: function (canvas, ctx, chunks, screenCoordinates, players) {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -28,7 +34,7 @@ function createDraw(screenDimensions) {
                 drawChunk(ctx, chunk, screenCoordinates);
             });
             _.forEach(players, function (player) {
-                player.draw(ctx, screenCoordinates);
+                drawPlayer(ctx, player, screenCoordinates);
             });
         }
     }
