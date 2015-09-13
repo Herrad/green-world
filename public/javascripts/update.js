@@ -48,7 +48,7 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw, screenDi
     });
 
     function handleMovement(direction) {
-        moveUnits = 8;
+        moveUnits = 16;
         var newCoordinates = {
             x: screenCoordinates.x,
             y: screenCoordinates.y
@@ -73,14 +73,14 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw, screenDi
         }
         if (direction === 'right') { //right
             playerCoordinates.x += moveUnits;
-            if (playerCoordinates.x > newCoordinates.x + screenDimensions.width - 64 - screenDimensions.width / 5) {
+            if (playerCoordinates.x > newCoordinates.x + screenDimensions.width - 128 - screenDimensions.width / 5) {
                 newCoordinates.x += moveUnits;
             }
             player.faceRight();
         }
         if (direction === 'down') { //down
             playerCoordinates.y += moveUnits;
-            if (playerCoordinates.y > newCoordinates.y + screenDimensions.height - 64 - screenDimensions.height / 5) {
+            if (playerCoordinates.y > newCoordinates.y + screenDimensions.height - 128 - screenDimensions.height / 5) {
                 newCoordinates.y += moveUnits;
             }
             player.faceDown();
@@ -135,8 +135,8 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw, screenDi
                     y: 328 - screenCoordinates.y
                 }, player)) {
                 player.coordinateChange({
-                    x: 480 - screenCoordinates.x + 64,
-                    y: 328 - screenCoordinates.y + 64
+                    x: 480 - screenCoordinates.x + 128,
+                    y: 328 - screenCoordinates.y + 128
                 });
 
             }
