@@ -71,8 +71,8 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw) {
         }
 
         if (collisionDetection.detected(players, {
-                x: 480 - newCoordinates.x,
-                y: 328 - newCoordinates.y
+                x: 1920 / 2 - 32 - newCoordinates.x,
+                y: 1080 / 2 - 32 - newCoordinates.y
             }, player)) {
             return;
         } else {
