@@ -3,9 +3,6 @@ function createIncomingEventHandler() {
         registerEventHandlers: function (update) {
             var socket = io();
 
-            socket.on('chunk-update', function (data) {
-                update.updateChunk(data)
-            });
             socket.on('player-list-update', function (players) {
                 update.playerList(players);
             });
@@ -13,7 +10,6 @@ function createIncomingEventHandler() {
             socket.on('ping', function () {
                 socket.emit('pong')
             });
-
             socket.on('local-chunks', function (data) {
                 update.chunksArrived(data);
             });

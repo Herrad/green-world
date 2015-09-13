@@ -24,7 +24,7 @@ module.exports.listen = function (app) {
 
     io.sockets.on('connection', function (socket) {
         socket.handshake.user = generateGuid();
-        socket.emit('chunk-update', startingChunk);
+        socket.emit('local-chunks', [startingChunk]);
 
         socket.on('new-player', function (player) {
             player.connectionReference = player.connectionReference || socket.handshake.user

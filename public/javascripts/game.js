@@ -20,7 +20,17 @@ function init() {
 
     var player = createPlayer(outgoingEvents);
 
-    var update = createUpdate(player, outgoingEvents, collisionDetection, draw, gameScreenSize);
+    var playerMovement = createPlayerMovement(player, collisionDetection, gameScreenSize);
+
+    $('body').on('keydown', function (e) {
+        playerMovement.keyDown(e.keyCode);
+    });
+
+    $('body').on('keyup', function (e) {
+        playerMovement.keyUp(e.keyCode);
+    });
+
+    var update = createUpdate(player, outgoingEvents, collisionDetection, draw, gameScreenSize, playerMovement);
 
     var incomingEvents = createIncomingEventHandler();
 
