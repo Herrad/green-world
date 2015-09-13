@@ -30,7 +30,7 @@ function init() {
         playerMovement.keyUp(e.keyCode);
     });
 
-    var update = createUpdate(player, outgoingEvents, collisionDetection, draw, gameScreenSize, playerMovement);
+    var update = createUpdate(player, outgoingEvents, collisionDetection, draw, playerMovement);
 
     var incomingEvents = createIncomingEventHandler();
 

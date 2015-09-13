@@ -1,4 +1,4 @@
-function createUpdate(player, outgoingEvents, collisionDetection, draw, screenDimensions, movement) {
+function createUpdate(player, outgoingEvents, collisionDetection, draw, movement) {
     var chunkCache = [];
     var chunkIds = [];
     var screenCoordinates = {
