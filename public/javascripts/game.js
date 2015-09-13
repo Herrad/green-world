@@ -1,14 +1,26 @@
-var canvas = document.getElementById('screen');
-var ctx = canvas.getContext('2d');
-
 function init() {
-    var outgoingEvents = createOutgoingEvents();
+
+    var gameScreen = $('#gameScreen');
+
+    var canvas = document.getElementById('gameScreen');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    var ctx = canvas.getContext('2d');
+
+    var gameScreenSize = {
+        width: gameScreen.width,
+        height: gameScreen.height
+    };
+
+    var outgoingEvents = createOutgoingEvents(gameScreenSize);
+
+    var draw = createDraw(gameScreenSize);
 
     var collisionDetection = createCollisionDetection();
 
     var player = createPlayer(outgoingEvents);
 
-    var update = createUpdate(player, outgoingEvents, collisionDetection);
+    var update = createUpdate(player, outgoingEvents, collisionDetection, draw);
 
     var incomingEvents = createIncomingEventHandler();
 
@@ -19,7 +31,9 @@ function init() {
         coordinates: player.coordinates
     });
 
-    setInterval(update.mainLoop, 1000 / 30);
+    setInterval(function () {
+        update.mainLoop(canvas, ctx)
+    }, 1000 / 30);
     console.log('initialised');
 }
 

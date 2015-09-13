@@ -1,4 +1,4 @@
-function createPlayer(outgoingEvents, id, coordinates, facing) {
+function createPlayer(outgoingEvents, id, coordinates, facing, defaultCoordinates) {
     var imageToDraw;
     if (facing) {
         imageToDraw = new Image
@@ -27,9 +27,9 @@ function createPlayer(outgoingEvents, id, coordinates, facing) {
         return result
     }
 
-    var coordinatesToUse = coordinates || {
-        x: 480,
-        y: 328
+    var coordinatesToUse = coordinates || defaultCoordinates || {
+        x: 1920 / 2 - 32,
+        y: 1080 / 2 - 32
     }
 
     var idToUse = id || generateGuid();

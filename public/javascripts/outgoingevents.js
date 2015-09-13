@@ -1,4 +1,4 @@
-function createOutgoingEvents() {
+function createOutgoingEvents(screenSize) {
     var socket = io();
 
     return {
@@ -12,6 +12,7 @@ function createOutgoingEvents() {
             socket.emit('new-player', player);
         },
         locationUpdate: function (player) {
+            player.screenSize = screenSize
             socket.emit('location-update', player);
         }
     }

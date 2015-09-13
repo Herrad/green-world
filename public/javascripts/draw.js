@@ -1,12 +1,12 @@
-function createDraw() {
+function createDraw(screenDimensions) {
 
-    function drawChunk(chunk, offset) {
+    function drawChunk(ctx, chunk, offset) {
         for (var i = chunk.blips.length - 1; i >= 0; i--) {
             var blip = chunk.blips[i];
-            if (chunk.coordinates.x + offset.x + blip.x > 1024 ||
+            if (chunk.coordinates.x + offset.x + blip.x > screenDimensions.width ||
                 chunk.coordinates.x + offset.x + blip.x + blip.width < 0 ||
                 chunk.coordinates.y + offset.y + blip.y + blip.height < 0 ||
-                chunk.coordinates.y + offset.y + blip.y > 720) {
+                chunk.coordinates.y + offset.y + blip.y > screenDimensions.height) {
                 continue
             }
             ctx.fillStyle = blip.rgb
@@ -22,7 +22,7 @@ function createDraw() {
     return {
         draw: function (ctx, chunk, offset) {
 
-            drawChunk(chunk, offset);
+            drawChunk(ctx, chunk, offset);
 
         }
     }

@@ -1,5 +1,4 @@
-function createUpdate(player, outgoingEvents, collisionDetection) {
-    var draw = createDraw();
+function createUpdate(player, outgoingEvents, collisionDetection, draw) {
     var chunkCache = [];
     var chunkIds = [];
     var screenCoordinates = {
@@ -80,8 +79,8 @@ function createUpdate(player, outgoingEvents, collisionDetection) {
             screenCoordinates = newCoordinates;
         }
         player.coordinateChange({
-            x: 480 - screenCoordinates.x,
-            y: 328 - screenCoordinates.y
+            x: 1920 / 2 - 32 - screenCoordinates.x,
+            y: 1080 / 2 - 32 - screenCoordinates.y
         });
     }
 
@@ -92,7 +91,7 @@ function createUpdate(player, outgoingEvents, collisionDetection) {
     }, 1000);
 
     return {
-        mainLoop: function () {
+        mainLoop: function (canvas, ctx) {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = "rgb(100, 100, 240)"
             ctx.fillRect(0, 0, canvas.width, canvas.height);
