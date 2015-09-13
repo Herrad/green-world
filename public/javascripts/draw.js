@@ -20,10 +20,16 @@ function createDraw(screenDimensions) {
     }
 
     return {
-        draw: function (ctx, chunk, offset) {
-
-            drawChunk(ctx, chunk, offset);
-
+        drawLoopIteration: function (canvas, ctx, chunks, screenCoordinates, players) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "rgb(100, 100, 240)"
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            _.forEach(chunks, function (chunk) {
+                drawChunk(ctx, chunk, screenCoordinates);
+            });
+            _.forEach(players, function (player) {
+                player.draw(ctx, screenCoordinates);
+            });
         }
     }
 }

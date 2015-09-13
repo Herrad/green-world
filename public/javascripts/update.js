@@ -19,16 +19,7 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw, movement
 
     return {
         mainLoop: function (canvas, ctx) {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "rgb(100, 100, 240)"
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            for (var i = chunksToDraw.length - 1; i >= 0; i--) {
-                var chunkToDraw = chunksToDraw[i];
-                draw.draw(ctx, chunkToDraw, screenCoordinates);
-            };
-            _.forEach(players, function (player, key) {
-                player.draw(ctx, screenCoordinates);
-            });
+            draw.drawLoopIteration(canvas, ctx, chunksToDraw, screenCoordinates, players)
             movement.move(players, screenCoordinates, moveScreenTo)
         },
         chunksArrived: function (chunks) {
