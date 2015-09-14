@@ -15,7 +15,7 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw, movement
 
     setInterval(function () {
         outgoingEvents.locationUpdate(player.serialise())
-    }, 1000);
+    }, 1000 / 30);
 
     return {
         mainLoop: function (canvas, ctx) {
