@@ -20,17 +20,17 @@ function init() {
 
     var player = createPlayer(outgoingEvents, $.cookie('character-name'));
 
-    var playerMovement = createPlayerMovement(player, collisionDetection, gameScreenSize);
+    var controls = createControls(player, collisionDetection, gameScreenSize);
 
     $('body').on('keydown', function (e) {
-        playerMovement.keyDown(e.keyCode);
+        controls.keyDown(e.keyCode);
     });
 
     $('body').on('keyup', function (e) {
-        playerMovement.keyUp(e.keyCode);
+        controls.keyUp(e.keyCode);
     });
 
-    var update = createUpdate(player, outgoingEvents, collisionDetection, draw, playerMovement);
+    var update = createUpdate(player, outgoingEvents, collisionDetection, draw, controls);
 
     var incomingEvents = createIncomingEventHandler();
 

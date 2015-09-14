@@ -1,5 +1,5 @@
-function createPlayerMovement(player, collisionDetection, screenDimensions) {
-    var keyMap = [];
+function createControls(player, collisionDetection, screenDimensions) {
+    var directionMap = [];
 
     function handleMovement(direction, players, screenCoordinates, callback) {
         moveUnits = 16;
@@ -64,37 +64,38 @@ function createPlayerMovement(player, collisionDetection, screenDimensions) {
     return {
         keyDown: function (keyCode) {
 
-            if (!$.inArray('left') && keyCode == 37 || keyCode == 65) { //left
-                keyMap.push('left');
-            }
-            if (!$.inArray('up') && keyCode == 38 || keyCode == 87) { //up
-                keyMap.push('up');
-            }
-            if (!$.inArray('right') && keyCode == 39 || keyCode == 68) { //right
-                keyMap.push('right');
-            }
-            if (!$.inArray('down') && keyCode == 40 || keyCode == 83) { //down
-                keyMap.push('down');
-            }
-            keyMap = _.uniq(keyMap);
-        },
-        keyUp: function (keyCode) {
-
             if (keyCode == 37 || keyCode == 65) { //left
-                keyMap.splice('left');
+                directionMap.push('left');
             }
             if (keyCode == 38 || keyCode == 87) { //up
-                keyMap.splice('up');
+                directionMap.push('up');
             }
             if (keyCode == 39 || keyCode == 68) { //right
-                keyMap.splice('right');
+                directionMap.push('right');
             }
             if (keyCode == 40 || keyCode == 83) { //down
-                keyMap.splice('down');
+                directionMap.push('down');
             }
+            directionMap = _.uniq(directionMap);
         },
-        move: function (players, screenCoordinates, callback) {
-            _.forEach(keyMap, function (direction) {
+        keyUp: function (keyCode) {
+            var removal = '';
+            if (keyCode == 37 || keyCode == 65) { //left
+                removal = 'left';
+            } else if (keyCode == 38 || keyCode == 87) { //up
+                removal = 'up';
+            } else if (keyCode == 39 || keyCode == 68) { //right
+                removal = 'right';
+            } else if (keyCode == 40 || keyCode == 83) { //down
+                removal = 'down';
+            }
+            _.remove(directionMap, function (direction) {
+                return direction === removal
+            });
+
+        },
+        controlIteration: function (players, screenCoordinates, callback) {
+            _.forEach(directionMap, function (direction) {
                 handleMovement(direction, players, screenCoordinates, callback)
             });
         }

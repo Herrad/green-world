@@ -1,4 +1,4 @@
-function createUpdate(player, outgoingEvents, collisionDetection, draw, movement) {
+function createUpdate(player, outgoingEvents, collisionDetection, draw, controls) {
     var chunkCache = [];
     var chunkIds = [];
     var screenCoordinates = {
@@ -20,7 +20,7 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw, movement
     return {
         mainLoop: function (canvas, ctx) {
             draw.drawLoopIteration(canvas, ctx, chunksToDraw, screenCoordinates, players)
-            movement.move(players, screenCoordinates, moveScreenTo)
+            controls.controlIteration(players, screenCoordinates, moveScreenTo)
         },
         chunksArrived: function (chunks) {
             chunksToDraw = chunks;
