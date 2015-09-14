@@ -1,0 +1,10 @@
+body {
+	background-image: url("/images/background.png");
+	background-repeat: repeat;
+}
+
+#newCharacter {
+	width: 400px;
+	height: 250px;
+	margin: 500px auto 0 auto;
+}

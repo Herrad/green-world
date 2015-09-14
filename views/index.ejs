@@ -3,15 +3,19 @@
   <head>
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/character-name.css' />
     <script src="/javascripts/jquery.js"></script>
     <script src="/javascripts/jquery-cookie.js"></script>
     <script src="/javascripts/redirectIfNameSet.js"></script>
   </head>
   <body>
-    <form id="newCharacter" method="POST" action="/createCharacter">
-      <label for="characterName" value="Enter a name"/>
-      <input name="characterName"/>
+  <div id="newCharacter">
+    <h1>Welcome to Green World</h1>
+    <form method="POST" action="/createCharacter">
+      <label for="characterName">Enter a name:</label>
+      <input name="characterName" type="text"/>
       <input type="submit"/>
     </form>
+    </div>
   </body>
 </html>
