@@ -76,7 +76,7 @@ function createControls(player, collisionDetection, screenDimensions) {
                 directionMap.push('down');
             }
             directionMap = _.uniq(directionMap);
-            directionMap.length > 1 ? moveUnits = 10 : moveUnits = 16
+            directionMap.length > 1 ? moveUnits = 12 : moveUnits = 16
         },
         keyUp: function (keyCode) {
             var removal = '';
@@ -93,6 +93,7 @@ function createControls(player, collisionDetection, screenDimensions) {
                 return direction === removal
             });
 
+            directionMap.length > 1 ? moveUnits = 12 : moveUnits = 16
         },
         controlIteration: function (players, screenCoordinates, callback) {
             _.forEach(directionMap, function (direction) {
