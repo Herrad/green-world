@@ -1,9 +1,8 @@
 function createControls(player, collisionDetection, screenDimensions) {
     var directionMap = [];
+    var moveUnits;
 
     function handleMovement(direction, players, screenCoordinates, callback) {
-        moveUnits = 16;
-
         var playerCoordinates = orientAndMovePlayer(direction, moveUnits)
         var newCoordinates = moveScreenIfOutsideBounds(screenCoordinates, playerCoordinates, moveUnits);
 
@@ -77,6 +76,7 @@ function createControls(player, collisionDetection, screenDimensions) {
                 directionMap.push('down');
             }
             directionMap = _.uniq(directionMap);
+            directionMap.length > 1 ? moveUnits = 10 : moveUnits = 16
         },
         keyUp: function (keyCode) {
             var removal = '';
