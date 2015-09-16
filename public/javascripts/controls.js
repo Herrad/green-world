@@ -45,16 +45,16 @@ function createControls(player, collisionDetection, screenDimensions) {
             x: screenCoordinates.x,
             y: screenCoordinates.y
         };
-        if (playerCoordinates.x < newCoordinates.x + screenDimensions.width / 5) {
+        if (playerCoordinates.x < newCoordinates.x + screenDimensions.width / 8) {
             newCoordinates.x -= moveUnits;
         }
-        if (playerCoordinates.y < newCoordinates.y + screenDimensions.height / 5) {
+        if (playerCoordinates.y < newCoordinates.y + screenDimensions.height / 8) {
             newCoordinates.y -= moveUnits;
         }
-        if (playerCoordinates.x > newCoordinates.x + screenDimensions.width - 128 - screenDimensions.width / 5) {
+        if (playerCoordinates.x > newCoordinates.x + screenDimensions.width - 128 - 390 - screenDimensions.width / 8) {
             newCoordinates.x += moveUnits;
         }
-        if (playerCoordinates.y > newCoordinates.y + screenDimensions.height - 128 - screenDimensions.height / 5) {
+        if (playerCoordinates.y > newCoordinates.y + screenDimensions.height - 128 - screenDimensions.height / 8) {
             newCoordinates.y += moveUnits;
         }
         return newCoordinates;
