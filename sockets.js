@@ -37,6 +37,11 @@ module.exports.listen = function (app) {
         });
 
         socket.on('location-update', function (player) {
+            var currentPlayer = playerList.find(player.id)
+            if (collision.detect(playerList.list, player.coordinates, player)) {
+                socket.emit('move', currentPlayer.coordinates);
+                return;
+            }
             var box = {
                 minX: player.coordinates.x - 2000,
                 maxX: player.coordinates.x + 2000,
