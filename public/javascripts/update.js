@@ -38,8 +38,8 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw, controls
             players = players.reverse();
             while (collisionDetection.detected(players, player.coordinates, player)) {
                 player.coordinateChange({
-                    x: player.coordinates.x + Math.floor(Math.random() * 512),
-                    y: player.coordinates.y + Math.floor(Math.random() * 512)
+                    x: player.coordinates.x - 64,
+                    y: player.coordinates.y
                 });
             }
         }
