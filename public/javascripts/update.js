@@ -26,9 +26,11 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw, controls
             chunksToDraw = chunks;
         },
         playerList: function (newList) {
-            players = [player];
             _.forEach(newList, function (newPlayer) {
-                if (newPlayer.id === player.id) {
+                var alreadyHasPlayer = _.some(players, function (existingPlayer) {
+                    return existingPlayer.id !== newPlayer.id
+                });
+                if (newPlayer.id === player.id || alreadyHasPlayer) {
                     return;
                 }
                 var fullPlayer = createPlayer(outgoingEvents, newPlayer.name, newPlayer.id, newPlayer.coordinates, newPlayer.facing);
@@ -38,7 +40,7 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw, controls
             players = players.reverse();
             while (collisionDetection.detected(players, player.coordinates, player)) {
                 player.coordinateChange({
-                    x: player.coordinates.x - 64,
+                    x: player.coordinates.x - 20,
                     y: player.coordinates.y
                 });
             }
