@@ -1,4 +1,4 @@
-function createDraw(screenDimensions) {
+function createDraw(screenDimensions, player) {
 
     function drawChunk(ctx, chunk, offset) {
         for (var i = chunk.blips.length - 1; i >= 0; i--) {
@@ -19,14 +19,21 @@ function createDraw(screenDimensions) {
         };
     }
 
-    function drawPlayer(ctx, player, screenCoordinates) {
-        var xToDraw = player.coordinates.x - screenCoordinates.x;
-        var yToDraw = player.coordinates.y - screenCoordinates.y;
-        ctx.drawImage(player.imageToDraw, xToDraw, yToDraw);
+    function drawPlayer(ctx, genericPlayer, screenCoordinates) {
+        var xToDraw = genericPlayer.coordinates.x - screenCoordinates.x;
+        var yToDraw = genericPlayer.coordinates.y - screenCoordinates.y;
+        ctx.drawImage(genericPlayer.imageToDraw, xToDraw, yToDraw);
         ctx.fillStyle = "rgb(0,0,0)";
         ctx.font = "30px sans-serif";
-        var xToDrawText = xToDraw + 128 / 2 - (player.name.length / 2) * 15
-        ctx.fillText(player.name, xToDrawText, yToDraw - 20);
+        var xToDrawText = xToDraw + 128 / 2 - (genericPlayer.name.length / 2) * 15
+        ctx.fillText(genericPlayer.name, xToDrawText, yToDraw - 20);
+    }
+
+    function drawInventory(ctx) {
+        ctx.fillStyle = "rgb(255,255,255)";
+        ctx.fillRect(screenDimensions.width - 490, 0, 510, screenDimensions.height + 10);
+        ctx.fillStyle = "rgb(0,0,0)";
+        ctx.fillRect(screenDimensions.width - 480, 10, 490, screenDimensions.height);
     }
 
     return {
@@ -37,9 +44,10 @@ function createDraw(screenDimensions) {
             _.forEach(chunks, function (chunk) {
                 drawChunk(ctx, chunk, screenCoordinates);
             });
-            _.forEach(players, function (player) {
-                drawPlayer(ctx, player, screenCoordinates);
+            _.forEach(players, function (genericPlayer) {
+                drawPlayer(ctx, genericPlayer, screenCoordinates);
             });
+            drawInventory(ctx);
         }
     }
 }

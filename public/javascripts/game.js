@@ -14,21 +14,13 @@ function init() {
 
     var outgoingEvents = createOutgoingEvents(gameScreenSize);
 
-    var draw = createDraw(gameScreenSize);
-
     var collisionDetection = createCollisionDetection();
 
     var player = createPlayer(outgoingEvents, $.cookie('character-name'));
 
     var controls = createControls(player, collisionDetection, gameScreenSize);
 
-    $('body').on('keydown', function (e) {
-        controls.keyDown(e.keyCode);
-    });
-
-    $('body').on('keyup', function (e) {
-        controls.keyUp(e.keyCode);
-    });
+    var draw = createDraw(gameScreenSize, player);
 
     var update = createUpdate(player, outgoingEvents, collisionDetection, draw, controls);
 
@@ -39,6 +31,14 @@ function init() {
     outgoingEvents.newPlayer({
         id: player.id,
         coordinates: player.coordinates
+    });
+
+    $('body').on('keydown', function (e) {
+        controls.keyDown(e.keyCode);
+    });
+
+    $('body').on('keyup', function (e) {
+        controls.keyUp(e.keyCode);
     });
 
     setInterval(function () {
