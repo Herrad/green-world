@@ -13,6 +13,9 @@ function createIncomingEventHandler() {
             socket.on('local-chunks', function (data) {
                 update.chunksArrived(data);
             });
+            socket.on('move', function (data) {
+                update.movePlayer(data);
+            });
         }
     }
 }

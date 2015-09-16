@@ -6,7 +6,7 @@ function createControls(player, collisionDetection, screenDimensions) {
         var playerCoordinates = orientAndMovePlayer(direction, moveUnits)
         var newCoordinates = moveScreenIfOutsideBounds(screenCoordinates, playerCoordinates, moveUnits);
 
-        if (collisionDetection.detected(players, playerCoordinates, player)) {
+        if (collisionDetection.detect(players, playerCoordinates, player)) {
             return;
         } else {
             callback(newCoordinates);

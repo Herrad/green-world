@@ -15,7 +15,7 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw, controls
 
     setInterval(function () {
         outgoingEvents.locationUpdate(player.serialise())
-    }, 1000 / 5);
+    }, 1000);
 
     return {
         mainLoop: function (canvas, ctx) {
@@ -26,24 +26,17 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw, controls
             chunksToDraw = chunks;
         },
         playerList: function (newList) {
+            players = [player];
             _.forEach(newList, function (newPlayer) {
-                var alreadyHasPlayer = _.some(players, function (existingPlayer) {
-                    return existingPlayer.id !== newPlayer.id
-                });
-                if (newPlayer.id === player.id || alreadyHasPlayer) {
+                if (player.id === newPlayer.id) {
                     return;
                 }
                 var fullPlayer = createPlayer(outgoingEvents, newPlayer.name, newPlayer.id, newPlayer.coordinates, newPlayer.facing);
                 players.push(fullPlayer)
             });
-
-            players = players.reverse();
-            while (collisionDetection.detected(players, player.coordinates, player)) {
-                player.coordinateChange({
-                    x: player.coordinates.x - 20,
-                    y: player.coordinates.y
-                });
-            }
+        },
+        movePlayer: function (newLocation) {
+            player.coordinateChange(newLocation);
         }
     }
 }

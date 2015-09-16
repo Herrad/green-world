@@ -1,7 +1,8 @@
 var socketio = require('socket.io')
-var players = require('./lib/players')();
+var playerList = require('./lib/players')();
 var biomeGenerator = require('./lib/procedural/biomeGenerator')();
 var chunkList = require('./lib/chunkList')(biomeGenerator);
+var collision = require('./lib/collision')();
 
 module.exports.listen = function (app) {
     io = socketio.listen(app)
@@ -28,7 +29,11 @@ module.exports.listen = function (app) {
 
         socket.on('new-player', function (player) {
             player.connectionReference = player.connectionReference || socket.handshake.user
-            players.add(player);
+            while (collision.detect(playerList.list, player.coordinates, player)) {
+                player.coordinates.x -= 50;
+            }
+            socket.emit('move', player.coordinates);
+            playerList.add(player);
         });
 
         socket.on('location-update', function (player) {
@@ -39,21 +44,21 @@ module.exports.listen = function (app) {
                 maxY: player.coordinates.y + 2000
             }
             player.connectionReference = player.connectionReference || socket.handshake.user
-            players.update(player);
-            var foundPlayers = players.within(box);
+            playerList.update(player);
+            var foundPlayers = playerList.within(box);
             socket.emit('player-list-update', foundPlayers);
             socket.emit('local-chunks', chunkList.getChunksNearby(player.coordinates));
         });
 
         socket.on('disconnect', function () {
-            players.removeByConnection(socket.handshake.user);
+            playerList.removeByConnection(socket.handshake.user);
         });
 
         var pongTimeout = 0;
         setInterval(function () {
             socket.emit('ping')
             pongTimeout = setTimeout(function removePlayer() {
-                players.removeByConnection(socket.handshake.user);
+                playerList.removeByConnection(socket.handshake.user);
             }, 1000);
         }, 10000);
 
