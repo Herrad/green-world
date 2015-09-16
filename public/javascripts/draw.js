@@ -35,13 +35,16 @@ function createDraw(screenDimensions, player) {
     function drawInventory(ctx) {
         ctx.fillStyle = "rgb(255,255,255)";
         ctx.fillRect(screenDimensions.width - 490, 0, 510, screenDimensions.height + 10);
+
         ctx.fillStyle = "rgb(255,0,0)";
-        ctx.font = "80px sans-serif";
-        ctx.fillRect(screenDimensions.width - 439, 128, 400, 25);
+        ctx.fillRect(screenDimensions.width - 465, 128, 453, 25);
         ctx.drawImage(inventoryImage, screenDimensions.width - 490, 0);
+
         ctx.fillStyle = "rgb(255,255,255)";
-        var xToDrawText = screenDimensions.width - 365 - (player.name.length / 2)
-        ctx.fillText(player.name, xToDrawText, 96);
+        ctx.font = "40px sans-serif";
+        var xToDrawText = screenDimensions.width - 470
+        ctx.fillText(player.name, xToDrawText, 50);
+        ctx.fillText("[x:" + player.coordinates.x + ",y:" + player.coordinates.y + "]", xToDrawText, 100);
     }
 
     return {
