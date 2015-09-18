@@ -1,10 +1,9 @@
 var socketio = require('socket.io')
-var playerList = require('./lib/players')();
 var biomeGenerator = require('./lib/procedural/biomeGenerator')();
 var chunkList = require('./lib/chunkList')(biomeGenerator);
 var collision = require('./lib/collision')();
 
-module.exports.listen = function (app) {
+module.exports.listen = function (app, playerList) {
     io = socketio.listen(app)
 
     function generateGuid() {

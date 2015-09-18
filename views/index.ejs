@@ -12,6 +12,9 @@
   <div id="newCharacter">
     <h1>Welcome to Green World</h1>
     <form method="POST" action="/createCharacter">
+      <%if(error){%>
+        <p class="error"><%= error %></p>
+        <%}%>
       <label for="characterName">Enter a name:</label>
       <input name="characterName" type="text"/>
       <input type="submit"/>
