@@ -6,6 +6,7 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw, controls
         y: 0
     }
     var chunksToDraw;
+    var chunkHash = '';
 
     function moveScreenTo(newCoordinates) {
         screenCoordinates = newCoordinates;
@@ -14,16 +15,20 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw, controls
     var players = [player];
 
     setInterval(function () {
-        outgoingEvents.locationUpdate(player.serialise())
+        outgoingEvents.locationUpdate(player.serialise(chunkHash))
     }, 1000 / 10);
 
     return {
         mainLoop: function (canvas, ctx) {
-            draw.drawLoopIteration(canvas, ctx, chunksToDraw, screenCoordinates, players)
+            draw.drawLoopIteration(canvas, ctx, chunksToDraw, screenCoordinates, players, player.coordinates)
             controls.controlIteration(players, screenCoordinates, moveScreenTo)
         },
         chunksArrived: function (chunks) {
             chunksToDraw = chunks;
+            chunkHash = '';
+            for (var i = chunks.length - 1; i >= 0; i--) {
+                chunkHash += chunks[i].hash;
+            };
         },
         playerList: function (newList) {
             players = [player];

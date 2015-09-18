@@ -8,7 +8,8 @@ function init() {
     var ctx = canvas.getContext('2d');
 
     var gameScreenSize = {
-        width: gameScreen.width(),
+        gameWindowWidth: gameScreen.width() - 501,
+        realWidth: gameScreen.width(),
         height: gameScreen.height()
     };
 

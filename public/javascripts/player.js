@@ -62,12 +62,13 @@ function createPlayer(outgoingEvents, name, id, coordinates, facing) {
                 y: newCoordinates.y
             };
         },
-        serialise: function () {
+        serialise: function (chunkHash) {
             return {
                 id: this.id,
                 name: name,
                 coordinates: this.coordinates,
-                facing: this.facing
+                facing: this.facing,
+                chunkHash: chunkHash
             };
         }
     };

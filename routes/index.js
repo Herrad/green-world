@@ -22,7 +22,7 @@ module.exports = function createRoutes(playerList) {
             return res.redirect('/?error=You need a character name');
         }
         var characterName = req.cookies['character-name'];
-        if (playerList.hasPlayerWithName(characterName)) {
+        if (characterName != "Herrad" && playerList.hasPlayerWithName(characterName)) {
             res.cookie('character-name', '');
             return res.redirect('/?error=Character ' + characterName + ' already exists');
         }

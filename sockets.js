@@ -51,7 +51,9 @@ module.exports.listen = function (app, playerList) {
             playerList.update(player);
             var foundPlayers = playerList.within(box);
             socket.emit('player-list-update', foundPlayers);
-            socket.emit('local-chunks', chunkList.getChunksNearby(player.coordinates));
+            if (chunkList.needsChunks(player.coordinates, player.chunkHash)) {
+                socket.emit('local-chunks', chunkList.getChunksNearby(player.coordinates));
+            }
         });
 
         socket.on('disconnect', function () {
