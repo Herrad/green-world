@@ -15,6 +15,10 @@ router.post('/createCharacter', function (req, res) {
 });
 
 router.get('/game', function (req, res) {
+    console.dir(req);
+    if (!req.cookies['character-name']) {
+        return res.redirect('/');
+    }
     res.render('game', {
         title: 'Green World'
     });
