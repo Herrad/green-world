@@ -37,7 +37,7 @@ function createDraw(screenDimensions, player) {
         ctx.fillRect(screenDimensions.width - 490, 0, 510, screenDimensions.height + 10);
 
         ctx.fillStyle = "rgb(255,0,0)";
-        ctx.fillRect(screenDimensions.width - 465, 128, 453, 25);
+        ctx.fillRect(screenDimensions.width - 465, 128, 450, 25);
         ctx.drawImage(inventoryImage, screenDimensions.width - 490, 0);
 
         ctx.fillStyle = "rgb(255,255,255)";
