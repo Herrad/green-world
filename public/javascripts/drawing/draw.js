@@ -1,6 +1,4 @@
 function createDraw(screenDimensions, player, map) {
-    var inventoryImage = new Image;
-    inventoryImage.src = "/images/player/inventory.png"
 
     var inventoryInternalX = screenDimensions.realWidth - 458;
     var inventoryDimensions = {
