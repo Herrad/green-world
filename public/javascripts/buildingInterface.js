@@ -18,6 +18,28 @@ function createBuildingInterface(buildingList) {
             var selectedBuilding = building;
             var blueprint = buildingList.findBlueprint(selectedBuilding);
             ctx.drawImage(blueprint, chunkCoordinates.x + selectedBlip.x - screenCoordinates.x, chunkCoordinates.y + selectedBlip.y - screenCoordinates.y);
+        },
+        buildFrom: function (spec, location, chunkCoordinates) {
+            var image = _.find(images, {
+                name: spec.name
+            });
+            return {
+                name: spec.name,
+                image: image,
+                dimensions: spec.dimensions,
+                location: location,
+                serialise: function () {
+                    return {
+                        name: this.name,
+                        dimensions: this.dimensions,
+                        location: this.location,
+                        drawAt: {
+                            x: this.location.x + chunkCoordinates.x,
+                            y: this.location.y + chunkCoordianates.y
+                        }
+                    }
+                }
+            }
         }
     }
 }

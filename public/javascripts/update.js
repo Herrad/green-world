@@ -93,7 +93,7 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw, controls
                 hash: chunkToBuildIn.hash
             });
             var buildingSpec = buildings.getBuilding('chapel');
-            var building = buildings.buildFrom(buildingSpec, buildAt, chunk.coordinates)
+            var building = buildingInterface.buildFrom(buildingSpec, buildAt, chunk.coordinates)
             chunk.buildings.push(building.serialise())
             outgoingEvents.sendChunkUpdate(chunk);
             controls.buildingMode = false;

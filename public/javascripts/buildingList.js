@@ -32,28 +32,6 @@ function createBuildingList() {
 
             return building;
         },
-        buildFrom: function (spec, location, chunkCoordinates) {
-            var image = _.find(images, {
-                name: spec.name
-            });
-            return {
-                name: spec.name,
-                image: image,
-                dimensions: spec.dimensions,
-                location: location,
-                serialise: function () {
-                    return {
-                        name: this.name,
-                        dimensions: this.dimensions,
-                        location: this.location,
-                        drawAt: {
-                            x: this.location.x + chunkCoordinates.x,
-                            y: this.location.y + chunkCoordinates.y
-                        }
-                    }
-                }
-            }
-        },
         findImage: function (name) {
             return _.find(images, {
                 name: name
