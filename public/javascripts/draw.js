@@ -98,12 +98,12 @@ function createDraw(screenDimensions, player) {
             Math.round(128 / reductionFactor),
             Math.round(128 / reductionFactor));
         ctx.fillStyle = "rgb(240, 100, 100)"
-        ctx.font = "20px sans-serif";
+        ctx.font = "12px sans-serif";
         if (xLocation + sizeOfChunk / 2 - chunk.name.length * 5 > mapTopLeft.x &&
             xLocation + sizeOfChunk / 2 + chunk.name.length * 5 < mapTopLeft.x + 457 &&
             yLocation + sizeOfChunk / 2 - 30 > mapTopLeft.y &&
             yLocation + sizeOfChunk / 2 + 30 < mapTopLeft.y + 477) {
-            ctx.fillText(chunk.name, xLocation + sizeOfChunk / 2 - chunk.name.length * 5, yLocation + sizeOfChunk / 2);
+            ctx.fillText(chunk.name, xLocation + sizeOfChunk / 2 - chunk.name.length * 3, yLocation + sizeOfChunk / 2);
         }
     }
 
