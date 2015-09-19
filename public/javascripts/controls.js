@@ -89,6 +89,8 @@ function createControls(player, collisionDetection, screenDimensions) {
             } else if (keyCode == 40 || keyCode == 83) { //down
                 removal = 'down';
             }
+            if (keyCode == 73) { //i
+            }
             if (keyCode == 77) { //m
                 this.drawMap = !this.drawMap;
             }
