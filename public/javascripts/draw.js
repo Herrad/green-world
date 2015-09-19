@@ -123,8 +123,15 @@ function createDraw(screenDimensions, player) {
         });
     }
 
+    function drawMapControl(ctx, screenCoordinates) {
+        ctx.fillStyle = "rgb(255, 255, 255)"
+        ctx.fillRect(screenDimensions.realWidth - 458, screenDimensions.height - 139, 477, 12);
+        ctx.font = "30px sans-serif";
+        ctx.fillText("Press 'M' for the map", screenDimensions.realWidth - 358, screenDimensions.height - 59);
+    }
+
     return {
-        drawLoopIteration: function (canvas, ctx, chunks, screenCoordinates, players, playerCoordinates) {
+        drawLoopIteration: function (canvas, ctx, chunks, screenCoordinates, players, playerCoordinates, shouldDrawMap) {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = "rgb(100, 100, 240)"
             ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -136,10 +143,14 @@ function createDraw(screenDimensions, player) {
                 drawPlayer(ctx, genericPlayer, screenCoordinates);
             });
             drawInventory(ctx);
-            drawMap(ctx, chunks, playerCoordinates, screenCoordinates, playerCoordinates, {
-                x: 200,
-                y: 200
-            });
+            if (shouldDrawMap) {
+                drawMap(ctx, chunks, playerCoordinates, screenCoordinates, playerCoordinates, {
+                    x: 160,
+                    y: 165
+                });
+            } else {
+                drawMapControl(ctx, screenCoordinates)
+            }
         }
     }
 }

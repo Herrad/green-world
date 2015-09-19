@@ -89,6 +89,9 @@ function createControls(player, collisionDetection, screenDimensions) {
             } else if (keyCode == 40 || keyCode == 83) { //down
                 removal = 'down';
             }
+            if (keyCode == 77) { //m
+                this.drawMap = !this.drawMap;
+            }
             _.remove(directionMap, function (direction) {
                 return direction === removal
             });
@@ -99,6 +102,7 @@ function createControls(player, collisionDetection, screenDimensions) {
             _.forEach(directionMap, function (direction) {
                 handleMovement(direction, players, screenCoordinates, callback)
             });
-        }
+        },
+        drawMap: false
     }
 }

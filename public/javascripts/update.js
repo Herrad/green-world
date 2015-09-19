@@ -34,7 +34,7 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw, controls
 
     return {
         mainLoop: function (canvas, ctx) {
-            draw.drawLoopIteration(canvas, ctx, chunksToDraw, screenCoordinates, players, player.coordinates)
+            draw.drawLoopIteration(canvas, ctx, chunksToDraw, screenCoordinates, players, player.coordinates, controls.drawMap)
             controls.controlIteration(players, screenCoordinates, moveScreenTo)
         },
         chunksArrived: function (chunks) {
