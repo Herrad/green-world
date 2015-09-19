@@ -1,16 +1,14 @@
 function init() {
 
-    var gameScreen = $('#gameScreen');
-
     var canvas = document.getElementById('gameScreen');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     var ctx = canvas.getContext('2d');
 
     var gameScreenSize = {
-        gameWindowWidth: gameScreen.width() - 501,
-        realWidth: gameScreen.width(),
-        height: gameScreen.height()
+        gameWindowWidth: canvas.width - 501,
+        realWidth: canvas.width,
+        height: canvas.height //gameScreen.height()
     };
 
     var outgoingEvents = createOutgoingEvents(gameScreenSize);
@@ -18,6 +16,10 @@ function init() {
     var collisionDetection = createCollisionDetection();
 
     var player = createPlayer(outgoingEvents, $.cookie('character-name'));
+    player.coordinateChange({
+        x: Math.floor(gameScreenSize.gameWindowWidth / 2) + 32,
+        y: Math.floor(gameScreenSize.height / 2) + 32
+    })
 
     var controls = createControls(player, collisionDetection, gameScreenSize);
 
