@@ -68,7 +68,10 @@ function init() {
 
     $('#gameScreen').on('click', function (e) {
         if (controls.buildingMode) {
-            update.build();
+            update.build({
+                x: e.offsetX,
+                y: e.offsetY
+            });
         }
     });
 

@@ -1,42 +1,35 @@
 function createBuildingInterface(buildingList) {
     var selectedBuilding = "chapel"
 
-    function drawBuildingsIn(ctx, chunk, screenCoordinates) {
-        _.forEach(chunk.buildings, function (building) {
-            var image = buildingList.findImage(building.name);
-            ctx.drawImage(image, building.drawAt.x - screenCoordinates.x, building.drawAt.y - screenCoordinates.y);
-        })
+    function drawBuildings(ctx, building, screenCoordinates) {
+        var image = buildingList.findImage(building.name);
+        ctx.drawImage(image, building.coordinates.x - screenCoordinates.x, building.coordinates.y - screenCoordinates.y);
     }
 
     return {
-        drawBuildings: function (ctx, chunks, screenCoordinates) {
-            _.forEach(chunks, function (chunk) {
-                drawBuildingsIn(ctx, chunk, screenCoordinates);
+        drawBuildings: function (ctx, buildings, screenCoordinates) {
+            _.forEach(buildings, function (building) {
+                drawBuildings(ctx, building, screenCoordinates);
             });
         },
-        drawBlueprint: function (ctx, building, selectedBlip, chunkCoordinates, screenCoordinates) {
+        drawBlueprint: function (ctx, building, selectedBlip, screenCoordinates) {
             var selectedBuilding = building;
             var blueprint = buildingList.findBlueprint(selectedBuilding);
-            ctx.drawImage(blueprint, chunkCoordinates.x + selectedBlip.x - screenCoordinates.x, chunkCoordinates.y + selectedBlip.y - screenCoordinates.y);
+            ctx.drawImage(blueprint, selectedBlip.x - screenCoordinates.x, selectedBlip.y - screenCoordinates.y);
         },
-        buildFrom: function (spec, location, chunkCoordinates) {
-            var image = _.find(images, {
-                name: spec.name
-            });
+        buildFrom: function (spec, coordinates) {
+            var image = buildingList.findImage(spec.name)
             return {
                 name: spec.name,
                 image: image,
                 dimensions: spec.dimensions,
-                location: location,
+                coordinates: coordinates,
                 serialise: function () {
                     return {
                         name: this.name,
                         dimensions: this.dimensions,
-                        location: this.location,
-                        drawAt: {
-                            x: this.location.x + chunkCoordinates.x,
-                            y: this.location.y + chunkCoordianates.y
-                        }
+                        coordinates: this.coordinates,
+                        hash: '[x:' + coordinates.x + ', y:' + coordinates.y + ']'
                     }
                 }
             }

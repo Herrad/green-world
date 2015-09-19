@@ -12,6 +12,9 @@ function createOutgoingEvents(screenSize) {
         },
         sendChunkUpdate: function (chunk) {
             socket.emit('chunk-update', chunk);
+        },
+        sendBuildingUpdate: function (building) {
+            socket.emit('new-building', building);
         }
     }
 }

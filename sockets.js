@@ -2,6 +2,7 @@ var socketio = require('socket.io')
 var biomeGenerator = require('./lib/procedural/biomeGenerator')();
 var nameGenerator = require('./lib/procedural/names')();
 var chunkList = require('./lib/chunkList')(biomeGenerator, nameGenerator);
+var buildingList = require('./lib/buildingList')();
 var collision = require('./lib/collision')();
 
 module.exports.listen = function (app, playerList) {
@@ -43,10 +44,10 @@ module.exports.listen = function (app, playerList) {
                 return;
             }
             var box = {
-                minX: player.coordinates.x - 2000,
-                maxX: player.coordinates.x + 2000,
-                minY: player.coordinates.y - 2000,
-                maxY: player.coordinates.y + 2000
+                minX: player.coordinates.x - 1000,
+                maxX: player.coordinates.x + 1000,
+                minY: player.coordinates.y - 1000,
+                maxY: player.coordinates.y + 1000
             }
             player.connectionReference = player.connectionReference || socket.handshake.user
             playerList.update(player);
@@ -57,10 +58,19 @@ module.exports.listen = function (app, playerList) {
             if (chunkList.needsChunks(player.coordinates, player.chunkHash)) {
                 socket.emit('local-chunks', chunkList.getChunksNearby(player.coordinates));
             }
+            if (buildingList.needsUpdate(box, player.buildingHash)) {
+                console.log('sending buildings');
+                socket.emit('local-buildings', buildingList.getBuildingsIn(box));
+            }
         });
 
         socket.on('chunk-update', function (chunk) {
             chunkList.writeChunk(chunk);
+        });
+
+        socket.on('new-building', function (chunk) {
+            console.log('newBuilding')
+            buildingList.writeBuilding(chunk);
         });
 
         socket.on('disconnect', function () {

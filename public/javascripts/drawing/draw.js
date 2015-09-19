@@ -29,7 +29,7 @@ function createDraw(screenDimensions, player, map, collision, buildings) {
 
     var buildingsToDraw = [];
 
-    function drawChunk(ctx, chunk, offset, mouseLocation, setBlipLocation) {
+    function drawChunk(ctx, chunk, offset, mouseLocation, setBuildLocation) {
         BLIP_SIZE = BLIP_SIZE || chunk.blipSize;
         for (var i = chunk.blips.length - 1; i >= 0; i--) {
             var blip = chunk.blips[i];
@@ -62,10 +62,10 @@ function createDraw(screenDimensions, player, map, collision, buildings) {
                 // ctx.lineTo(blipBox.x, blipBox.height);
                 // ctx.lineTo(blipBox.x, blipBox.y);
                 // ctx.stroke();
-                setBlipLocation({
-                    x: blip.x,
-                    y: blip.y
-                }, chunk);
+                setBuildLocation({
+                    x: blip.x + chunk.coordinates.x,
+                    y: blip.y + chunk.coordinates.y
+                });
             }
         }
 
