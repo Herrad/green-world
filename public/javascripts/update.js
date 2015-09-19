@@ -1,4 +1,4 @@
-function createUpdate(player, outgoingEvents, collisionDetection, draw, controls, buildings) {
+function createUpdate(player, outgoingEvents, collisionDetection, draw, controls, buildings, buildingInterface) {
     var chunkCache = [];
     var chunkIds = [];
     var screenCoordinates = {
@@ -47,10 +47,23 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw, controls
         chunkToBuildIn = chunk;
     }
 
+    function runDraw(canvas, ctx) {
+        draw.clearCanvas(canvas, ctx);
+        draw.drawChunks(ctx, chunksToDraw, screenCoordinates, mousePosition, setBlipLocation);
+        buildingInterface.drawBuildings(ctx, chunksToDraw, screenCoordinates);
+        if (controls.buildingMode) {
+            buildingInterface.drawBlueprint(ctx, "chapel", buildAt, chunkToBuildIn.coordinates, screenCoordinates);
+        }
+        draw.drawPlayers(ctx, screenCoordinates, players)
+        draw.drawInventory(ctx)
+        draw.drawMap(ctx, chunksToDraw, player.coordinates, screenCoordinates, controls)
+    }
+
     return {
         mainLoop: function (canvas, ctx) {
-            draw.drawLoopIteration(canvas, ctx, chunksToDraw, screenCoordinates, players, player.coordinates, controls, mousePosition, setBlipLocation)
-            controls.controlIteration(players, screenCoordinates, moveScreenTo)
+            runDraw(canvas, ctx);
+            controls.controlIteration(players, screenCoordinates, moveScreenTo);
+
         },
         chunksArrived: function (chunks) {
             acceptChunks(chunks);
@@ -83,6 +96,7 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw, controls
             var building = buildings.buildFrom(buildingSpec, buildAt, chunk.coordinates)
             chunk.buildings.push(building.serialise())
             outgoingEvents.sendChunkUpdate(chunk);
+            controls.buildingMode = false;
         }
     }
 }

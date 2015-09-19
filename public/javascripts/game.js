@@ -15,7 +15,9 @@ function init() {
 
     var collisionDetection = createCollisionDetection();
 
-    var buildings = createBuildings();
+    var buildingList = createBuildingList();
+
+    var buildingInterface = createBuildingInterface(buildingList);
 
     var player = createPlayer(outgoingEvents, $.cookie('character-name'));
     player.coordinateChange({
@@ -29,9 +31,9 @@ function init() {
         x: 200,
         y: 200
     });
-    var draw = createDraw(gameScreenSize, player, map, collisionDetection, buildings);
+    var draw = createDraw(gameScreenSize, player, map, collisionDetection, buildingList);
 
-    var update = createUpdate(player, outgoingEvents, collisionDetection, draw, controls, buildings);
+    var update = createUpdate(player, outgoingEvents, collisionDetection, draw, controls, buildingList, buildingInterface);
 
     var incomingEvents = createIncomingEventHandler();
 

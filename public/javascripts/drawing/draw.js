@@ -54,24 +54,19 @@ function createDraw(screenDimensions, player, map, collision, buildings) {
             ctx.fill();
 
             if (collision.pointingAt(mouseLocation, blipBox)) {
-                ctx.fillStyle = "rgb(255,255,255)"
-                ctx.beginPath()
-                ctx.moveTo(blipBox.x, blipBox.y)
-                ctx.lineTo(blipBox.width, blipBox.y);
-                ctx.lineTo(blipBox.width, blipBox.height);
-                ctx.lineTo(blipBox.x, blipBox.height);
-                ctx.lineTo(blipBox.x, blipBox.y);
-                ctx.stroke();
+                // ctx.fillStyle = "rgb(255,255,255)"
+                // ctx.beginPath()
+                // ctx.moveTo(blipBox.x, blipBox.y)
+                // ctx.lineTo(blipBox.width, blipBox.y);
+                // ctx.lineTo(blipBox.width, blipBox.height);
+                // ctx.lineTo(blipBox.x, blipBox.height);
+                // ctx.lineTo(blipBox.x, blipBox.y);
+                // ctx.stroke();
                 setBlipLocation({
                     x: blip.x,
                     y: blip.y
                 }, chunk);
             }
-        }
-
-        for (var i = chunk.buildings.length - 1; i >= 0; i--) {
-
-            buildingsToDraw.push(chunk.buildings[i]);
         }
 
     }
@@ -118,21 +113,23 @@ function createDraw(screenDimensions, player, map, collision, buildings) {
     }
 
     return {
-        drawLoopIteration: function (canvas, ctx, chunks, screenCoordinates, players, playerCoordinates, controls, mouseLocation, setBlipLocation) {
+        clearCanvas: function (canvas, ctx) {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = "rgb(100, 100, 240)"
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-            buildingsToDraw = [];
+        },
+        drawChunks: function (ctx, chunks, screenCoordinates, mouseLocation, setBlipLocation) {
             _.forEach(chunks, function (chunk) {
                 drawChunk(ctx, chunk, screenCoordinates, mouseLocation, setBlipLocation);
             });
-            _.forEach(buildingsToDraw, function (building) {
-                drawBuilding(ctx, building, screenCoordinates);
-            });
+        },
+        drawPlayers: function (ctx, screenCoordinates, players) {
             _.forEach(players, function (genericPlayer) {
                 drawPlayer(ctx, genericPlayer, screenCoordinates);
             });
-            drawInventory(ctx);
+        },
+        drawInventory: drawInventory,
+        drawMap: function (ctx, chunks, playerCoordinates, screenCoordinates, controls) {
             if (controls.drawMap) {
                 map.draw(ctx, chunks, playerCoordinates, screenCoordinates);
             } else {
