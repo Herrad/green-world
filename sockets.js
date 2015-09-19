@@ -1,6 +1,7 @@
 var socketio = require('socket.io')
 var biomeGenerator = require('./lib/procedural/biomeGenerator')();
-var chunkList = require('./lib/chunkList')(biomeGenerator);
+var nameGenerator = require('./lib/procedural/names')();
+var chunkList = require('./lib/chunkList')(biomeGenerator, nameGenerator);
 var collision = require('./lib/collision')();
 
 module.exports.listen = function (app, playerList) {
@@ -50,7 +51,9 @@ module.exports.listen = function (app, playerList) {
             player.connectionReference = player.connectionReference || socket.handshake.user
             playerList.update(player);
             var foundPlayers = playerList.within(box);
-            socket.emit('player-list-update', foundPlayers);
+            if (foundPlayers.length > 1) {
+                socket.emit('player-list-update', foundPlayers);
+            }
             if (chunkList.needsChunks(player.coordinates, player.chunkHash)) {
                 socket.emit('local-chunks', chunkList.getChunksNearby(player.coordinates));
             }

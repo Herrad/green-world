@@ -47,71 +47,76 @@ function createDraw(screenDimensions, player) {
         ctx.fillText("[x:" + player.coordinates.x + ",y:" + player.coordinates.y + "]", xToDrawText, 100);
     }
 
-    function drawMapChunk(ctx, chunk, mapTopLeft, screenCoordinates) {
+    function drawMapChunk(ctx, chunk, mapTopLeft, screenCoordinates, playerCoordinates, offset) {
         var chunkWidth = 128 * 20
         var reductionFactor = 8;
-        ctx.fillStyle = "rgb(200, 200, 0)"
-        var xLocation = chunk.coordinates.x / reductionFactor - screenCoordinates.x / reductionFactor + mapTopLeft.x;
-        var yLocation = chunk.coordinates.y / reductionFactor - screenCoordinates.y / reductionFactor;
-        var offScreen = xLocation + chunkWidth / reductionFactor < mapTopLeft.x || xLocation > mapTopLeft.x + 477;
+        var sizeOfChunk = Math.round(chunkWidth / reductionFactor);
+        ctx.fillStyle = chunk.fillStyle || "rgb(200,200,0)";
+        var xLocation = Math.round(chunk.coordinates.x / reductionFactor - screenCoordinates.x / reductionFactor + mapTopLeft.x + offset.x);
+        var yLocation = Math.round(chunk.coordinates.y / reductionFactor - screenCoordinates.y / reductionFactor + mapTopLeft.y + offset.y);
+        var offScreen = xLocation + sizeOfChunk < mapTopLeft.x ||
+            xLocation > mapTopLeft.x + 477 ||
+            yLocation + sizeOfChunk < mapTopLeft.y ||
+            yLocation > mapTopLeft.y + 477 + 12;
         if (offScreen) {
             return;
         }
 
         var toTheLeft = xLocation < mapTopLeft.x;
-        var toTheRight = xLocation + chunkWidth / reductionFactor > mapTopLeft.x + 477;
+        var toTheRight = xLocation + sizeOfChunk > mapTopLeft.x + 477;
         var toTheTop = yLocation < mapTopLeft.y;
-        var toTheBottom = yLocation > mapTopLeft.y + 477;
+        var toTheBottom = yLocation + sizeOfChunk > mapTopLeft.y + 477 + 12;
         var xToDraw = width = 0;
-        var yToDraw = mapTopLeft.y
-        var height = 0;
-        // if (toTheLeft) {
-        //     xToDraw = mapTopLeft.x
-        //     width = chunkWidth / reductionFactor + xLocation - xToDraw;
-        //     height = 100
-        // }
-        // else
-        if (toTheRight) {
-            xToDraw = xLocation
-            width = mapTopLeft.x + 477 - xToDraw;
-            height = 100
+        var yToDraw = height = 0;
+        if (toTheLeft) {
+            xToDraw = mapTopLeft.x
+            width = sizeOfChunk + xLocation - xToDraw;
         }
-        // else {
-        //     xToDraw = xLocation;
-        //     width = chunkWidth / reductionFactor;
-        //     height = 100
-        // }
-        // if (xToDraw + width > 477) {
-        //     width = 477 - xToDraw
-        // }
-        // if (toTheTop) {
-        //     yToDraw = mapTopLeft.y
-        //     height = yToDraw - yLocation + chunkWidth / reductionFactor;
-        // } else if (toTheBottom) {
-        //     return
-        // } else {
-        //     yToDraw = yLocation;
-        //     height = chunkWidth / reductionFactor
-        // }
-        // if (yToDraw + height > 477) {
-        //     height = 477 - yToDraw
-        // }
-        ctx.fillRect(xToDraw, yToDraw, width, height);
-        // ctx.fillStyle = "rgb(240, 100, 240)"
-        // ctx.fillRect(playerCoordinates.x / reductionFactor + mapTopLeft.x - screenCoordinates.x / reductionFactor, playerCoordinates.y / reductionFactor + mapTopLeft.y - screenCoordinates.y / reductionFactor, 10, 10);
+        if (toTheRight) {
+            xToDraw = xToDraw || xLocation
+            width = mapTopLeft.x + 477 - xToDraw;
+        }
+        xToDraw = xToDraw || xLocation;
+        width = width || sizeOfChunk;
 
+        if (toTheTop) {
+            yToDraw = mapTopLeft.y
+            height = sizeOfChunk + yLocation - yToDraw;
+        }
+        if (toTheBottom) {
+            yToDraw = yToDraw || yLocation
+            height = height || mapTopLeft.y + 499 - yToDraw;
+        }
+        yToDraw = yToDraw || yLocation;
+        height = height || sizeOfChunk;
+
+        ctx.fillRect(xToDraw, yToDraw, width, height);
+        ctx.fillStyle = "rgb(81,93,255)"
+        ctx.fillRect(
+            Math.round(playerCoordinates.x / reductionFactor + mapTopLeft.x - screenCoordinates.x / reductionFactor + offset.x),
+            Math.round(playerCoordinates.y / reductionFactor + mapTopLeft.y - screenCoordinates.y / reductionFactor + offset.y),
+            Math.round(128 / reductionFactor),
+            Math.round(128 / reductionFactor));
+        ctx.fillStyle = "rgb(240, 100, 100)"
+        ctx.font = "20px sans-serif";
+        if (xLocation + sizeOfChunk / 2 - chunk.name.length * 5 > mapTopLeft.x &&
+            xLocation + sizeOfChunk / 2 + chunk.name.length * 5 < mapTopLeft.x + 477 &&
+            yLocation + sizeOfChunk / 2 - 30 > mapTopLeft.y &&
+            yLocation + sizeOfChunk / 2 + 30 < mapTopLeft.y + 477) {
+            ctx.fillText(chunk.name, xLocation + sizeOfChunk / 2 - chunk.name.length * 5, yLocation + sizeOfChunk / 2);
+        }
     }
 
-    function drawMap(ctx, chunks, playerCoordinates, screenCoordinates) {
+    function drawMap(ctx, chunks, playerCoordinates, screenCoordinates, playerCoordinates, offset) {
         ctx.fillStyle = "rgb(200, 100, 240)"
-        ctx.fillRect(screenDimensions.realWidth - 478, screenDimensions.height - 12 - 400, 477, screenDimensions.height - 12);
+        ctx.fillRect(screenDimensions.realWidth - 478, screenDimensions.height - 477, 477, 477);
 
         var mapTopLeft = {
             x: screenDimensions.realWidth - 478,
-            y: screenDimensions.height - 12 - 400
+            y: screenDimensions.height - 478
         }
         _.forEach(chunks, function (chunk) {
-            drawMapChunk(ctx, chunk, mapTopLeft, screenCoordinates);
+            drawMapChunk(ctx, chunk, mapTopLeft, screenCoordinates, playerCoordinates, offset);
         });
     }
 
@@ -128,7 +133,10 @@ function createDraw(screenDimensions, player) {
                 drawPlayer(ctx, genericPlayer, screenCoordinates);
             });
             drawInventory(ctx);
-            //drawMap(ctx, chunks, playerCoordinates, screenCoordinates);
+            drawMap(ctx, chunks, playerCoordinates, screenCoordinates, playerCoordinates, {
+                x: 200,
+                y: 200
+            });
         }
     }
 }
