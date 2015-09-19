@@ -1,4 +1,4 @@
-function createDraw(screenDimensions, player, map) {
+function createDraw(screenDimensions, player, map, collision) {
 
     var inventoryInternalX = screenDimensions.realWidth - 458;
     var inventoryDimensions = {
@@ -27,24 +27,42 @@ function createDraw(screenDimensions, player, map) {
 
     var BLIP_SIZE = 0;
 
-    function drawChunk(ctx, chunk, offset) {
+    function drawChunk(ctx, chunk, offset, mouseLocation) {
         BLIP_SIZE = BLIP_SIZE || chunk.blipSize;
         for (var i = chunk.blips.length - 1; i >= 0; i--) {
             var blip = chunk.blips[i];
-            if (chunk.coordinates.x + blip.x - offset.x > screenDimensions.gameWindowWidth + BLIP_SIZE ||
-                chunk.coordinates.x + blip.x + blip.width - offset.x < -BLIP_SIZE ||
-                chunk.coordinates.y + blip.y + blip.height - offset.y < -BLIP_SIZE ||
-                chunk.coordinates.y + blip.y - offset.y > screenDimensions.height + BLIP_SIZE) {
+            var blipBox = {
+                x: chunk.coordinates.x + blip.x - offset.x,
+                y: chunk.coordinates.y + blip.y - offset.y,
+                width: chunk.coordinates.x + blip.x + blip.width - offset.x,
+                height: chunk.coordinates.y + blip.y + blip.height - offset.y
+            }
+            if (blipBox.x > screenDimensions.gameWindowWidth + BLIP_SIZE ||
+                blipBox.width < -BLIP_SIZE ||
+                blipBox.height < -BLIP_SIZE ||
+                blipBox.y > screenDimensions.height + BLIP_SIZE) {
                 continue
             }
             ctx.fillStyle = blip.rgb
             ctx.beginPath()
-            ctx.moveTo(chunk.coordinates.x + blip.x - offset.x, chunk.coordinates.y + blip.y - offset.y)
-            ctx.lineTo(chunk.coordinates.x + blip.x + blip.width - offset.x, chunk.coordinates.y + blip.y - offset.y);
-            ctx.lineTo(chunk.coordinates.x + blip.x + blip.width - offset.x, chunk.coordinates.y + blip.y + blip.height - offset.y);
-            ctx.lineTo(chunk.coordinates.x + blip.x - offset.x, chunk.coordinates.y + blip.y + blip.height - offset.y);
+            ctx.moveTo(blipBox.x, blipBox.y)
+            ctx.lineTo(blipBox.width, blipBox.y);
+            ctx.lineTo(blipBox.width, blipBox.height);
+            ctx.lineTo(blipBox.x, blipBox.height);
             ctx.fill();
-        };
+
+            if (collision.pointingAt(mouseLocation, blipBox)) {
+                ctx.fillStyle = "rgb(255,255,255)"
+                ctx.beginPath()
+                ctx.moveTo(blipBox.x, blipBox.y)
+                ctx.lineTo(blipBox.width, blipBox.y);
+                ctx.lineTo(blipBox.width, blipBox.height);
+                ctx.lineTo(blipBox.x, blipBox.height);
+                ctx.lineTo(blipBox.x, blipBox.y);
+                ctx.stroke();
+            }
+        }
+
     }
 
     function drawPlayer(ctx, genericPlayer, screenCoordinates) {
@@ -84,13 +102,13 @@ function createDraw(screenDimensions, player, map) {
     }
 
     return {
-        drawLoopIteration: function (canvas, ctx, chunks, screenCoordinates, players, playerCoordinates, controls) {
+        drawLoopIteration: function (canvas, ctx, chunks, screenCoordinates, players, playerCoordinates, controls, mouseLocation) {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = "rgb(100, 100, 240)"
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
             _.forEach(chunks, function (chunk) {
-                drawChunk(ctx, chunk, screenCoordinates);
+                drawChunk(ctx, chunk, screenCoordinates, mouseLocation);
             });
             _.forEach(players, function (genericPlayer) {
                 drawPlayer(ctx, genericPlayer, screenCoordinates);

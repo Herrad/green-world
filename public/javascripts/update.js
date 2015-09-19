@@ -32,9 +32,18 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw, controls
 
     }, 1000 / 10);
 
+    var mousePosition = {
+        x: 0,
+        y: 0
+    };
+
+    function selectBlip(realBlipCoordinates) {
+        buildAt = realBlipCoordinates;
+    }
+
     return {
         mainLoop: function (canvas, ctx) {
-            draw.drawLoopIteration(canvas, ctx, chunksToDraw, screenCoordinates, players, player.coordinates, controls)
+            draw.drawLoopIteration(canvas, ctx, chunksToDraw, screenCoordinates, players, player.coordinates, controls, mousePosition)
             controls.controlIteration(players, screenCoordinates, moveScreenTo)
         },
         chunksArrived: function (chunks) {
@@ -56,6 +65,9 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw, controls
         },
         movePlayer: function (newLocation) {
             player.coordinateChange(newLocation);
+        },
+        setMouseLocation: function (newPosition) {
+            mousePosition = newPosition
         }
     }
 }

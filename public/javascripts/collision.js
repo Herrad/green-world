@@ -28,6 +28,10 @@ function createCollisionDetection() {
                 }
             };
             return false;
+        },
+        pointingAt: function (pointCoordinates, rectangle) {
+            return pointCoordinates.x > rectangle.x && pointCoordinates.x < rectangle.width &&
+                pointCoordinates.y > rectangle.y && pointCoordinates.y < rectangle.height;
         }
     }
 }

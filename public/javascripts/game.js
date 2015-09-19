@@ -27,7 +27,7 @@ function init() {
         x: 200,
         y: 200
     });
-    var draw = createDraw(gameScreenSize, player, map);
+    var draw = createDraw(gameScreenSize, player, map, collisionDetection);
 
     var update = createUpdate(player, outgoingEvents, collisionDetection, draw, controls);
 
@@ -46,6 +46,20 @@ function init() {
 
     $('body').on('keyup', function (e) {
         controls.keyUp(e.keyCode);
+    });
+
+    $('#gameScreen').on('mousemove', function (e) {
+        if (e.layerX) {
+            update.setMouseLocation({
+                x: e.layerX,
+                y: e.layerY
+            });
+        } else {
+            update.setMouseLocation({
+                x: e.offsetX,
+                y: e.offsetY
+            });
+        }
     });
 
     setInterval(function () {

@@ -100,7 +100,7 @@ function createControls(player, collisionDetection, screenDimensions) {
 
             directionMap.length > 1 ? moveUnits = 8 : moveUnits = 12
         },
-        controlIteration: function (players, screenCoordinates, callback) {
+        controlIteration: function (players, screenCoordinates, callback, setMousePosition) {
             _.forEach(directionMap, function (direction) {
                 handleMovement(direction, players, screenCoordinates, callback)
             });
