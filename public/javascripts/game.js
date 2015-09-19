@@ -21,7 +21,11 @@ function init() {
 
     var controls = createControls(player, collisionDetection, gameScreenSize);
 
-    var draw = createDraw(gameScreenSize, player);
+    var map = createMap(gameScreenSize, {
+        x: 200,
+        y: 200
+    });
+    var draw = createDraw(gameScreenSize, player, map);
 
     var update = createUpdate(player, outgoingEvents, collisionDetection, draw, controls);
 

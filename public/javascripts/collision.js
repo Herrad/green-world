@@ -3,9 +3,9 @@ function createCollisionDetection() {
         detect: function (players, coordinates, collisionee) {
             var playerBox = {
                 x1: coordinates.x,
-                x2: coordinates.x + 128,
+                x2: coordinates.x + 64,
                 y1: coordinates.y,
-                y2: coordinates.y + 128
+                y2: coordinates.y + 64
             }
             for (var i = players.length - 1; i >= 0; i--) {
                 var player = players[i];
@@ -14,9 +14,9 @@ function createCollisionDetection() {
                 }
                 var otherBox = {
                     x1: player.coordinates.x,
-                    x2: player.coordinates.x + 128,
+                    x2: player.coordinates.x + 64,
                     y1: player.coordinates.y,
-                    y2: player.coordinates.y + 128
+                    y2: player.coordinates.y + 64
                 }
                 var rightSideBiggerThanLeft = playerBox.x2 > otherBox.x1;
                 var leftSideSmallerThanRight = playerBox.x1 < otherBox.x2;

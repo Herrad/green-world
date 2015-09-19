@@ -51,10 +51,10 @@ function createControls(player, collisionDetection, screenDimensions) {
         if (playerCoordinates.y < newCoordinates.y + screenDimensions.height / 8) {
             newCoordinates.y -= moveUnits;
         }
-        if (playerCoordinates.x > newCoordinates.x + screenDimensions.gameWindowWidth - 128 - screenDimensions.gameWindowWidth / 8) {
+        if (playerCoordinates.x > newCoordinates.x + screenDimensions.gameWindowWidth - 64 - screenDimensions.gameWindowWidth / 8) {
             newCoordinates.x += moveUnits;
         }
-        if (playerCoordinates.y > newCoordinates.y + screenDimensions.height - 128 - screenDimensions.height / 8) {
+        if (playerCoordinates.y > newCoordinates.y + screenDimensions.height - 64 - screenDimensions.height / 8) {
             newCoordinates.y += moveUnits;
         }
         return newCoordinates;
@@ -76,7 +76,7 @@ function createControls(player, collisionDetection, screenDimensions) {
                 directionMap.push('down');
             }
             directionMap = _.uniq(directionMap);
-            directionMap.length > 1 ? moveUnits = 12 : moveUnits = 16
+            directionMap.length > 1 ? moveUnits = 8 : moveUnits = 12
         },
         keyUp: function (keyCode) {
             var removal = '';
@@ -96,7 +96,7 @@ function createControls(player, collisionDetection, screenDimensions) {
                 return direction === removal
             });
 
-            directionMap.length > 1 ? moveUnits = 12 : moveUnits = 16
+            directionMap.length > 1 ? moveUnits = 8 : moveUnits = 12
         },
         controlIteration: function (players, screenCoordinates, callback) {
             _.forEach(directionMap, function (direction) {
