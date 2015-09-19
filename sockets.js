@@ -59,6 +59,10 @@ module.exports.listen = function (app, playerList) {
             }
         });
 
+        socket.on('chunk-update', function (chunk) {
+            chunkList.writeChunk(chunk);
+        });
+
         socket.on('disconnect', function () {
             playerList.removeByConnection(socket.handshake.user);
         });

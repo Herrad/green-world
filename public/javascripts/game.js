@@ -29,7 +29,7 @@ function init() {
         x: 200,
         y: 200
     });
-    var draw = createDraw(gameScreenSize, player, map, collisionDetection);
+    var draw = createDraw(gameScreenSize, player, map, collisionDetection, buildings);
 
     var update = createUpdate(player, outgoingEvents, collisionDetection, draw, controls, buildings);
 

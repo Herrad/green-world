@@ -2,11 +2,6 @@ function createOutgoingEvents(screenSize) {
     var socket = io();
 
     return {
-        // playerLocationUpdate: function (coordinates) {
-        //     socket.emit('player-location-update', {
-        //         coordinates: coordinates
-        //     });
-        // },
         newPlayer: function (player) {
             console.log('emit new player')
             socket.emit('new-player', player);
@@ -14,6 +9,9 @@ function createOutgoingEvents(screenSize) {
         locationUpdate: function (player) {
             player.screenSize = screenSize
             socket.emit('location-update', player);
+        },
+        sendChunkUpdate: function (chunk) {
+            socket.emit('chunk-update', chunk);
         }
     }
 }

@@ -42,8 +42,8 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw, controls
         y: 0
     };
 
-    function setBlipLocation(realBlipCoordinates, chunk) {
-        buildAt = realBlipCoordinates;
+    function setBlipLocation(blipCoordinates, chunk) {
+        buildAt = blipCoordinates;
         chunkToBuildIn = chunk;
     }
 
@@ -79,9 +79,10 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw, controls
             var chunk = _.find(chunksToDraw, {
                 hash: chunkToBuildIn.hash
             });
-            var building = buildings.getBuilding('chapel');
-            building.location = buildAt;
-            chunk.buildings.push(building)
+            var buildingSpec = buildings.getBuilding('chapel');
+            var building = buildings.buildFrom(buildingSpec, buildAt, chunk.coordinates)
+            chunk.buildings.push(building.serialise())
+            outgoingEvents.sendChunkUpdate(chunk);
         }
     }
 }
