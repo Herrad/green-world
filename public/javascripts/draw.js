@@ -34,30 +34,30 @@ function createDraw(screenDimensions, player) {
 
     function drawInventory(ctx) {
         ctx.fillStyle = "rgb(255,255,255)";
-        ctx.fillRect(screenDimensions.realWidth - 490, 0, 510, 624);
+        ctx.fillRect(screenDimensions.realWidth - 470, 0, 510, 624);
 
         ctx.fillStyle = "rgb(255,0,0)";
-        ctx.fillRect(screenDimensions.realWidth - 465, 128, 450, 25);
-        ctx.drawImage(inventoryImage, screenDimensions.realWidth - 490, 0);
+        ctx.fillRect(screenDimensions.realWidth - 445, 128, 450, 25);
+        ctx.drawImage(inventoryImage, screenDimensions.realWidth - 470, 0);
 
         ctx.fillStyle = "rgb(255,255,255)";
         ctx.font = "40px sans-serif";
-        var xToDrawText = screenDimensions.realWidth - 470
+        var xToDrawText = screenDimensions.realWidth - 450
         ctx.fillText(player.name, xToDrawText, 50);
         ctx.fillText("[x:" + player.coordinates.x + ",y:" + player.coordinates.y + "]", xToDrawText, 100);
     }
 
     function drawMapChunk(ctx, chunk, mapTopLeft, screenCoordinates, playerCoordinates, offset) {
         var chunkWidth = 128 * 20
-        var reductionFactor = 8;
+        var reductionFactor = 16;
         var sizeOfChunk = Math.round(chunkWidth / reductionFactor);
         ctx.fillStyle = chunk.fillStyle || "rgb(200,200,0)";
         var xLocation = Math.round(chunk.coordinates.x / reductionFactor - screenCoordinates.x / reductionFactor + mapTopLeft.x + offset.x);
         var yLocation = Math.round(chunk.coordinates.y / reductionFactor - screenCoordinates.y / reductionFactor + mapTopLeft.y + offset.y);
-        var offScreen = xLocation + sizeOfChunk < mapTopLeft.x ||
-            xLocation > mapTopLeft.x + 477 ||
-            yLocation + sizeOfChunk < mapTopLeft.y ||
-            yLocation > mapTopLeft.y + 477 + 12;
+        var offScreen = xLocation + sizeOfChunk <= mapTopLeft.x ||
+            xLocation >= mapTopLeft.x + 477 ||
+            yLocation + sizeOfChunk <= mapTopLeft.y ||
+            yLocation >= mapTopLeft.y + 477 + 12;
         if (offScreen) {
             return;
         }
@@ -100,7 +100,7 @@ function createDraw(screenDimensions, player) {
         ctx.fillStyle = "rgb(240, 100, 100)"
         ctx.font = "20px sans-serif";
         if (xLocation + sizeOfChunk / 2 - chunk.name.length * 5 > mapTopLeft.x &&
-            xLocation + sizeOfChunk / 2 + chunk.name.length * 5 < mapTopLeft.x + 477 &&
+            xLocation + sizeOfChunk / 2 + chunk.name.length * 5 < mapTopLeft.x + 457 &&
             yLocation + sizeOfChunk / 2 - 30 > mapTopLeft.y &&
             yLocation + sizeOfChunk / 2 + 30 < mapTopLeft.y + 477) {
             ctx.fillText(chunk.name, xLocation + sizeOfChunk / 2 - chunk.name.length * 5, yLocation + sizeOfChunk / 2);
@@ -108,11 +108,14 @@ function createDraw(screenDimensions, player) {
     }
 
     function drawMap(ctx, chunks, playerCoordinates, screenCoordinates, playerCoordinates, offset) {
-        ctx.fillStyle = "rgb(200, 100, 240)"
-        ctx.fillRect(screenDimensions.realWidth - 478, screenDimensions.height - 477, 477, 477);
+        ctx.fillStyle = "rgb(100, 100, 240)"
+        ctx.fillRect(screenDimensions.realWidth - 458, screenDimensions.height - 477, 477, 489);
+
+        ctx.fillStyle = "rgb(255, 255, 255)"
+        ctx.fillRect(screenDimensions.realWidth - 458, screenDimensions.height - 489, 477, 12);
 
         var mapTopLeft = {
-            x: screenDimensions.realWidth - 478,
+            x: screenDimensions.realWidth - 458,
             y: screenDimensions.height - 478
         }
         _.forEach(chunks, function (chunk) {

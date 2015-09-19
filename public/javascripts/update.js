@@ -5,11 +5,23 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw, controls
         x: 0,
         y: 0
     }
-    var chunksToDraw;
+    var chunksToDraw = [];
     var chunkHash = '';
 
     function moveScreenTo(newCoordinates) {
         screenCoordinates = newCoordinates;
+    }
+
+    function acceptChunks(chunks) {
+        if (chunksToDraw.length + chunks.length > 100) {
+            chunksToDraw = _.takeRight(chunksToDraw, 100);
+        }
+        for (var i = chunks.length - 1; i >= 0; i--) {
+            _.remove(chunksToDraw, {
+                coordinates: chunks[i].coordinates
+            });
+            chunksToDraw.push(chunks[i]);
+        };
     }
 
     var players = [player];
@@ -26,7 +38,7 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw, controls
             controls.controlIteration(players, screenCoordinates, moveScreenTo)
         },
         chunksArrived: function (chunks) {
-            chunksToDraw = chunks;
+            acceptChunks(chunks);
             chunkHash = '';
             for (var i = chunks.length - 1; i >= 0; i--) {
                 chunkHash += chunks[i].hash;
