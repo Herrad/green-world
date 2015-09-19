@@ -1,15 +1,16 @@
 function createControls(player, collisionDetection, screenDimensions) {
     var directionMap = [];
     var moveUnits;
+    var buildingMode = false;
 
-    function handleMovement(direction, players, screenCoordinates, callback) {
+    function handleMovement(direction, players, screenCoordinates, moveScreenTo) {
         var playerCoordinates = orientAndMovePlayer(direction, moveUnits)
         var newCoordinates = moveScreenIfOutsideBounds(screenCoordinates, playerCoordinates, moveUnits);
 
         if (collisionDetection.detect(players, playerCoordinates, player)) {
             return;
         } else {
-            callback(newCoordinates);
+            moveScreenTo(newCoordinates);
             player.coordinateChange(playerCoordinates);
         }
     }
@@ -89,7 +90,8 @@ function createControls(player, collisionDetection, screenDimensions) {
             } else if (keyCode == 40 || keyCode == 83) { //down
                 removal = 'down';
             }
-            if (keyCode == 73) { //i
+            if (keyCode == 66) { //b
+                this.buildingMode = !this.buildingMode;
             }
             if (keyCode == 77) { //m
                 this.drawMap = !this.drawMap;
@@ -100,11 +102,12 @@ function createControls(player, collisionDetection, screenDimensions) {
 
             directionMap.length > 1 ? moveUnits = 8 : moveUnits = 12
         },
-        controlIteration: function (players, screenCoordinates, callback, setMousePosition) {
+        controlIteration: function (players, screenCoordinates, moveScreenTo) {
             _.forEach(directionMap, function (direction) {
-                handleMovement(direction, players, screenCoordinates, callback)
+                handleMovement(direction, players, screenCoordinates, moveScreenTo)
             });
         },
-        drawMap: false
+        drawMap: false,
+        buildingMode: false
     }
 }

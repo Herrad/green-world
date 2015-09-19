@@ -1,4 +1,4 @@
-function createDraw(screenDimensions, player, map, collision) {
+function createDraw(screenDimensions, player, map, collision, allBuildings) {
 
     var inventoryInternalX = screenDimensions.realWidth - 458;
     var inventoryDimensions = {
@@ -27,7 +27,7 @@ function createDraw(screenDimensions, player, map, collision) {
 
     var BLIP_SIZE = 0;
 
-    function drawChunk(ctx, chunk, offset, mouseLocation) {
+    function drawChunk(ctx, chunk, offset, mouseLocation, setBlipLocation) {
         BLIP_SIZE = BLIP_SIZE || chunk.blipSize;
         for (var i = chunk.blips.length - 1; i >= 0; i--) {
             var blip = chunk.blips[i];
@@ -60,7 +60,16 @@ function createDraw(screenDimensions, player, map, collision) {
                 ctx.lineTo(blipBox.x, blipBox.height);
                 ctx.lineTo(blipBox.x, blipBox.y);
                 ctx.stroke();
+                setBlipLocation({
+                    x: chunk.coordinates.x + blip.x,
+                    y: chunk.coordinates.y + blip.y
+                }, chunk);
             }
+        }
+
+        for (var i = chunk.buildings.length - 1; i >= 0; i--) {
+            var building = chunk.buildings[i];
+            ctx.drawImage(building.image, building.location.x - offset.x, building.location.y - offset.y);
         }
 
     }
@@ -102,13 +111,13 @@ function createDraw(screenDimensions, player, map, collision) {
     }
 
     return {
-        drawLoopIteration: function (canvas, ctx, chunks, screenCoordinates, players, playerCoordinates, controls, mouseLocation) {
+        drawLoopIteration: function (canvas, ctx, chunks, screenCoordinates, players, playerCoordinates, controls, mouseLocation, setBlipLocation) {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = "rgb(100, 100, 240)"
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
             _.forEach(chunks, function (chunk) {
-                drawChunk(ctx, chunk, screenCoordinates, mouseLocation);
+                drawChunk(ctx, chunk, screenCoordinates, mouseLocation, setBlipLocation);
             });
             _.forEach(players, function (genericPlayer) {
                 drawPlayer(ctx, genericPlayer, screenCoordinates);

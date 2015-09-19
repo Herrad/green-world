@@ -1,4 +1,4 @@
-function createUpdate(player, outgoingEvents, collisionDetection, draw, controls) {
+function createUpdate(player, outgoingEvents, collisionDetection, draw, controls, buildings) {
     var chunkCache = [];
     var chunkIds = [];
     var screenCoordinates = {
@@ -7,6 +7,11 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw, controls
     }
     var chunksToDraw = [];
     var chunkHash = '';
+    var buildAt = {
+        x: 0,
+        y: 0
+    };
+    var chunkToBuildIn = {};
 
     function moveScreenTo(newCoordinates) {
         screenCoordinates = newCoordinates;
@@ -37,13 +42,14 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw, controls
         y: 0
     };
 
-    function selectBlip(realBlipCoordinates) {
+    function setBlipLocation(realBlipCoordinates, chunk) {
         buildAt = realBlipCoordinates;
+        chunkToBuildIn = chunk;
     }
 
     return {
         mainLoop: function (canvas, ctx) {
-            draw.drawLoopIteration(canvas, ctx, chunksToDraw, screenCoordinates, players, player.coordinates, controls, mousePosition)
+            draw.drawLoopIteration(canvas, ctx, chunksToDraw, screenCoordinates, players, player.coordinates, controls, mousePosition, setBlipLocation)
             controls.controlIteration(players, screenCoordinates, moveScreenTo)
         },
         chunksArrived: function (chunks) {
@@ -68,6 +74,14 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw, controls
         },
         setMouseLocation: function (newPosition) {
             mousePosition = newPosition
+        },
+        build: function () {
+            var chunk = _.find(chunksToDraw, {
+                hash: chunkToBuildIn.hash
+            });
+            var building = buildings.getBuilding('chapel');
+            building.location = buildAt;
+            chunk.buildings.push(building)
         }
     }
 }

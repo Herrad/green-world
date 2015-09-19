@@ -15,6 +15,8 @@ function init() {
 
     var collisionDetection = createCollisionDetection();
 
+    var buildings = createBuildings();
+
     var player = createPlayer(outgoingEvents, $.cookie('character-name'));
     player.coordinateChange({
         x: Math.floor(gameScreenSize.gameWindowWidth / 2) + 32,
@@ -29,7 +31,7 @@ function init() {
     });
     var draw = createDraw(gameScreenSize, player, map, collisionDetection);
 
-    var update = createUpdate(player, outgoingEvents, collisionDetection, draw, controls);
+    var update = createUpdate(player, outgoingEvents, collisionDetection, draw, controls, buildings);
 
     var incomingEvents = createIncomingEventHandler();
 
@@ -59,6 +61,12 @@ function init() {
                 x: e.offsetX,
                 y: e.offsetY
             });
+        }
+    });
+
+    $('#gameScreen').on('click', function (e) {
+        if (controls.buildingMode) {
+            update.build();
         }
     });
 
