@@ -72,9 +72,6 @@ function createDraw(screenDimensions, player, map, collision, buildings) {
         for (var i = chunk.buildings.length - 1; i >= 0; i--) {
 
             buildingsToDraw.push(chunk.buildings[i]);
-            var building = chunk.buildings[i];
-            var image = buildings.findImage(building.name);
-            ctx.drawImage(image, chunk.coordinates.x + building.location.x - offset.x, chunk.coordinates.y + building.location.y - offset.y);
         }
 
     }
