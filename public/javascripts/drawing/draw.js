@@ -52,14 +52,6 @@ function createDraw(screenDimensions, player, map, collision) {
             ctx.fill();
 
             if (collision.pointingAt(mouseLocation, blipBox)) {
-                // ctx.fillStyle = "rgb(255,255,255)"
-                // ctx.beginPath()
-                // ctx.moveTo(blipBox.x, blipBox.y)
-                // ctx.lineTo(blipBox.width, blipBox.y);
-                // ctx.lineTo(blipBox.width, blipBox.height);
-                // ctx.lineTo(blipBox.x, blipBox.height);
-                // ctx.lineTo(blipBox.x, blipBox.y);
-                // ctx.stroke();
                 setBuildLocation({
                     x: blip.x + chunk.coordinates.x,
                     y: blip.y + chunk.coordinates.y

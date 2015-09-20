@@ -17,7 +17,9 @@ function init() {
 
     var buildingSpecs = createBuildingSpecs();
 
-    var buildingInterface = createBuildingInterface(buildingSpecs, collisionDetection);
+    var buildingFactory = createBuildingFactory(buildingSpecs);
+
+    var buildingInterface = createBuildingInterface(buildingSpecs, collisionDetection, buildingFactory);
 
     var player = createPlayer(outgoingEvents, $.cookie('character-name'));
     player.coordinateChange({
@@ -33,7 +35,7 @@ function init() {
     });
     var draw = createDraw(gameScreenSize, player, map, collisionDetection);
 
-    var update = createUpdate(player, outgoingEvents, collisionDetection, draw, controls, buildingInterface);
+    var update = createUpdate(player, outgoingEvents, collisionDetection, draw, controls, buildingInterface, buildingFactory);
 
     var incomingEvents = createIncomingEventHandler();
 

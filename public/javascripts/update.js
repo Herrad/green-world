@@ -1,4 +1,4 @@
-function createUpdate(player, outgoingEvents, collisionDetection, draw, controls, buildingInterface) {
+function createUpdate(player, outgoingEvents, collisionDetection, draw, controls, buildingInterface, buildingFactory) {
     var screenCoordinates = {
         x: 0,
         y: 0
@@ -17,7 +17,7 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw, controls
         screenCoordinates = newCoordinates;
     }
 
-    function acceptHashable(newHashable, oldHashable) {
+    function acceptHashable(newHashable, oldHashable, deserialise) {
         if (!newHashable) return;
         if (oldHashable.length + newHashable.length > 100) {
             oldHashable = _.takeRight(oldHashable, 100);
@@ -26,7 +26,11 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw, controls
             _.remove(oldHashable, {
                 hash: newHashable[i].hash
             });
-            oldHashable.push(newHashable[i]);
+            if (deserialise) {
+                oldHashable.push(deserialise(newHashable[i]));
+            } else {
+                oldHashable.push(newHashable[i]);
+            }
         };
         return oldHashable;
     }
@@ -116,7 +120,7 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw, controls
             chunkHash = buildHash(chunks);
         },
         buildingsArrived: function (buildings) {
-            buildingsToDraw = acceptHashable(buildings, buildingsToDraw);
+            buildingsToDraw = acceptHashable(buildings, buildingsToDraw, buildingFactory.deserialise);
             buildingHash = buildHash(buildings);
         },
         playerList: function (newList) {
@@ -143,7 +147,7 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw, controls
             var blipCoordinates = findBlipCoordinatesOfClick(worldClickLocation);
             var building = buildingInterface.buildFrom('chapel', blipCoordinates, buildingsToDraw)
             if (building) {
-                outgoingEvents.sendBuildingUpdate(building.serialise());
+                outgoingEvents.sendBuildingUpdate(building);
                 controls.buildingMode = false;
             }
         }

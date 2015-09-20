@@ -1,9 +1,8 @@
-function createBuildingInterface(buildingSpecs, collision) {
+function createBuildingInterface(buildingSpecs, collision, buildingFactory) {
     var selectedBuilding = "chapel"
 
     function drawBuildings(ctx, building, screenCoordinates) {
-        var image = buildingSpecs.findImage(building.name);
-        ctx.drawImage(image, building.coordinates.x - screenCoordinates.x, building.coordinates.y - screenCoordinates.y);
+        ctx.drawImage(building.image, building.coordinates.x - screenCoordinates.x, building.coordinates.y - screenCoordinates.y);
     }
 
     return {
@@ -44,7 +43,7 @@ function createBuildingInterface(buildingSpecs, collision) {
             if (collisionDetected) {
                 return undefined;
             }
-            return createBuilding(coordinates, spec);
+            return buildingFactory.createBuilding(coordinates, spec);
         }
     }
 }

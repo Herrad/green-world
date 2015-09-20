@@ -3,7 +3,7 @@ function createControls(player, collisionDetection, screenDimensions) {
     var moveUnits;
     var buildingMode = false;
 
-    function handleMovement(direction, players, screenCoordinates, moveScreenTo) {
+    function handleMovement(direction, players, screenCoordinates, moveScreenTo, buildings) {
         var playerCoordinates = orientAndMovePlayer(direction, moveUnits)
         var newCoordinates = moveScreenIfOutsideBounds(screenCoordinates, playerCoordinates, moveUnits);
 
@@ -102,9 +102,9 @@ function createControls(player, collisionDetection, screenDimensions) {
 
             directionMap.length > 1 ? moveUnits = 8 : moveUnits = 12
         },
-        controlIteration: function (players, screenCoordinates, moveScreenTo) {
+        controlIteration: function (players, screenCoordinates, moveScreenTo, buildings) {
             _.forEach(directionMap, function (direction) {
-                handleMovement(direction, players, screenCoordinates, moveScreenTo)
+                handleMovement(direction, players, screenCoordinates, moveScreenTo, buildings)
             });
         },
         drawMap: false,
