@@ -34,10 +34,23 @@ function createCollisionDetection() {
                 pointCoordinates.y > rectangle.y && pointCoordinates.y < rectangle.height;
         },
         rectanglesOverlap: function (rectangle1, rectangle2) {
-            if (rectangle1.x1 > rectangle2.x2 ||
-                rectangle1.x2 < rectangle2.x1 ||
-                rectangle1.y1 > rectangle2.y2 ||
-                rectangle1.y2 < rectangle2.y1) {
+            var normalisedRect1 = {
+                x1: rectangle1.x1 || rectangle1.x,
+                y1: rectangle1.y1 || rectangle1.y,
+                x2: rectangle1.x2 || rectangle1.width,
+                y2: rectangle1.y2 || rectangle1.height
+            }
+            var normalisedRect2 = {
+                x1: rectangle2.x1 || rectangle2.x,
+                y1: rectangle2.y1 || rectangle2.y,
+                x2: rectangle2.x2 || rectangle2.width,
+                y2: rectangle2.y2 || rectangle2.height
+            }
+
+            if (normalisedRect1.x1 > normalisedRect2.x2 ||
+                normalisedRect1.x2 < normalisedRect2.x1 ||
+                normalisedRect1.y1 > normalisedRect2.y2 ||
+                normalisedRect1.y2 < normalisedRect2.y1) {
                 return false;
             }
             return true;

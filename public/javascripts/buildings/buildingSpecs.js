@@ -39,7 +39,12 @@ function createBuildingSpecs() {
         x2: chapelSpec.dimensions.width,
         y2: chapelSpec.dimensions.height
     }, {
-        x1: 9 * 64,
+        x1: 0,
+        y1: 14 * 64,
+        x2: Math.floor(chapelSpec.dimensions.width / 2) - 64,
+        y2: chapelSpec.dimensions.height
+    }, {
+        x1: Math.floor(chapelSpec.dimensions.width / 2) + 64,
         y1: 14 * 64,
         x2: chapelSpec.dimensions.width,
         y2: chapelSpec.dimensions.height

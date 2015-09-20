@@ -3,11 +3,30 @@ function createControls(player, collisionDetection, screenDimensions) {
     var moveUnits;
     var buildingMode = false;
 
+    function collidesWithBuildings(playerCoordinates, buildings) {
+        var collisionDetected = false
+        var rectangle1 = {
+            x1: playerCoordinates.x,
+            y1: playerCoordinates.y,
+            x2: playerCoordinates.x + 64,
+            y2: playerCoordinates.y + 64
+        }
+        _.forEach(buildings, function (building) {
+            _.forEach(building.impassables, function (impassable) {
+                if (collisionDetected) return;
+                var rectangle2 = translateBy(impassable, building.coordinates)
+                collisionDetected = collisionDetection.rectanglesOverlap(rectangle1, rectangle2);
+            });
+        });
+        return collisionDetected;
+    }
+
     function handleMovement(direction, players, screenCoordinates, moveScreenTo, buildings) {
         var playerCoordinates = orientAndMovePlayer(direction, moveUnits)
         var newCoordinates = moveScreenIfOutsideBounds(screenCoordinates, playerCoordinates, moveUnits);
 
-        if (collisionDetection.detect(players, playerCoordinates, player)) {
+        if (collisionDetection.detect(players, playerCoordinates, player) ||
+            collidesWithBuildings(playerCoordinates, buildings)) {
             return;
         } else {
             moveScreenTo(newCoordinates);

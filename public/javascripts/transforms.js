@@ -1,8 +1,8 @@
 function translateBy(rectangle, point) {
     return {
-        x: rectangle.x + point.x,
-        y: rectangle.y + point.y,
-        width: rectangle.width + point.x,
-        height: rectangle.height + point.y
+        x1: rectangle.x1 + point.x,
+        y1: rectangle.y1 + point.y,
+        x2: rectangle.x2 + point.x,
+        y2: rectangle.y2 + point.y
     }
 }

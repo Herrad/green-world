@@ -108,7 +108,7 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw, controls
     return {
         mainLoop: function (canvas, ctx) {
             runDraw(canvas, ctx);
-            controls.controlIteration(players, screenCoordinates, moveScreenTo);
+            controls.controlIteration(players, screenCoordinates, moveScreenTo, buildingsToDraw);
 
         },
         flush: function () {
