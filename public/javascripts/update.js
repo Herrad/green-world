@@ -145,7 +145,7 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw, controls
                 y: clickLocation.y + screenCoordinates.y
             };
             var blipCoordinates = findBlipCoordinatesOfClick(worldClickLocation);
-            var building = buildingInterface.buildFrom('chapel', blipCoordinates, buildingsToDraw)
+            var building = buildingInterface.buildFrom('chapel', blipCoordinates, buildingsToDraw, players)
             if (building) {
                 outgoingEvents.sendBuildingUpdate(building);
                 controls.buildingMode = false;

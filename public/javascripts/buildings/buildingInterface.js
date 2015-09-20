@@ -16,19 +16,34 @@ function createBuildingInterface(buildingSpecs, collision, buildingFactory) {
             var blueprint = buildingSpecs.findBlueprint(selectedBuilding);
             ctx.drawImage(blueprint, selectedBlip.x - screenCoordinates.x, selectedBlip.y - screenCoordinates.y);
         },
-        buildFrom: function (buildingName, coordinates, existingBuildings) {
+        buildFrom: function (buildingName, coordinates, existingBuildings, players) {
             var spec = buildingSpecs.getBuilding(buildingName);
             var collisionDetected = false;
+            var rectangle1 = {
+                x1: coordinates.x,
+                x2: coordinates.x + spec.dimensions.width,
+                y1: coordinates.y,
+                y2: coordinates.y + spec.dimensions.height
+            }
+            if (collisionDetected) {
+                return;
+            }
+            _.forEach(players, function (player) {
+                if (collisionDetected) {
+                    return;
+                };
+                var rectangle2 = {
+                    x1: player.coordinates.x,
+                    x2: player.coordinates.x + 64,
+                    y1: player.coordinates.y,
+                    y2: player.coordinates.y + 64
+                }
+                collisionDetected = collision.rectanglesOverlap(rectangle1, rectangle2)
+            });
             _.forEach(existingBuildings, function (existingBuilding) {
                 if (collisionDetected) {
                     return;
                 }
-                var rectangle1 = {
-                    x1: coordinates.x,
-                    x2: coordinates.x + spec.dimensions.width,
-                    y1: coordinates.y,
-                    y2: coordinates.y + spec.dimensions.height
-                };
                 var rectangle2 = {
                     x1: existingBuilding.coordinates.x,
                     x2: existingBuilding.coordinates.x + existingBuilding.dimensions.width,
@@ -41,7 +56,7 @@ function createBuildingInterface(buildingSpecs, collision, buildingFactory) {
             });
 
             if (collisionDetected) {
-                return undefined;
+                return;
             }
             return buildingFactory.createBuilding(coordinates, spec);
         }
