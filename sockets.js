@@ -26,6 +26,8 @@ module.exports.listen = function (app, playerList) {
 
     io.sockets.on('connection', function (socket) {
         socket.handshake.user = generateGuid();
+        socket.emit('flush');
+
         socket.emit('local-chunks', [startingChunk]);
 
         socket.on('new-player', function (player) {
@@ -59,7 +61,6 @@ module.exports.listen = function (app, playerList) {
                 socket.emit('local-chunks', chunkList.getChunksNearby(player.coordinates));
             }
             if (buildingList.needsUpdate(box, player.buildingHash)) {
-                console.log('sending buildings');
                 socket.emit('local-buildings', buildingList.getBuildingsIn(box));
             }
         });
@@ -69,7 +70,6 @@ module.exports.listen = function (app, playerList) {
         });
 
         socket.on('new-building', function (chunk) {
-            console.log('newBuilding')
             buildingList.writeBuilding(chunk);
         });
 

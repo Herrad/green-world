@@ -24,7 +24,7 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw, controls
         }
         for (var i = newHashable.length - 1; i >= 0; i--) {
             _.remove(oldHashable, {
-                coordinates: newHashable[i].coordinates
+                hash: newHashable[i].hash
             });
             oldHashable.push(newHashable[i]);
         };
@@ -75,6 +75,10 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw, controls
             runDraw(canvas, ctx);
             controls.controlIteration(players, screenCoordinates, moveScreenTo);
 
+        },
+        flush: function () {
+            chunksToDraw = [];
+            buildingsToDraw = []
         },
         chunksArrived: function (chunks) {
             chunksToDraw = acceptHashable(chunks, chunksToDraw);

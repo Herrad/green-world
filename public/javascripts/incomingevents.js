@@ -19,6 +19,9 @@ function createIncomingEventHandler() {
             socket.on('move', function (data) {
                 update.movePlayer(data);
             });
+            socket.on('flush', function () {
+                update.flush();
+            });
         }
     }
 }
