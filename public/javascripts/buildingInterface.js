@@ -1,8 +1,8 @@
-function createBuildingInterface(buildingList) {
+function createBuildingInterface(buildingSpecs, outgoingEvents) {
     var selectedBuilding = "chapel"
 
     function drawBuildings(ctx, building, screenCoordinates) {
-        var image = buildingList.findImage(building.name);
+        var image = buildingSpecs.findImage(building.name);
         ctx.drawImage(image, building.coordinates.x - screenCoordinates.x, building.coordinates.y - screenCoordinates.y);
     }
 
@@ -14,14 +14,14 @@ function createBuildingInterface(buildingList) {
         },
         drawBlueprint: function (ctx, building, selectedBlip, screenCoordinates) {
             var selectedBuilding = building;
-            var blueprint = buildingList.findBlueprint(selectedBuilding);
+            var blueprint = buildingSpecs.findBlueprint(selectedBuilding);
             ctx.drawImage(blueprint, selectedBlip.x - screenCoordinates.x, selectedBlip.y - screenCoordinates.y);
         },
-        buildFrom: function (spec, coordinates) {
-            var image = buildingList.findImage(spec.name)
+        buildFrom: function (buildingName, coordinates) {
+            var spec = buildingSpecs.getBuilding(buildingName);
             return {
                 name: spec.name,
-                image: image,
+                image: spec.image,
                 dimensions: spec.dimensions,
                 coordinates: coordinates,
                 serialise: function () {
@@ -33,6 +33,9 @@ function createBuildingInterface(buildingList) {
                     }
                 }
             }
+        },
+        buildAt: function () {
+
         }
     }
 }

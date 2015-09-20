@@ -1,4 +1,4 @@
-function createBuildingList() {
+function createBuildingSpecs() {
 
     var chapel = new Image;
     chapel.src = '/images/buildings/chapel.png';
@@ -29,7 +29,7 @@ function createBuildingList() {
             var building = _.find(buildingSpecs, {
                 name: buildingName
             });
-
+            building.image = this.findImage(buildingName);
             return building;
         },
         findImage: function (name) {

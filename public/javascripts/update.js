@@ -1,4 +1,4 @@
-function createUpdate(player, outgoingEvents, collisionDetection, draw, controls, buildings, buildingInterface) {
+function createUpdate(player, outgoingEvents, collisionDetection, draw, controls, buildingInterface) {
     var screenCoordinates = {
         x: 0,
         y: 0
@@ -70,6 +70,37 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw, controls
         draw.drawMap(ctx, chunksToDraw, player.coordinates, screenCoordinates, controls)
     }
 
+    function findBlipCoordinatesOfClick(clickLocationInWorld) {
+
+        var coordinates;
+        _.forEach(chunksToDraw, function (chunk) {
+            var chunkRectangle = {
+                x: chunk.coordinates.x,
+                y: chunk.coordinates.y,
+                width: chunk.coordinates.x + chunk.dimensions.width,
+                height: chunk.coordinates.x + chunk.dimensions.height
+            }
+            if (collisionDetection.pointingAt(clickLocationInWorld, chunkRectangle)) {
+                _.forEach(chunk.blips, function (blip) {
+                    var blipRectangle = {
+                        x: chunkRectangle.x + blip.x,
+                        y: chunkRectangle.y + blip.y,
+                        width: chunkRectangle.x + blip.x + blip.width,
+                        height: chunkRectangle.y + blip.y + blip.height
+                    };
+                    if (collisionDetection.pointingAt(clickLocationInWorld, blipRectangle)) {
+                        coordinates = {
+                            x: chunk.coordinates.x + blip.x,
+                            y: chunk.coordinates.y + blip.y
+                        };
+                    }
+                });
+            }
+        });
+
+        return coordinates;
+    }
+
     return {
         mainLoop: function (canvas, ctx) {
             runDraw(canvas, ctx);
@@ -104,35 +135,13 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw, controls
         setMouseLocation: function (newPosition) {
             mousePosition = newPosition
         },
-        build: function (clickLocation) {
-            var blipToBuild = {};
+        tryToBuildAt: function (clickLocation) {
             var worldClickLocation = {
                 x: clickLocation.x + screenCoordinates.x,
                 y: clickLocation.y + screenCoordinates.y
             };
-            var coordinatesToBuildAtm
-            _.forEach(chunksToDraw, function (chunk) {
-                if (worldClickLocation.x > chunk.coordinates.x &&
-                    worldClickLocation.x < chunk.coordinates.x + chunk.dimensions.width &&
-                    worldClickLocation.y > chunk.coordinates.y &&
-                    worldClickLocation.y < chunk.coordinates.y + chunk.dimensions.height) {
-
-                    _.forEach(chunk.blips, function (blip) {
-                        if (worldClickLocation.x > blip.x + chunk.coordinates.x &&
-                            worldClickLocation.x < blip.x + chunk.coordinates.x + blip.width &&
-                            worldClickLocation.y > blip.y + chunk.coordinates.y &&
-                            worldClickLocation.y < blip.y + chunk.coordinates.y + blip.height) {
-                            coordinatesToBuildAt = {
-                                x: chunk.coordinates.x + blip.x,
-                                y: chunk.coordinates.y + blip.y
-                            };
-                        }
-
-                    });
-                }
-            })
-            var buildingSpec = buildings.getBuilding('chapel');
-            var building = buildingInterface.buildFrom(buildingSpec, coordinatesToBuildAt)
+            var blipCoordinates = findBlipCoordinatesOfClick(worldClickLocation);
+            var building = buildingInterface.buildFrom('chapel', blipCoordinates)
             outgoingEvents.sendBuildingUpdate(building.serialise());
             controls.buildingMode = false;
         }

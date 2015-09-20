@@ -15,9 +15,9 @@ function init() {
 
     var collisionDetection = createCollisionDetection();
 
-    var buildingList = createBuildingList();
+    var buildingSpecs = createBuildingSpecs();
 
-    var buildingInterface = createBuildingInterface(buildingList);
+    var buildingInterface = createBuildingInterface(buildingSpecs, outgoingEvents);
 
     var player = createPlayer(outgoingEvents, $.cookie('character-name'));
     player.coordinateChange({
@@ -31,9 +31,9 @@ function init() {
         x: 200,
         y: 200
     });
-    var draw = createDraw(gameScreenSize, player, map, collisionDetection, buildingList);
+    var draw = createDraw(gameScreenSize, player, map, collisionDetection);
 
-    var update = createUpdate(player, outgoingEvents, collisionDetection, draw, controls, buildingList, buildingInterface);
+    var update = createUpdate(player, outgoingEvents, collisionDetection, draw, controls, buildingInterface);
 
     var incomingEvents = createIncomingEventHandler();
 
@@ -68,7 +68,7 @@ function init() {
 
     $('#gameScreen').on('click', function (e) {
         if (controls.buildingMode) {
-            update.build({
+            update.tryToBuildAt({
                 x: e.offsetX,
                 y: e.offsetY
             });

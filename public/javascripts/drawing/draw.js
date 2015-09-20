@@ -1,4 +1,4 @@
-function createDraw(screenDimensions, player, map, collision, buildings) {
+function createDraw(screenDimensions, player, map, collision) {
 
     var inventoryInternalX = screenDimensions.realWidth - 458;
     var inventoryDimensions = {
@@ -26,8 +26,6 @@ function createDraw(screenDimensions, player, map, collision, buildings) {
     }
 
     var BLIP_SIZE = 0;
-
-    var buildingsToDraw = [];
 
     function drawChunk(ctx, chunk, offset, mouseLocation, setBuildLocation) {
         BLIP_SIZE = BLIP_SIZE || chunk.blipSize;
@@ -69,11 +67,6 @@ function createDraw(screenDimensions, player, map, collision, buildings) {
             }
         }
 
-    }
-
-    function drawBuilding(ctx, building, offset) {
-        var image = buildings.findImage(building.name);
-        ctx.drawImage(image, building.drawAt.x - offset.x, building.drawAt.y - offset.y);
     }
 
     function drawPlayer(ctx, genericPlayer, screenCoordinates) {
