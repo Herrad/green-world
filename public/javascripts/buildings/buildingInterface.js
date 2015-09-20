@@ -5,6 +5,23 @@ function createBuildingInterface(buildingSpecs, collision, buildingFactory) {
         ctx.drawImage(building.image, building.coordinates.x - screenCoordinates.x, building.coordinates.y - screenCoordinates.y);
     }
 
+    function collidesWithAnyRectangles(rectangle1, rectangles) {
+        var collisionDetected = false;
+        _.forEach(rectangles, function (rectangle) {
+            if (collisionDetected) {
+                return;
+            };
+            var rectangle2 = {
+                x1: rectangle.coordinates.x,
+                x2: rectangle.coordinates.x + 64,
+                y1: rectangle.coordinates.y,
+                y2: rectangle.coordinates.y + 64
+            }
+            collisionDetected = collision.rectanglesOverlap(rectangle1, rectangle2)
+        });
+        return collisionDetected;
+    }
+
     return {
         drawBuildings: function (ctx, buildings, screenCoordinates) {
             _.forEach(buildings, function (building) {
@@ -25,38 +42,10 @@ function createBuildingInterface(buildingSpecs, collision, buildingFactory) {
                 y1: coordinates.y,
                 y2: coordinates.y + spec.dimensions.height
             }
-            if (collisionDetected) {
+            if (collidesWithAnyRectangles(rectangle1, players)) {
                 return;
-            }
-            _.forEach(players, function (player) {
-                if (collisionDetected) {
-                    return;
-                };
-                var rectangle2 = {
-                    x1: player.coordinates.x,
-                    x2: player.coordinates.x + 64,
-                    y1: player.coordinates.y,
-                    y2: player.coordinates.y + 64
-                }
-                collisionDetected = collision.rectanglesOverlap(rectangle1, rectangle2)
-            });
-            _.forEach(existingBuildings, function (existingBuilding) {
-                if (collisionDetected) {
-                    return;
-                }
-                var rectangle2 = {
-                    x1: existingBuilding.coordinates.x,
-                    x2: existingBuilding.coordinates.x + existingBuilding.dimensions.width,
-                    y1: existingBuilding.coordinates.y,
-                    y2: existingBuilding.coordinates.y + existingBuilding.dimensions.height
-                }
-                if (collision.rectanglesOverlap(rectangle1, rectangle2)) {
-                    collisionDetected = true;
-                }
-            });
-
-            if (collisionDetected) {
-                return;
+            } else if (collidesWithAnyRectangles(rectangle1, existingBuildings)) {
+                return
             }
             return buildingFactory.createBuilding(coordinates, spec);
         }
