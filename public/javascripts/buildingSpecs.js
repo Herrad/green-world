@@ -19,8 +19,8 @@ function createBuildingSpecs() {
     var buildingSpecs = [{
         name: 'chapel',
         dimensions: {
-            width: 10,
-            height: 15
+            width: 10 * 64,
+            height: 15 * 64
         }
     }];
 

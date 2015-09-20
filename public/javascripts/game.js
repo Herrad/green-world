@@ -17,7 +17,7 @@ function init() {
 
     var buildingSpecs = createBuildingSpecs();
 
-    var buildingInterface = createBuildingInterface(buildingSpecs, outgoingEvents);
+    var buildingInterface = createBuildingInterface(buildingSpecs, collisionDetection);
 
     var player = createPlayer(outgoingEvents, $.cookie('character-name'));
     player.coordinateChange({

@@ -78,15 +78,15 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw, controls
                 x: chunk.coordinates.x,
                 y: chunk.coordinates.y,
                 width: chunk.coordinates.x + chunk.dimensions.width,
-                height: chunk.coordinates.x + chunk.dimensions.height
+                height: chunk.coordinates.y + chunk.dimensions.height
             }
             if (collisionDetection.pointingAt(clickLocationInWorld, chunkRectangle)) {
                 _.forEach(chunk.blips, function (blip) {
                     var blipRectangle = {
-                        x: chunkRectangle.x + blip.x,
-                        y: chunkRectangle.y + blip.y,
-                        width: chunkRectangle.x + blip.x + blip.width,
-                        height: chunkRectangle.y + blip.y + blip.height
+                        x: chunk.coordinates.x + blip.x,
+                        y: chunk.coordinates.y + blip.y,
+                        width: chunk.coordinates.x + blip.x + blip.width,
+                        height: chunk.coordinates.y + blip.y + blip.height
                     };
                     if (collisionDetection.pointingAt(clickLocationInWorld, blipRectangle)) {
                         coordinates = {
@@ -141,9 +141,11 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw, controls
                 y: clickLocation.y + screenCoordinates.y
             };
             var blipCoordinates = findBlipCoordinatesOfClick(worldClickLocation);
-            var building = buildingInterface.buildFrom('chapel', blipCoordinates)
-            outgoingEvents.sendBuildingUpdate(building.serialise());
-            controls.buildingMode = false;
+            var building = buildingInterface.buildFrom('chapel', blipCoordinates, buildingsToDraw)
+            if (building) {
+                outgoingEvents.sendBuildingUpdate(building.serialise());
+                controls.buildingMode = false;
+            }
         }
     }
 }

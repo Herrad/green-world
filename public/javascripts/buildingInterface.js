@@ -1,4 +1,4 @@
-function createBuildingInterface(buildingSpecs, outgoingEvents) {
+function createBuildingInterface(buildingSpecs, collision) {
     var selectedBuilding = "chapel"
 
     function drawBuildings(ctx, building, screenCoordinates) {
@@ -17,25 +17,34 @@ function createBuildingInterface(buildingSpecs, outgoingEvents) {
             var blueprint = buildingSpecs.findBlueprint(selectedBuilding);
             ctx.drawImage(blueprint, selectedBlip.x - screenCoordinates.x, selectedBlip.y - screenCoordinates.y);
         },
-        buildFrom: function (buildingName, coordinates) {
+        buildFrom: function (buildingName, coordinates, existingBuildings) {
             var spec = buildingSpecs.getBuilding(buildingName);
-            return {
-                name: spec.name,
-                image: spec.image,
-                dimensions: spec.dimensions,
-                coordinates: coordinates,
-                serialise: function () {
-                    return {
-                        name: this.name,
-                        dimensions: this.dimensions,
-                        coordinates: this.coordinates,
-                        hash: '[x:' + coordinates.x + ', y:' + coordinates.y + ']'
-                    }
+            var collisionDetected = false;
+            _.forEach(existingBuildings, function (existingBuilding) {
+                if (collisionDetected) {
+                    return;
                 }
-            }
-        },
-        buildAt: function () {
+                var rectangle1 = {
+                    x1: coordinates.x,
+                    x2: coordinates.x + spec.dimensions.width,
+                    y1: coordinates.y,
+                    y2: coordinates.y + spec.dimensions.height
+                };
+                var rectangle2 = {
+                    x1: existingBuilding.coordinates.x,
+                    x2: existingBuilding.coordinates.x + existingBuilding.dimensions.width,
+                    y1: existingBuilding.coordinates.y,
+                    y2: existingBuilding.coordinates.y + existingBuilding.dimensions.height
+                }
+                if (collision.rectanglesOverlap(rectangle1, rectangle2)) {
+                    collisionDetected = true;
+                }
+            });
 
+            if (collisionDetected) {
+                return undefined;
+            }
+            return createBuilding(coordinates, spec);
         }
     }
 }

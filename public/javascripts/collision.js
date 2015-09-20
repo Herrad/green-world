@@ -32,6 +32,15 @@ function createCollisionDetection() {
         pointingAt: function (pointCoordinates, rectangle) {
             return pointCoordinates.x > rectangle.x && pointCoordinates.x < rectangle.width &&
                 pointCoordinates.y > rectangle.y && pointCoordinates.y < rectangle.height;
+        },
+        rectanglesOverlap: function (rectangle1, rectangle2) {
+            if (rectangle1.x1 > rectangle2.x2 ||
+                rectangle1.x2 < rectangle2.x1 ||
+                rectangle1.y1 > rectangle2.y2 ||
+                rectangle1.y2 < rectangle2.y1) {
+                return false;
+            }
+            return true;
         }
     }
 }
