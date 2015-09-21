@@ -1,8 +1,15 @@
-function createBuildingInterface(buildingSpecs, collision, buildingFactory) {
+function createBuildingInterface(buildingSpecs, collision, buildingFactory, player) {
     var selectedBuilding = "chapel"
 
     function drawBuildings(ctx, building, screenCoordinates) {
-        ctx.drawImage(building.image, building.coordinates.x - screenCoordinates.x, building.coordinates.y - screenCoordinates.y);
+        var rectangle = {
+            x1: building.coordinates.x,
+            x2: building.coordinates.x + building.dimensions.width,
+            y1: building.coordinates.y,
+            y2: building.coordinates.y + building.dimensions.height
+        }
+        var image = building.image;
+        ctx.drawImage(image, building.coordinates.x - screenCoordinates.x, building.coordinates.y - screenCoordinates.y);
     }
 
     function collidesWithAnyRectangles(rectangle1, rectangles) {
@@ -26,14 +33,14 @@ function createBuildingInterface(buildingSpecs, collision, buildingFactory) {
     }
 
     return {
-        drawBuildings: function (ctx, buildings, screenCoordinates) {
+        drawBuildings: function (ctx, buildings, screenCoordinates, player) {
             _.forEach(buildings, function (building) {
-                drawBuildings(ctx, building, screenCoordinates);
+                drawBuildings(ctx, building, screenCoordinates, player);
             });
         },
         drawBlueprint: function (ctx, building, selectedBlip, screenCoordinates) {
             var selectedBuilding = building;
-            var blueprint = buildingSpecs.findBlueprint(selectedBuilding);
+            var blueprint = buildingSpecs.findImages(selectedBuilding).blueprint;
             ctx.drawImage(blueprint, selectedBlip.x - screenCoordinates.x, selectedBlip.y - screenCoordinates.y);
         },
         buildFrom: function (buildingName, coordinates, existingBuildings, players) {

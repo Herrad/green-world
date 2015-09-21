@@ -8,12 +8,8 @@ function createBuildingSpecs() {
 
     var images = [{
         name: 'chapel',
-        image: chapel
-    }]
-
-    var blueprints = [{
-        name: 'chapel',
-        image: chapelBluerint
+        image: chapel,
+        blueprint: chapelBluerint
     }]
 
     var chapelSpec = {
@@ -60,21 +56,14 @@ function createBuildingSpecs() {
 
     return {
         getBuilding: function (buildingName) {
-            var building = _.find(buildingSpecs, {
+            return _.find(buildingSpecs, {
                 name: buildingName
             });
-            building.image = this.findImage(buildingName);
-            return building;
         },
-        findImage: function (name) {
+        findImages: function (name) {
             return _.find(images, {
                 name: name
-            }).image;
-        },
-        findBlueprint: function (name) {
-            return _.find(blueprints, {
-                name: name
-            }).image;
+            });
         }
     }
 }

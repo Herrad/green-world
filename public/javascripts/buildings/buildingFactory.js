@@ -14,7 +14,7 @@ function createBuildingFactory(buildingSpecs) {
                 dimensions: building.dimensions,
                 coordinates: building.coordinates,
                 hash: '[x:' + building.coordinates.x + ', y:' + building.coordinates.y + ']',
-                image: buildingSpecs.findImage(building.name),
+                image: buildingSpecs.findImages(building.name).image,
                 impassables: spec.impassables,
                 border: border,
                 serialise: function () {
