@@ -3,6 +3,12 @@ function createBuildingFactory(buildingSpecs) {
     return {
         deserialise: function (building) {
             var spec = buildingSpecs.getBuilding(building.name)
+            var border = {
+                x1: building.coordinates.x - spec.buildBorder.x1,
+                x2: building.coordinates.x + spec.buildBorder.x2,
+                y1: building.coordinates.y - spec.buildBorder.y1,
+                y2: building.coordinates.y + spec.buildBorder.y2
+            }
             return {
                 name: building.name,
                 dimensions: building.dimensions,
@@ -10,6 +16,7 @@ function createBuildingFactory(buildingSpecs) {
                 hash: '[x:' + building.coordinates.x + ', y:' + building.coordinates.y + ']',
                 image: buildingSpecs.findImage(building.name),
                 impassables: spec.impassables,
+                border: border,
                 serialise: function () {
                     return {
                         name: this.name,

@@ -11,11 +11,14 @@ function createBuildingInterface(buildingSpecs, collision, buildingFactory) {
             if (collisionDetected) {
                 return;
             };
-            var rectangle2 = {
-                x1: rectangle.coordinates.x,
-                x2: rectangle.coordinates.x + rectangle.dimensions.width,
-                y1: rectangle.coordinates.y,
-                y2: rectangle.coordinates.y + rectangle.dimensions.height
+            var rectangle2 = rectangle;
+            if (!rectangle.x1 && !rectangle.x2 && !rectangle.y1 && !rectangle.y2) {
+                rectangle2 = {
+                    x1: rectangle.coordinates.x,
+                    x2: rectangle.coordinates.x + rectangle.dimensions.width,
+                    y1: rectangle.coordinates.y,
+                    y2: rectangle.coordinates.y + rectangle.dimensions.height
+                }
             }
             collisionDetected = collision.rectanglesOverlap(rectangle1, rectangle2)
         });
@@ -37,14 +40,14 @@ function createBuildingInterface(buildingSpecs, collision, buildingFactory) {
             var spec = buildingSpecs.getBuilding(buildingName);
             var collisionDetected = false;
             var rectangle1 = {
-                x1: coordinates.x,
-                x2: coordinates.x + spec.dimensions.width,
-                y1: coordinates.y,
-                y2: coordinates.y + spec.dimensions.height
+                x1: coordinates.x - spec.buildBorder.x1,
+                x2: coordinates.x + spec.dimensions.width + spec.buildBorder.x2,
+                y1: coordinates.y - spec.buildBorder.y1,
+                y2: coordinates.y + spec.dimensions.height + spec.buildBorder.y2
             }
             if (collidesWithAnyRectangles(rectangle1, players)) {
                 return;
-            } else if (collidesWithAnyRectangles(rectangle1, existingBuildings)) {
+            } else if (collidesWithAnyRectangles(rectangle1, _.pluck(existingBuildings, 'border'))) {
                 return
             }
             return buildingFactory.createBuilding(coordinates, spec);

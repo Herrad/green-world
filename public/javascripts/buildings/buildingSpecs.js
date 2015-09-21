@@ -19,8 +19,14 @@ function createBuildingSpecs() {
     var chapelSpec = {
         name: 'chapel',
         dimensions: {
-            width: 12 * 64,
-            height: 16 * 64
+            width: 10 * 64,
+            height: 15 * 64
+        },
+        buildBorder: {
+            x1: 64,
+            x2: 64,
+            y1: 64,
+            y2: 64
         }
     };
     chapelSpec.impassables = [{
