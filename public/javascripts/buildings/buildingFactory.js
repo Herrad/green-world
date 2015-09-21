@@ -5,9 +5,9 @@ function createBuildingFactory(buildingSpecs) {
             var spec = buildingSpecs.getBuilding(building.name)
             var border = {
                 x1: building.coordinates.x - spec.buildBorder.x1,
-                x2: building.coordinates.x + spec.buildBorder.x2,
+                x2: building.coordinates.x + spec.dimensions.width + spec.buildBorder.x2,
                 y1: building.coordinates.y - spec.buildBorder.y1,
-                y2: building.coordinates.y + spec.buildBorder.y2
+                y2: building.coordinates.y + spec.dimensions.height + spec.buildBorder.y2
             }
             return {
                 name: building.name,
