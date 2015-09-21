@@ -13,9 +13,9 @@ function createBuildingInterface(buildingSpecs, collision, buildingFactory) {
             };
             var rectangle2 = {
                 x1: rectangle.coordinates.x,
-                x2: rectangle.coordinates.x + 64,
+                x2: rectangle.coordinates.x + rectangle.dimensions.width,
                 y1: rectangle.coordinates.y,
-                y2: rectangle.coordinates.y + 64
+                y2: rectangle.coordinates.y + rectangle.dimensions.height
             }
             collisionDetected = collision.rectanglesOverlap(rectangle1, rectangle2)
         });

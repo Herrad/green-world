@@ -38,6 +38,10 @@ function createPlayer(outgoingEvents, name, id, coordinates, facing) {
         name: name || "No Name",
         id: idToUse,
         coordinates: coordinatesToUse,
+        dimensions: {
+            width: 64,
+            height: 64
+        },
         facing: imageToDraw.src,
         imageToDraw: imageToDraw,
         faceLeft: function () {
