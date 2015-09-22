@@ -80,21 +80,33 @@ function createControls(player, collisionDetection, screenDimensions) {
         return newCoordinates;
     }
 
+    function detectControl(keyCode, action) {
+        switch (keyCode) {
+        case 37:
+        case 65:
+            action('left');
+            break;
+        case 38:
+        case 87:
+            action('up');
+            break;
+        case 39:
+        case 68:
+            action('right');
+            break;
+        case 40:
+        case 83:
+            action('down');
+            break;
+        }
+    }
+
     return {
         keyDown: function (keyCode) {
-
-            if (keyCode == 37 || keyCode == 65) { //left
-                directionMap.push('left');
+            var push = function (direction) {
+                directionMap.push(direction);
             }
-            if (keyCode == 38 || keyCode == 87) { //up
-                directionMap.push('up');
-            }
-            if (keyCode == 39 || keyCode == 68) { //right
-                directionMap.push('right');
-            }
-            if (keyCode == 40 || keyCode == 83) { //down
-                directionMap.push('down');
-            }
+            detectControl(keyCode, push);
             directionMap = _.uniq(directionMap);
             directionMap.length > 1 ? moveUnits = 8 : moveUnits = 12
         },
