@@ -2,4 +2,4 @@ deployment:
   dockerhub:
     branch: master
     commands:
-      - $TRIGGER_DOCKER_HUB_BUILD
+      - curl -H "Content-Type: application/json" --data '{"build": true}' -X POST $DOCKER_TARGET
