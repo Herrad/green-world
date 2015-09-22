@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Building tests</title>
+  <link rel="stylesheet" media="all" href="../public/stylesheets/libs/mocha.css">
+</head>
+<body>
+  <div id="mocha"><p><a href=".">Index</a></p></div>
+  <div id="messages"></div>
+  <div id="fixtures"></div>
+  <script src="../public/javascripts/libs/mocha.js"></script>
+  <script src="../public/javascripts/libs/chai.js"></script>
+  <script>mocha.setup('bdd')</script>
+  <script src="../public/javascripts/libs/lodash.js"></script>
+  <script src="../public/javascripts/buildings/buildingInterface.js"></script>
+  <script src="../public/javascripts/collision.js"></script>
+  <script src="./buildingPlacement.js"></script>
+  <script>mocha.run();</script>
+</body>
+</html>
