@@ -106,36 +106,35 @@ function createControls(player, collisionDetection, screenDimensions) {
     }
 
     function mapGamepadChanges() {
-        if (!oldGamepad) {
-            oldGamepad = navigator.getGamepads()[0]
-            return;
-        }
         var currentGamepad = navigator.getGamepads()[0]
-        if (currentGamepad.axes[0] < -0.2) {
+        var normalisedAxis = [
+            currentGamepad.axes[0] > 0 ? Math.floor(currentGamepad.axes[0] * 10) / 10 : Math.ceil(currentGamepad.axes[0] * 10) / 10,
+            currentGamepad.axes[1] > 0 ? Math.floor(currentGamepad.axes[1] * 10) / 10 : Math.ceil(currentGamepad.axes[1] * 10) / 10
+        ]
+        if (normalisedAxis[0] < -0.5) {
             push('left')
         }
-        if (currentGamepad.axes[0] > 0.2) {
+        if (normalisedAxis[0] > 0.5) {
             push('right')
         }
-        if (currentGamepad.axes[1] < 0.2) {
+        if (normalisedAxis[1] < -0.5) {
             push('up')
         }
-        if (currentGamepad.axes[1] > -0.2) {
+        if (normalisedAxis[1] > 0.5) {
             push('down')
         }
-        if (currentGamepad.axes[0] > -0.2) {
+        if (normalisedAxis[0] > -0.5 && normalisedAxis[0] < -0.1) {
             remove('left')
         }
-        if (currentGamepad.axes[0] < 0.2) {
+        if (normalisedAxis[0] < 0.5 && normalisedAxis[0] > 0.1) {
             remove('right')
         }
-        if (currentGamepad.axes[1] > 0.2) {
+        if (normalisedAxis[1] > -0.5 && normalisedAxis[1] < -0.1) {
             remove('up')
         }
-        if (currentGamepad.axes[1] < -0.2) {
+        if (normalisedAxis[1] < 0.5 && normalisedAxis[1] > 0.1) {
             remove('down')
         }
-        oldGamepad = currentGamepad;
     }
 
     function remove(directionToRemove) {
