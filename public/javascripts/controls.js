@@ -2,6 +2,8 @@ function createControls(player, collisionDetection, screenDimensions) {
     var directionMap = [];
     var moveUnits;
     var buildingMode = false;
+    var oldGamepad;
+    var currentGamepad;
 
     function collidesWithBuildings(playerCoordinates, buildings) {
         var collisionDetected = false
@@ -81,59 +83,95 @@ function createControls(player, collisionDetection, screenDimensions) {
     }
 
     function detectControl(keyCode, action) {
+        var direction = '';
         switch (keyCode) {
         case 37:
         case 65:
-            action('left');
+            direction = 'left'
             break;
         case 38:
         case 87:
-            action('up');
+            direction = 'up';
             break;
         case 39:
         case 68:
-            action('right');
+            direction = 'right';
             break;
         case 40:
         case 83:
-            action('down');
+            direction = 'down';
             break;
         }
+        action(direction);
+    }
+
+    function mapGamepadChanges() {
+        if (!oldGamepad) {
+            oldGamepad = navigator.getGamepads()[0]
+            return;
+        }
+        var currentGamepad = navigator.getGamepads()[0]
+        if (currentGamepad.axes[0] < -0.2) {
+            push('left')
+        }
+        if (currentGamepad.axes[0] > 0.2) {
+            push('right')
+        }
+        if (currentGamepad.axes[1] < 0.2) {
+            push('up')
+        }
+        if (currentGamepad.axes[1] > -0.2) {
+            push('down')
+        }
+        if (currentGamepad.axes[0] > -0.2) {
+            remove('left')
+        }
+        if (currentGamepad.axes[0] < 0.2) {
+            remove('right')
+        }
+        if (currentGamepad.axes[1] > 0.2) {
+            remove('up')
+        }
+        if (currentGamepad.axes[1] < -0.2) {
+            remove('down')
+        }
+        oldGamepad = currentGamepad;
+    }
+
+    function remove(directionToRemove) {
+        _.remove(directionMap, function (direction) {
+            return direction === directionToRemove;
+        });
+        normaliseDirectionMap();
+    }
+
+    function push(direction) {
+        directionMap.push(direction);
+        normaliseDirectionMap();
+    }
+
+    function normaliseDirectionMap() {
+        directionMap = _.uniq(directionMap);
+        directionMap.length > 1 ? moveUnits = 8 : moveUnits = 12
     }
 
     return {
         keyDown: function (keyCode) {
-            var push = function (direction) {
-                directionMap.push(direction);
-            }
             detectControl(keyCode, push);
-            directionMap = _.uniq(directionMap);
-            directionMap.length > 1 ? moveUnits = 8 : moveUnits = 12
         },
         keyUp: function (keyCode) {
-            var removal = '';
-            if (keyCode == 37 || keyCode == 65) { //left
-                removal = 'left';
-            } else if (keyCode == 38 || keyCode == 87) { //up
-                removal = 'up';
-            } else if (keyCode == 39 || keyCode == 68) { //right
-                removal = 'right';
-            } else if (keyCode == 40 || keyCode == 83) { //down
-                removal = 'down';
-            }
+            detectControl(keyCode, remove);
             if (keyCode == 66) { //b
                 this.buildingMode = !this.buildingMode;
             }
             if (keyCode == 77) { //m
                 this.drawMap = !this.drawMap;
             }
-            _.remove(directionMap, function (direction) {
-                return direction === removal
-            });
 
             directionMap.length > 1 ? moveUnits = 8 : moveUnits = 12
         },
         controlIteration: function (players, screenCoordinates, moveScreenTo, buildings) {
+            mapGamepadChanges();
             _.forEach(directionMap, function (direction) {
                 handleMovement(direction, players, screenCoordinates, moveScreenTo, buildings)
             });
