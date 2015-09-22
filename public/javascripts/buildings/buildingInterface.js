@@ -2,12 +2,6 @@ function createBuildingInterface(buildingSpecs, collision, buildingFactory, play
     var selectedBuilding = "chapel"
 
     function drawBuildings(ctx, building, screenCoordinates) {
-        var rectangle = {
-            x1: building.coordinates.x,
-            x2: building.coordinates.x + building.dimensions.width,
-            y1: building.coordinates.y,
-            y2: building.coordinates.y + building.dimensions.height
-        }
         var image = building.image;
         ctx.drawImage(image, building.coordinates.x - screenCoordinates.x, building.coordinates.y - screenCoordinates.y);
     }
