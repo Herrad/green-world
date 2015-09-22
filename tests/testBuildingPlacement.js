@@ -1,6 +1,6 @@
 var expect = chai.expect;
 
-describe('building placement', function () {
+describe('test building placement', function () {
     describe('interfering with other objects', function () {
         var specToReturn = {
             buildBorder: {},
