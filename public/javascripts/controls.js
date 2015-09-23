@@ -107,6 +107,7 @@ function createControls(player, collisionDetection, screenDimensions) {
 
     function mapGamepadChanges() {
         var currentGamepad = navigator.getGamepads()[0]
+        if (!currentGamepad) return;
         var normalisedAxis = [
             currentGamepad.axes[0] > 0 ? Math.floor(currentGamepad.axes[0] * 10) / 10 : Math.ceil(currentGamepad.axes[0] * 10) / 10,
             currentGamepad.axes[1] > 0 ? Math.floor(currentGamepad.axes[1] * 10) / 10 : Math.ceil(currentGamepad.axes[1] * 10) / 10
