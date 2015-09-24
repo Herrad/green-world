@@ -1,6 +1,6 @@
 function createIncomingEventHandler() {
     return {
-        registerEventHandlers: function (update) {
+        registerEventHandlers: function (update, seedCallback) {
             var socket = io();
 
             socket.on('player-list-update', function (players) {
@@ -21,6 +21,9 @@ function createIncomingEventHandler() {
             });
             socket.on('flush', function () {
                 update.flush();
+            });
+            socket.on('seed', function (seed) {
+                seedCallback(seed);
             });
         }
     }

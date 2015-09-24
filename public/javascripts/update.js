@@ -106,7 +106,7 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw, controls
     }
 
     return {
-        mainLoop: function (canvas, ctx) {
+        mainLoop: function (canvas, ctx, seed) {
             runDraw(canvas, ctx);
             controls.controlIteration(players, screenCoordinates, moveScreenTo, buildingsToDraw);
 
@@ -150,6 +150,9 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw, controls
                 outgoingEvents.sendBuildingUpdate(building);
                 controls.buildingMode = false;
             }
+        },
+        setSeed: function (newSeed) {
+            seed = newSeed;
         }
     }
 }

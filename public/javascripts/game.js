@@ -1,5 +1,5 @@
 function init() {
-
+    var gameSeed = 0;
     var canvas = document.getElementById('gameScreen');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -35,11 +35,14 @@ function init() {
     });
     var draw = createDraw(gameScreenSize, player, map, collisionDetection);
 
-    var update = createUpdate(player, outgoingEvents, collisionDetection, draw, controls, buildingInterface, buildingFactory);
-
     var incomingEvents = createIncomingEventHandler();
 
-    incomingEvents.registerEventHandlers(update);
+    var update = createUpdate(player, outgoingEvents, collisionDetection, draw, controls, buildingInterface, buildingFactory);
+
+    incomingEvents.registerEventHandlers(update, function (seed) {
+        console.log("new seed: " + seed)
+        gameSeed = seed
+    });
 
     outgoingEvents.newPlayer({
         id: player.id,
@@ -78,7 +81,8 @@ function init() {
     });
 
     setInterval(function () {
-        update.mainLoop(canvas, ctx)
+        if (!gameSeed) return;
+        update.mainLoop(canvas, ctx, gameSeed)
     }, 1000 / 30);
     console.log('initialised');
 }

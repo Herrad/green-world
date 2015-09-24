@@ -1,4 +1,9 @@
 var socketio = require('socket.io')
+var seedrandom = require('seedrandom');
+var gameSeed = 53198032
+seedrandom(gameSeed, {
+    global: true
+});
 var biomeGenerator = require('./lib/procedural/biomeGenerator')();
 var nameGenerator = require('./lib/procedural/names')();
 var chunkList = require('./lib/chunkList')(biomeGenerator, nameGenerator);
@@ -27,7 +32,7 @@ module.exports.listen = function (app, playerList) {
     io.sockets.on('connection', function (socket) {
         socket.handshake.user = generateGuid();
         socket.emit('flush');
-
+        socket.emit('seed', gameSeed)
         socket.emit('local-chunks', [startingChunk]);
 
         socket.on('new-player', function (player) {
