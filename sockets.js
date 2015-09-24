@@ -4,6 +4,7 @@ var nameGenerator = require('./lib/procedural/names')();
 var chunkList = require('./lib/chunkList')(biomeGenerator, nameGenerator);
 var buildingList = require('./lib/buildingList')();
 var collision = require('./lib/collision')();
+var gameSeed = 5319803208112717
 
 module.exports.listen = function (app, playerList) {
     io = socketio.listen(app)
@@ -27,7 +28,7 @@ module.exports.listen = function (app, playerList) {
     io.sockets.on('connection', function (socket) {
         socket.handshake.user = generateGuid();
         socket.emit('flush');
-
+        socket.emit('seed', gameSeed)
         socket.emit('local-chunks', [startingChunk]);
 
         socket.on('new-player', function (player) {
