@@ -1,10 +1,14 @@
 var socketio = require('socket.io')
+var seedrandom = require('seedrandom');
+var gameSeed = 53198032
+seedrandom(gameSeed, {
+    global: true
+});
 var biomeGenerator = require('./lib/procedural/biomeGenerator')();
 var nameGenerator = require('./lib/procedural/names')();
 var chunkList = require('./lib/chunkList')(biomeGenerator, nameGenerator);
 var buildingList = require('./lib/buildingList')();
 var collision = require('./lib/collision')();
-var gameSeed = 5319803208112717
 
 module.exports.listen = function (app, playerList) {
     io = socketio.listen(app)
