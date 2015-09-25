@@ -7,7 +7,7 @@ function createMap(screenDimensions, offset) {
     }
 
     function drawMapChunk(ctx, chunk, playerCoordinates, screenCoordinates) {
-        var chunkWidth = 64 * 5
+        var chunkWidth = 64 * 20
         var reductionFactor = 16;
         var sizeOfChunk = Math.round(chunkWidth / reductionFactor);
         ctx.fillStyle = chunk.fillStyle || "rgb(200,200,0)";
