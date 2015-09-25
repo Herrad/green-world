@@ -23,13 +23,13 @@ function init() {
 
     var outgoingEvents = createOutgoingEvents(gameScreenSize, chunkCache, buildingCache);
 
-    var buildingInterface = createBuildingInterface(buildingSpecs, collisionDetection, buildingFactory, buildingCache);
-
     var player = createPlayer(outgoingEvents, $.cookie('character-name'));
     player.coordinateChange({
         x: Math.floor(gameScreenSize.gameWindowWidth / 2) + 32,
         y: Math.floor(gameScreenSize.height / 2) + 32
     })
+
+    var buildingInterface = createBuildingInterface(buildingSpecs, collisionDetection, buildingFactory, player, buildingCache);
 
     var controls = createControls(player, collisionDetection, gameScreenSize, buildingCache);
 

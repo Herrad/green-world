@@ -1,5 +1,6 @@
 function createBuildingInterface(buildingSpecs, collision, buildingFactory, player, buildingCache) {
     var selectedBuilding = "chapel"
+    var buildingCache = buildingCache;
 
     function drawBuildings(ctx, building, screenCoordinates) {
         var image = building.image;

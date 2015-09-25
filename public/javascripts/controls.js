@@ -1,4 +1,4 @@
-function createControls(player, collisionDetection, screenDimensions) {
+function createControls(player, collisionDetection, screenDimensions, buildingCache) {
     var directionMap = [];
     var moveUnits;
     var buildingMode = false;
