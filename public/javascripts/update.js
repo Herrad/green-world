@@ -15,8 +15,7 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw, controls
     var players = [player];
 
     setInterval(function () {
-        var serialsedPlayer = player.serialise(chunkCache.hash, buildingCache.hash)
-        outgoingEvents.locationUpdate(serialsedPlayer)
+        outgoingEvents.locationUpdate(player)
 
     }, 1000 / 10);
 

@@ -1,4 +1,4 @@
-function createOutgoingEvents(screenSize) {
+function createOutgoingEvents(screenSize, chunkCache, buildingCache) {
     var socket = io();
 
     return {
@@ -7,8 +7,9 @@ function createOutgoingEvents(screenSize) {
             socket.emit('new-player', player);
         },
         locationUpdate: function (player) {
-            player.screenSize = screenSize
-            socket.emit('location-update', player);
+            var serialisedPlayer = player.serialise(chunkCache.hash, buildingCache.hash)
+            serialisedPlayer.screenSize = screenSize
+            socket.emit('location-update', serialisedPlayer);
         },
         sendChunkUpdate: function (chunk) {
             socket.emit('chunk-update', chunk);

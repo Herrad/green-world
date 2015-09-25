@@ -11,15 +11,17 @@ function init() {
         height: canvas.height //gameScreen.height()
     };
 
-    var outgoingEvents = createOutgoingEvents(gameScreenSize);
-
     var collisionDetection = createCollisionDetection();
 
     var buildingSpecs = createBuildingSpecs();
 
     var buildingFactory = createBuildingFactory(buildingSpecs);
 
+    var chunkCache = createCache();
+
     var buildingCache = createCache(buildingFactory.deserialise);
+
+    var outgoingEvents = createOutgoingEvents(gameScreenSize, chunkCache, buildingCache);
 
     var buildingInterface = createBuildingInterface(buildingSpecs, collisionDetection, buildingFactory, buildingCache);
 
@@ -36,8 +38,6 @@ function init() {
         y: 200
     });
     var draw = createDraw(gameScreenSize, player, map, collisionDetection);
-
-    var chunkCache = createCache();
 
     var incomingEvents = createIncomingEventHandler(buildingCache, chunkCache);
 
