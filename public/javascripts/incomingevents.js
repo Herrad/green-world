@@ -1,4 +1,4 @@
-function createIncomingEventHandler() {
+function createIncomingEventHandler(buildingCache, chunkCache) {
     return {
         registerEventHandlers: function (update, seedCallback) {
             var socket = io();
@@ -11,16 +11,17 @@ function createIncomingEventHandler() {
                 socket.emit('pong')
             });
             socket.on('local-chunks', function (data) {
-                update.chunksArrived(data);
+                chunkCache.incoming(data);
             });
             socket.on('local-buildings', function (data) {
-                update.buildingsArrived(data);
+                buildingCache.incoming(data);
             });
             socket.on('move', function (data) {
                 update.movePlayer(data);
             });
             socket.on('flush', function () {
-                update.flush();
+                buildingCache.flush();
+                chunkCache.flush();
             });
             socket.on('seed', function (seed) {
                 seedCallback(seed);

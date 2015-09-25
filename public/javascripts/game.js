@@ -35,9 +35,13 @@ function init() {
     });
     var draw = createDraw(gameScreenSize, player, map, collisionDetection);
 
-    var incomingEvents = createIncomingEventHandler();
+    var buildingCache = createCache(buildingFactory.deserialise);
 
-    var update = createUpdate(player, outgoingEvents, collisionDetection, draw, controls, buildingInterface, buildingFactory);
+    var chunkCache = createCache();
+
+    var incomingEvents = createIncomingEventHandler(buildingCache, chunkCache);
+
+    var update = createUpdate(player, outgoingEvents, collisionDetection, draw, controls, buildingInterface, buildingCache, chunkCache);
 
     incomingEvents.registerEventHandlers(update, function (seed) {
         console.log("new seed: " + seed)

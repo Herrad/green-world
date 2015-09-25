@@ -1,54 +1,21 @@
-function createUpdate(player, outgoingEvents, collisionDetection, draw, controls, buildingInterface, buildingFactory) {
+function createUpdate(player, outgoingEvents, collisionDetection, draw, controls, buildingInterface, buildingCache, chunkCache) {
     var screenCoordinates = {
         x: 0,
         y: 0
     }
-    var chunksToDraw = [];
-    var chunkHash = '';
     var buildAt = {
         x: 0,
         y: 0
     };
 
-    var buildingsToDraw = []
-    var buildingHash = ''
-
     function moveScreenTo(newCoordinates) {
         screenCoordinates = newCoordinates;
-    }
-
-    function acceptHashable(newHashable, oldHashable, deserialise) {
-        if (!newHashable) return;
-        if (oldHashable.length + newHashable.length > 100) {
-            oldHashable = _.takeRight(oldHashable, 100);
-        }
-        for (var i = newHashable.length - 1; i >= 0; i--) {
-            _.remove(oldHashable, {
-                hash: newHashable[i].hash
-            });
-            if (deserialise) {
-                oldHashable.push(deserialise(newHashable[i]));
-            } else {
-                oldHashable.push(newHashable[i]);
-            }
-        };
-        return oldHashable;
-    }
-
-    function buildHash(hashable) {
-        var hash = ''
-        _.chain(hashable)
-            .sortByAll(['coordinates.x', 'coordinates.y'])
-            .forEach(function (hasher) {
-                hash += hasher.hash;
-            }).value();
-        return hash
     }
 
     var players = [player];
 
     setInterval(function () {
-        var serialsedPlayer = player.serialise(chunkHash, buildingHash)
+        var serialsedPlayer = player.serialise(chunkCache.hash, buildingCache.hash)
         outgoingEvents.locationUpdate(serialsedPlayer)
 
     }, 1000 / 10);
@@ -64,20 +31,20 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw, controls
 
     function runDraw(canvas, ctx) {
         draw.clearCanvas(canvas, ctx);
-        draw.drawChunks(ctx, chunksToDraw, screenCoordinates, mousePosition, setBlipLocation);
-        buildingInterface.drawBuildings(ctx, buildingsToDraw, screenCoordinates);
+        draw.drawChunks(ctx, chunkCache.data, screenCoordinates, mousePosition, setBlipLocation);
+        buildingInterface.drawBuildings(ctx, buildingCache.data, screenCoordinates);
         if (controls.buildingMode) {
             buildingInterface.drawBlueprint(ctx, "chapel", buildAt, screenCoordinates);
         }
         draw.drawPlayers(ctx, screenCoordinates, players)
         draw.drawInventory(ctx)
-        draw.drawMap(ctx, chunksToDraw, player.coordinates, screenCoordinates, controls)
+        draw.drawMap(ctx, chunkCache.data, player.coordinates, screenCoordinates, controls)
     }
 
     function findBlipCoordinatesOfClick(clickLocationInWorld) {
 
         var coordinates;
-        _.forEach(chunksToDraw, function (chunk) {
+        _.forEach(chunkCache.data, function (chunk) {
             var chunkRectangle = {
                 x: chunk.coordinates.x,
                 y: chunk.coordinates.y,
@@ -108,20 +75,8 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw, controls
     return {
         mainLoop: function (canvas, ctx, seed) {
             runDraw(canvas, ctx);
-            controls.controlIteration(players, screenCoordinates, moveScreenTo, buildingsToDraw);
+            controls.controlIteration(players, screenCoordinates, moveScreenTo, buildingCache.data);
 
-        },
-        flush: function () {
-            chunksToDraw = [];
-            buildingsToDraw = []
-        },
-        chunksArrived: function (chunks) {
-            chunksToDraw = acceptHashable(chunks, chunksToDraw);
-            chunkHash = buildHash(chunks);
-        },
-        buildingsArrived: function (buildings) {
-            buildingsToDraw = acceptHashable(buildings, buildingsToDraw, buildingFactory.deserialise);
-            buildingHash = buildHash(buildings);
         },
         playerList: function (newList) {
             players = [player];
@@ -145,7 +100,7 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw, controls
                 y: clickLocation.y + screenCoordinates.y
             };
             var blipCoordinates = findBlipCoordinatesOfClick(worldClickLocation);
-            var building = buildingInterface.buildFrom('chapel', blipCoordinates, buildingsToDraw, players)
+            var building = buildingInterface.buildFrom('chapel', blipCoordinates, buildingCache.data, players)
             if (building) {
                 outgoingEvents.sendBuildingUpdate(building);
                 controls.buildingMode = false;
