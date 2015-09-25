@@ -1,4 +1,4 @@
-function createDraw(screenDimensions, player, map, collision, chunkCache) {
+function createDraw(screenDimensions, player, map, collision, chunkCache, inventoryArtist) {
 
     var inventoryInternalX = screenDimensions.realWidth - 458;
     var inventoryDimensions = {
@@ -15,12 +15,7 @@ function createDraw(screenDimensions, player, map, collision, chunkCache) {
             height: screenDimensions.height
         },
         textX: inventoryInternalX + 8,
-        mapWidth: 477,
-
-        inventorySection: {
-            y: 120,
-            height: screenDimensions.height - 139 - 180
-        }
+        mapWidth: 477
     }
 
     var healthBar = {
@@ -76,7 +71,7 @@ function createDraw(screenDimensions, player, map, collision, chunkCache) {
         ctx.fillText(genericPlayer.name, xToDrawText, yToDraw - 20);
     }
 
-    function drawInventory(ctx) {
+    function drawOutline(ctx) {
         ctx.fillStyle = "rgb(255,255,255)";
         draw(ctx, inventoryDimensions.external);
         ctx.fillStyle = "rgb(0,0,0)";
@@ -87,22 +82,6 @@ function createDraw(screenDimensions, player, map, collision, chunkCache) {
         ctx.fillText(player.name, inventoryDimensions.textX, 50);
         ctx.fillText("[x:" + player.coordinates.x + ",y:" + player.coordinates.y + "]", inventoryDimensions.textX, 100);
 
-        ctx.fillStyle = "rgb(255,255,255)";
-        draw(ctx, {
-            x: inventoryDimensions.internal.x,
-            y: inventoryDimensions.inventorySection.y,
-            width: inventoryDimensions.internal.width,
-            height: 10
-        });
-        ctx.fillStyle = "rgb(70,70,70)";
-        draw(ctx, {
-            x: inventoryDimensions.internal.x,
-            y: 190,
-            width: inventoryDimensions.internal.width,
-            height: inventoryDimensions.inventorySection.height
-        });
-        ctx.fillStyle = "rgb(255,255,255)";
-        ctx.fillText("Inventory", inventoryDimensions.textX, 170);
     }
 
     function drawMapControl(ctx, screenCoordinates) {
@@ -110,13 +89,6 @@ function createDraw(screenDimensions, player, map, collision, chunkCache) {
         ctx.fillRect(inventoryDimensions.internal.x, screenDimensions.height - 139, inventoryDimensions.mapWidth, 12);
         ctx.font = "30px sans-serif";
         ctx.fillText("Press 'M' for the map", screenDimensions.realWidth - 358, screenDimensions.height - 59);
-    }
-
-    function draw(ctx, rectangle) {
-        if (!rectangle || rectangle.x === undefined || rectangle.y === undefined || rectangle.width === undefined || rectangle.height === undefined) {
-            return;
-        }
-        ctx.fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
     }
 
     return {
@@ -135,7 +107,11 @@ function createDraw(screenDimensions, player, map, collision, chunkCache) {
                 drawPlayer(ctx, genericPlayer, screenCoordinates);
             });
         },
-        drawInventory: drawInventory,
+        drawMiddleSection: function (ctx, controls) {
+            drawOutline(ctx);
+            if (!controls.buildingMode)
+                inventoryArtist.draw(ctx);
+        },
         drawMap: function (ctx, playerCoordinates, screenCoordinates, controls) {
             if (controls.drawMap) {
                 map.draw(ctx, chunkCache.data, playerCoordinates, screenCoordinates);

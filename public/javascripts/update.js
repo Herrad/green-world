@@ -36,7 +36,7 @@ function createUpdate(player, outgoingEvents, draw, controls, buildingInterface,
             buildingInterface.drawBlueprint(ctx, buildAt, screenCoordinates);
         }
         draw.drawPlayers(ctx, screenCoordinates, players)
-        draw.drawInventory(ctx)
+        draw.drawMiddleSection(ctx, controls)
         draw.drawMap(ctx, player.coordinates, screenCoordinates, controls)
     }
 

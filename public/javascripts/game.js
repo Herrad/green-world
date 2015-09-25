@@ -37,7 +37,8 @@ function init() {
         x: 200,
         y: 200
     });
-    var draw = createDraw(gameScreenSize, player, map, collisionDetection, chunkCache);
+    var inventoryArtist = createInventoryArtist(gameScreenSize);
+    var draw = createDraw(gameScreenSize, player, map, collisionDetection, chunkCache, inventoryArtist);
 
     var incomingEvents = createIncomingEventHandler(buildingCache, chunkCache);
 
