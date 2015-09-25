@@ -1,4 +1,4 @@
-function createBuildingInterface(buildingSpecs, collision, buildingFactory, player) {
+function createBuildingInterface(buildingSpecs, collision, buildingFactory, player, buildingCache) {
     var selectedBuilding = "chapel"
 
     function drawBuildings(ctx, building, screenCoordinates) {
@@ -27,17 +27,17 @@ function createBuildingInterface(buildingSpecs, collision, buildingFactory, play
     }
 
     return {
-        drawBuildings: function (ctx, buildings, screenCoordinates, player) {
-            _.forEach(buildings, function (building) {
+        drawBuildings: function (ctx, screenCoordinates, player) {
+            _.forEach(buildingCache.data, function (building) {
                 drawBuildings(ctx, building, screenCoordinates, player);
             });
         },
-        drawBlueprint: function (ctx, building, selectedBlip, screenCoordinates) {
-            var selectedBuilding = building;
+        drawBlueprint: function (ctx, selectedBlip, screenCoordinates) {
+            var selectedBuilding = player.selectedBuilding;
             var blueprint = buildingSpecs.findImages(selectedBuilding).blueprint;
             ctx.drawImage(blueprint, selectedBlip.x - screenCoordinates.x, selectedBlip.y - screenCoordinates.y);
         },
-        buildFrom: function (buildingName, coordinates, existingBuildings, players) {
+        buildFrom: function (buildingName, coordinates, players) {
             var spec = buildingSpecs.getBuilding(buildingName);
             var collisionDetected = false;
             var rectangle1 = {
@@ -48,7 +48,7 @@ function createBuildingInterface(buildingSpecs, collision, buildingFactory, play
             }
             if (collidesWithAnyRectangles(rectangle1, players)) {
                 return;
-            } else if (collidesWithAnyRectangles(rectangle1, _.pluck(existingBuildings, 'border'))) {
+            } else if (collidesWithAnyRectangles(rectangle1, _.pluck(buildingCache.data, 'border'))) {
                 return
             }
             return buildingFactory.createBuilding(coordinates, spec);

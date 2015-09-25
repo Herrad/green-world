@@ -1,4 +1,4 @@
-function createUpdate(player, outgoingEvents, collisionDetection, draw, controls, buildingInterface, buildingCache, chunkCache) {
+function createUpdate(player, outgoingEvents, collisionDetection, draw, controls, buildingInterface, chunkCache) {
     var screenCoordinates = {
         x: 0,
         y: 0
@@ -32,9 +32,9 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw, controls
     function runDraw(canvas, ctx) {
         draw.clearCanvas(canvas, ctx);
         draw.drawChunks(ctx, chunkCache.data, screenCoordinates, mousePosition, setBlipLocation);
-        buildingInterface.drawBuildings(ctx, buildingCache.data, screenCoordinates);
+        buildingInterface.drawBuildings(ctx, screenCoordinates);
         if (controls.buildingMode) {
-            buildingInterface.drawBlueprint(ctx, "chapel", buildAt, screenCoordinates);
+            buildingInterface.drawBlueprint(ctx, buildAt, screenCoordinates);
         }
         draw.drawPlayers(ctx, screenCoordinates, players)
         draw.drawInventory(ctx)
@@ -75,7 +75,7 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw, controls
     return {
         mainLoop: function (canvas, ctx, seed) {
             runDraw(canvas, ctx);
-            controls.controlIteration(players, screenCoordinates, moveScreenTo, buildingCache.data);
+            controls.controlIteration(players, screenCoordinates, moveScreenTo);
 
         },
         playerList: function (newList) {
@@ -100,7 +100,7 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw, controls
                 y: clickLocation.y + screenCoordinates.y
             };
             var blipCoordinates = findBlipCoordinatesOfClick(worldClickLocation);
-            var building = buildingInterface.buildFrom('chapel', blipCoordinates, buildingCache.data, players)
+            var building = buildingInterface.buildFrom('chapel', blipCoordinates, players)
             if (building) {
                 outgoingEvents.sendBuildingUpdate(building);
                 controls.buildingMode = false;

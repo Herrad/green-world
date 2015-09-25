@@ -75,7 +75,8 @@ function createPlayer(outgoingEvents, name, id, coordinates, facing) {
                 chunkHash: chunkHash,
                 buildingHash: buildingHash
             };
-        }
+        },
+        selectedBuilding: 'chapel'
     };
 
     return player;

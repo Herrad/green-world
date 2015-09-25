@@ -19,7 +19,9 @@ function init() {
 
     var buildingFactory = createBuildingFactory(buildingSpecs);
 
-    var buildingInterface = createBuildingInterface(buildingSpecs, collisionDetection, buildingFactory);
+    var buildingCache = createCache(buildingFactory.deserialise);
+
+    var buildingInterface = createBuildingInterface(buildingSpecs, collisionDetection, buildingFactory, buildingCache);
 
     var player = createPlayer(outgoingEvents, $.cookie('character-name'));
     player.coordinateChange({
@@ -27,7 +29,7 @@ function init() {
         y: Math.floor(gameScreenSize.height / 2) + 32
     })
 
-    var controls = createControls(player, collisionDetection, gameScreenSize);
+    var controls = createControls(player, collisionDetection, gameScreenSize, buildingCache);
 
     var map = createMap(gameScreenSize, {
         x: 200,
@@ -35,13 +37,11 @@ function init() {
     });
     var draw = createDraw(gameScreenSize, player, map, collisionDetection);
 
-    var buildingCache = createCache(buildingFactory.deserialise);
-
     var chunkCache = createCache();
 
     var incomingEvents = createIncomingEventHandler(buildingCache, chunkCache);
 
-    var update = createUpdate(player, outgoingEvents, collisionDetection, draw, controls, buildingInterface, buildingCache, chunkCache);
+    var update = createUpdate(player, outgoingEvents, collisionDetection, draw, controls, buildingInterface, chunkCache);
 
     incomingEvents.registerEventHandlers(update, function (seed) {
         console.log("new seed: " + seed)

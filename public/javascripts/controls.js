@@ -5,7 +5,7 @@ function createControls(player, collisionDetection, screenDimensions) {
     var oldGamepad;
     var currentGamepad;
 
-    function collidesWithBuildings(playerCoordinates, buildings) {
+    function collidesWithBuildings(playerCoordinates) {
         var collisionDetected = false
         var rectangle1 = {
             x1: playerCoordinates.x,
@@ -13,7 +13,7 @@ function createControls(player, collisionDetection, screenDimensions) {
             x2: playerCoordinates.x + 64,
             y2: playerCoordinates.y + 64
         }
-        _.forEach(buildings, function (building) {
+        _.forEach(buildingCache.data, function (building) {
             _.forEach(building.impassables, function (impassable) {
                 if (collisionDetected) return;
                 var rectangle2 = translateBy(impassable, building.coordinates)
@@ -23,12 +23,12 @@ function createControls(player, collisionDetection, screenDimensions) {
         return collisionDetected;
     }
 
-    function handleMovement(direction, players, screenCoordinates, moveScreenTo, buildings) {
+    function handleMovement(direction, players, screenCoordinates, moveScreenTo) {
         var playerCoordinates = orientAndMovePlayer(direction, moveUnits)
         var newCoordinates = moveScreenIfOutsideBounds(screenCoordinates, playerCoordinates, moveUnits);
 
         if (collisionDetection.detect(players, playerCoordinates, player) ||
-            collidesWithBuildings(playerCoordinates, buildings)) {
+            collidesWithBuildings(playerCoordinates)) {
             return;
         } else {
             moveScreenTo(newCoordinates);
@@ -170,10 +170,10 @@ function createControls(player, collisionDetection, screenDimensions) {
 
             directionMap.length > 1 ? moveUnits = 8 : moveUnits = 12
         },
-        controlIteration: function (players, screenCoordinates, moveScreenTo, buildings) {
+        controlIteration: function (players, screenCoordinates, moveScreenTo) {
             mapGamepadChanges();
             _.forEach(directionMap, function (direction) {
-                handleMovement(direction, players, screenCoordinates, moveScreenTo, buildings)
+                handleMovement(direction, players, screenCoordinates, moveScreenTo)
             });
         },
         drawMap: false,
