@@ -23,17 +23,20 @@ describe('test building placement', function () {
             }
         }
         it('should be possible to place a building when clear of all obsticles', function () {
-            var buildingInterface = createBuildingInterface(buildingSpecs, createCollisionDetection(), buildingFactory, {});
+            var cache = createCache();
+
+            var buildingInterface = createBuildingInterface(buildingSpecs, createCollisionDetection(), buildingFactory, {}, cache);
 
             var result = buildingInterface.buildFrom('house', {
                 x: 0,
                 y: 0
-            }, [], {});
+            }, {});
 
-            expect(result.identifier).to.equal(expectedBuilding.identifier)
+            expect(expectedBuilding.identifier).to.equal(result.identifier)
         });
         it('should not be possible to place a building when another building is in the way', function () {
-            var buildingInterface = createBuildingInterface(buildingSpecs, createCollisionDetection(), buildingFactory, {});
+            var cache = createCache();
+            var buildingInterface = createBuildingInterface(buildingSpecs, createCollisionDetection(), buildingFactory, {}, cache);
             var otherBuildings = [{
                 border: {
                     x1: 5,
@@ -42,16 +45,21 @@ describe('test building placement', function () {
                     y2: 15
                 }
             }];
+            cache.incoming(otherBuildings);
+
             var result = buildingInterface.buildFrom('house', {
                 x: 0,
                 y: 0
-            }, otherBuildings, {});
+            }, {});
 
             expect(result).to.equal(undefined)
         });
         it('should not be possible to place a building when a player is in the way', function () {
-            var buildingInterface = createBuildingInterface(buildingSpecs, createCollisionDetection(), buildingFactory, {});
+            var cache = createCache();
+
+            var buildingInterface = createBuildingInterface(buildingSpecs, createCollisionDetection(), buildingFactory, {}, cache);
             var otherBuildings = [];
+
             var players = [{
                 coordinates: {
                     x: 5,
@@ -62,10 +70,11 @@ describe('test building placement', function () {
                     height: 1
                 }
             }]
+
             var result = buildingInterface.buildFrom('house', {
                 x: 0,
                 y: 0
-            }, otherBuildings, players);
+            }, players);
 
             expect(result).to.equal(undefined)
         });

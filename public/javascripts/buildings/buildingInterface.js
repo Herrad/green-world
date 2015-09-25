@@ -28,7 +28,7 @@ function createBuildingInterface(buildingSpecs, collision, buildingFactory, play
     }
 
     return {
-        drawBuildings: function (ctx, screenCoordinates, player) {
+        drawBuildings: function (ctx, screenCoordinates) {
             _.forEach(buildingCache.data, function (building) {
                 drawBuildings(ctx, building, screenCoordinates, player);
             });
