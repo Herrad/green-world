@@ -1,4 +1,4 @@
-function createUpdate(player, outgoingEvents, collisionDetection, draw, controls, buildingInterface, chunkCache) {
+function createUpdate(player, outgoingEvents, draw, controls, buildingInterface, chunkInterpreter) {
     var screenCoordinates = {
         x: 0,
         y: 0
@@ -30,45 +30,14 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw, controls
 
     function runDraw(canvas, ctx) {
         draw.clearCanvas(canvas, ctx);
-        draw.drawChunks(ctx, chunkCache.data, screenCoordinates, mousePosition, setBlipLocation);
+        draw.drawChunks(ctx, screenCoordinates, mousePosition, setBlipLocation);
         buildingInterface.drawBuildings(ctx, screenCoordinates);
         if (controls.buildingMode) {
             buildingInterface.drawBlueprint(ctx, buildAt, screenCoordinates);
         }
         draw.drawPlayers(ctx, screenCoordinates, players)
         draw.drawInventory(ctx)
-        draw.drawMap(ctx, chunkCache.data, player.coordinates, screenCoordinates, controls)
-    }
-
-    function findBlipCoordinatesOfClick(clickLocationInWorld) {
-
-        var coordinates;
-        _.forEach(chunkCache.data, function (chunk) {
-            var chunkRectangle = {
-                x: chunk.coordinates.x,
-                y: chunk.coordinates.y,
-                width: chunk.coordinates.x + chunk.dimensions.width,
-                height: chunk.coordinates.y + chunk.dimensions.height
-            }
-            if (collisionDetection.pointingAt(clickLocationInWorld, chunkRectangle)) {
-                _.forEach(chunk.blips, function (blip) {
-                    var blipRectangle = {
-                        x: chunk.coordinates.x + blip.x,
-                        y: chunk.coordinates.y + blip.y,
-                        width: chunk.coordinates.x + blip.x + blip.width,
-                        height: chunk.coordinates.y + blip.y + blip.height
-                    };
-                    if (collisionDetection.pointingAt(clickLocationInWorld, blipRectangle)) {
-                        coordinates = {
-                            x: chunk.coordinates.x + blip.x,
-                            y: chunk.coordinates.y + blip.y
-                        };
-                    }
-                });
-            }
-        });
-
-        return coordinates;
+        draw.drawMap(ctx, player.coordinates, screenCoordinates, controls)
     }
 
     return {
@@ -98,7 +67,7 @@ function createUpdate(player, outgoingEvents, collisionDetection, draw, controls
                 x: clickLocation.x + screenCoordinates.x,
                 y: clickLocation.y + screenCoordinates.y
             };
-            var blipCoordinates = findBlipCoordinatesOfClick(worldClickLocation);
+            var blipCoordinates = chunkInterpreter.getBlipClicked(worldClickLocation);
             var building = buildingInterface.buildFrom('chapel', blipCoordinates, players)
             if (building) {
                 outgoingEvents.sendBuildingUpdate(building);

@@ -1,4 +1,4 @@
-function createDraw(screenDimensions, player, map, collision) {
+function createDraw(screenDimensions, player, map, collision, chunkCache) {
 
     var inventoryInternalX = screenDimensions.realWidth - 458;
     var inventoryDimensions = {
@@ -15,7 +15,12 @@ function createDraw(screenDimensions, player, map, collision) {
             height: screenDimensions.height
         },
         textX: inventoryInternalX + 8,
-        mapWidth: 477
+        mapWidth: 477,
+
+        inventorySection: {
+            y: 120,
+            height: screenDimensions.height - 139 - 180
+        }
     }
 
     var healthBar = {
@@ -81,6 +86,23 @@ function createDraw(screenDimensions, player, map, collision) {
         ctx.font = "40px sans-serif";
         ctx.fillText(player.name, inventoryDimensions.textX, 50);
         ctx.fillText("[x:" + player.coordinates.x + ",y:" + player.coordinates.y + "]", inventoryDimensions.textX, 100);
+
+        ctx.fillStyle = "rgb(255,255,255)";
+        draw(ctx, {
+            x: inventoryDimensions.internal.x,
+            y: inventoryDimensions.inventorySection.y,
+            width: inventoryDimensions.internal.width,
+            height: 10
+        });
+        ctx.fillStyle = "rgb(70,70,70)";
+        draw(ctx, {
+            x: inventoryDimensions.internal.x,
+            y: 190,
+            width: inventoryDimensions.internal.width,
+            height: inventoryDimensions.inventorySection.height
+        });
+        ctx.fillStyle = "rgb(255,255,255)";
+        ctx.fillText("Inventory", inventoryDimensions.textX, 170);
     }
 
     function drawMapControl(ctx, screenCoordinates) {
@@ -103,8 +125,8 @@ function createDraw(screenDimensions, player, map, collision) {
             ctx.fillStyle = "rgb(100, 100, 240)"
             ctx.fillRect(0, 0, canvas.width, canvas.height);
         },
-        drawChunks: function (ctx, chunks, screenCoordinates, mouseLocation, setBlipLocation) {
-            _.forEach(chunks, function (chunk) {
+        drawChunks: function (ctx, screenCoordinates, mouseLocation, setBlipLocation) {
+            _.forEach(chunkCache.data, function (chunk) {
                 drawChunk(ctx, chunk, screenCoordinates, mouseLocation, setBlipLocation);
             });
         },
@@ -114,9 +136,9 @@ function createDraw(screenDimensions, player, map, collision) {
             });
         },
         drawInventory: drawInventory,
-        drawMap: function (ctx, chunks, playerCoordinates, screenCoordinates, controls) {
+        drawMap: function (ctx, playerCoordinates, screenCoordinates, controls) {
             if (controls.drawMap) {
-                map.draw(ctx, chunks, playerCoordinates, screenCoordinates);
+                map.draw(ctx, chunkCache.data, playerCoordinates, screenCoordinates);
             } else {
                 drawMapControl(ctx, screenCoordinates)
             }

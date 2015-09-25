@@ -37,11 +37,13 @@ function init() {
         x: 200,
         y: 200
     });
-    var draw = createDraw(gameScreenSize, player, map, collisionDetection);
+    var draw = createDraw(gameScreenSize, player, map, collisionDetection, chunkCache);
 
     var incomingEvents = createIncomingEventHandler(buildingCache, chunkCache);
 
-    var update = createUpdate(player, outgoingEvents, collisionDetection, draw, controls, buildingInterface, chunkCache);
+    var chunkInterpreter = createChunkInterpreter(chunkCache);
+
+    var update = createUpdate(player, outgoingEvents, draw, controls, buildingInterface, chunkInterpreter);
 
     incomingEvents.registerEventHandlers(update, function (seed) {
         console.log("new seed: " + seed)
