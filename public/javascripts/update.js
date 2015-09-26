@@ -36,7 +36,7 @@ function createUpdate(player, outgoingEvents, draw, controls, buildingInterface,
             buildingInterface.drawBlueprint(ctx, buildAt, screenCoordinates);
         }
         draw.drawPlayers(ctx, screenCoordinates, players)
-        draw.drawMiddleSection(ctx, controls)
+        draw.drawRightPanel(ctx, controls)
         draw.drawMap(ctx, player.coordinates, screenCoordinates, controls)
     }
 
@@ -52,7 +52,7 @@ function createUpdate(player, outgoingEvents, draw, controls, buildingInterface,
                 if (player.id === newPlayer.id) {
                     return;
                 }
-                var fullPlayer = createPlayer(outgoingEvents, newPlayer.name, newPlayer.id, newPlayer.coordinates, newPlayer.facing);
+                var fullPlayer = deserialisePlayer(newPlayer.name, newPlayer.inventory, newPlayer.id, newPlayer.coordinates, newPlayer.facing);
                 players.push(fullPlayer)
             });
         },

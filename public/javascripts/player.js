@@ -1,4 +1,4 @@
-function createPlayer(outgoingEvents, name, id, coordinates, facing) {
+function createPlayer(name, inventory, id, coordinates, facing, inventory) {
     var imageToDraw;
     if (facing) {
         imageToDraw = new Image
@@ -73,10 +73,12 @@ function createPlayer(outgoingEvents, name, id, coordinates, facing) {
                 coordinates: this.coordinates,
                 facing: this.facing,
                 chunkHash: chunkHash,
-                buildingHash: buildingHash
+                buildingHash: buildingHash,
+                inventory: this.inventory.serialise()
             };
         },
-        selectedBuilding: 'chapel'
+        selectedBuilding: 'chapel',
+        inventory: inventory
     };
 
     return player;

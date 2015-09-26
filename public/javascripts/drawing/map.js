@@ -1,18 +1,13 @@
-function createMap(screenDimensions, offset) {
-    var mapDimensions = {
-        x: screenDimensions.realWidth - 458,
-        y: screenDimensions.height - 478,
-        width: 477,
-        height: 489
-    }
+function createMap(playerOffset, rightPanelDimensions) {
+    var mapDimensions = rightPanelDimensions.map
 
     function drawMapChunk(ctx, chunk, playerCoordinates, screenCoordinates) {
         var chunkWidth = 64 * 20;
         var reductionFactor = 16;
         var sizeOfChunk = Math.round(chunkWidth / reductionFactor);
         ctx.fillStyle = chunk.fillStyle || "rgb(200,200,0)";
-        var xLocation = Math.round(chunk.coordinates.x / reductionFactor - screenCoordinates.x / reductionFactor + mapDimensions.x + offset.x);
-        var yLocation = Math.round(chunk.coordinates.y / reductionFactor - screenCoordinates.y / reductionFactor + mapDimensions.y + offset.y);
+        var xLocation = Math.round(chunk.coordinates.x / reductionFactor - screenCoordinates.x / reductionFactor + mapDimensions.x + playerOffset.x);
+        var yLocation = Math.round(chunk.coordinates.y / reductionFactor - screenCoordinates.y / reductionFactor + mapDimensions.y + playerOffset.y);
         var offScreen = xLocation + sizeOfChunk <= mapDimensions.x ||
             xLocation >= mapDimensions.x + mapDimensions.width ||
             yLocation + sizeOfChunk <= mapDimensions.y ||
@@ -52,8 +47,8 @@ function createMap(screenDimensions, offset) {
         ctx.fillRect(xToDraw, yToDraw, width, height);
         ctx.fillStyle = "rgb(255,255,255)"
         ctx.fillRect(
-            Math.round(playerCoordinates.x / reductionFactor + mapDimensions.x - screenCoordinates.x / reductionFactor + offset.x),
-            Math.round(playerCoordinates.y / reductionFactor + mapDimensions.y - screenCoordinates.y / reductionFactor + offset.y),
+            Math.round(playerCoordinates.x / reductionFactor + mapDimensions.x - screenCoordinates.x / reductionFactor + playerOffset.x),
+            Math.round(playerCoordinates.y / reductionFactor + mapDimensions.y - screenCoordinates.y / reductionFactor + playerOffset.y),
             Math.round(64 / reductionFactor),
             Math.round(64 / reductionFactor));
         ctx.fillStyle = "rgb(240, 100, 100)"
