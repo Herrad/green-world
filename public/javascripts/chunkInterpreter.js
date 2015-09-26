@@ -1,4 +1,4 @@
-function createChunkInterpreter(chunkCache) {
+function createChunkInterpreter(chunkCache, collisionDetection) {
 
     function findBlipCoordinatesOfClick(clickLocationInWorld) {
 
@@ -32,7 +32,7 @@ function createChunkInterpreter(chunkCache) {
     }
     return {
         getBlipClicked: function (clickLocationInWorld) {
-            findBlipCoordinatesOfClick(clickLocationInWorld)
+            return findBlipCoordinatesOfClick(clickLocationInWorld)
         }
     }
 }

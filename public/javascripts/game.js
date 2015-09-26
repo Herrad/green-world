@@ -41,7 +41,7 @@ function init() {
 
     var controls = createControls(player, collisionDetection, gameScreenSize, buildingCache);
 
-    var rightPanelInternalX = gameScreenSize.realWidth - Math.floor(gameScreenSize.realWidth / 4.19);
+    var rightPanelInternalX = gameScreenSize.realWidth - Math.floor(gameScreenSize.realWidth / 4.19) < 600 ? 600 : gameScreenSize.realWidth - Math.floor(gameScreenSize.realWidth / 4.19);
     var rightPanelDimensions = {
         internal: {
             x: rightPanelInternalX,
@@ -59,7 +59,7 @@ function init() {
         info: {
             nameY: Math.floor(gameScreenSize.height / 21.6),
             coordinatesY: Math.floor(gameScreenSize.height / 10.8),
-            fontSize: Math.floor(gameScreenSize.width / 48)
+            fontSize: Math.floor(gameScreenSize.realWidth / 48)
         },
         collapsedMap: {
             x: rightPanelInternalX,
@@ -76,6 +76,23 @@ function init() {
             y: gameScreenSize.height - Math.floor(gameScreenSize.realWidth / 4),
             width: Math.floor(gameScreenSize.realWidth / 4),
             height: Math.floor(gameScreenSize.realWidth / 4)
+        },
+        middlePanel: {
+            x: rightPanelInternalX,
+            y: Math.floor(gameScreenSize.height / 8.1),
+            width: Math.floor(gameScreenSize.realWidth / 4.2),
+            height: gameScreenSize.height - (Math.floor(gameScreenSize.height / 8.1) + Math.floor(gameScreenSize.height / 14)) - Math.floor(gameScreenSize.height / 7.7),
+            title: {
+                x: rightPanelInternalX + 8,
+                y: Math.floor(gameScreenSize.height / 5.8)
+            },
+            inventory: {
+                y: Math.floor(gameScreenSize.height / 8.1) + Math.floor(gameScreenSize.height / 14)
+            },
+            items: {
+                fontSize: Math.floor(gameScreenSize.height / 49)
+            },
+            fontSize: Math.floor(gameScreenSize.height / 24.5)
         }
     }
     var map = createMap({
@@ -89,7 +106,7 @@ function init() {
 
     var incomingEvents = createIncomingEventHandler(buildingCache, chunkCache);
 
-    var chunkInterpreter = createChunkInterpreter(chunkCache);
+    var chunkInterpreter = createChunkInterpreter(chunkCache, collisionDetection);
 
     var update = createUpdate(player, outgoingEvents, draw, controls, buildingInterface, chunkInterpreter);
 
