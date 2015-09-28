@@ -155,8 +155,7 @@ function init() {
     }, 1000 / 30);
     console.log('initialised');
     eventLog.info("Welcome to Green World!", 3000);
+    window.onbeforeunload = outgoingEvents.disconnect;
 }
 
 window.onload = init;
-
-window.onbeforeunload = outgoingEvents.disconnect
