@@ -1,4 +1,4 @@
-function createIncomingEventHandler(buildingCache, chunkCache) {
+function createIncomingEventHandler(buildingCache, chunkCache, eventLog) {
     return {
         registerEventHandlers: function (update, seedCallback) {
             var socket = io();
@@ -25,6 +25,9 @@ function createIncomingEventHandler(buildingCache, chunkCache) {
             });
             socket.on('seed', function (seed) {
                 seedCallback(seed);
+            });
+            socket.on('new-player', function (playerName) {
+                eventLog.info(playerName + " connected", 3000)
             });
         }
     }

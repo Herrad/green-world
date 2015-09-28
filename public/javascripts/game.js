@@ -105,7 +105,7 @@ function init() {
 
     var draw = createDraw(gameScreenSize, player, map, collisionDetection, chunkCache, inventoryArtist, rightPanelDimensions);
 
-    var incomingEvents = createIncomingEventHandler(buildingCache, chunkCache);
+    var incomingEvents = createIncomingEventHandler(buildingCache, chunkCache, eventLog);
 
     var chunkInterpreter = createChunkInterpreter(chunkCache, collisionDetection);
 
@@ -114,12 +114,9 @@ function init() {
     incomingEvents.registerEventHandlers(update, function (seed) {
         console.log("new seed: " + seed)
         gameSeed = seed
-    });
+    }, eventLog);
 
-    outgoingEvents.newPlayer({
-        id: player.id,
-        coordinates: player.coordinates
-    });
+    outgoingEvents.newPlayer(player.serialise({}, {}));
 
     $('body').on('keydown', function (e) {
         controls.keyDown(e.keyCode);
@@ -157,6 +154,7 @@ function init() {
         update.mainLoop(canvas, ctx, gameSeed)
     }, 1000 / 30);
     console.log('initialised');
+    eventLog.info("Welcome to Green World!", 3000);
 }
 
 window.onload = init;
