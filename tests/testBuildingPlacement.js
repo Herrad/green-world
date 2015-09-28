@@ -25,7 +25,9 @@ describe('test building placement', function () {
         it('should be possible to place a building when clear of all obsticles', function () {
             var cache = createCache();
 
-            var buildingInterface = createBuildingInterface(buildingSpecs, createCollisionDetection(), buildingFactory, {}, cache);
+            var buildingInterface = createBuildingInterface(buildingSpecs, createCollisionDetection(), buildingFactory, {}, cache, {
+                warning: function () {}
+            });
 
             var result = buildingInterface.buildFrom('house', {
                 x: 0,
@@ -36,7 +38,9 @@ describe('test building placement', function () {
         });
         it('should not be possible to place a building when another building is in the way', function () {
             var cache = createCache();
-            var buildingInterface = createBuildingInterface(buildingSpecs, createCollisionDetection(), buildingFactory, {}, cache);
+            var buildingInterface = createBuildingInterface(buildingSpecs, createCollisionDetection(), buildingFactory, {}, cache, {
+                warning: function () {}
+            });
             var otherBuildings = [{
                 border: {
                     x1: 5,
@@ -57,7 +61,9 @@ describe('test building placement', function () {
         it('should not be possible to place a building when a player is in the way', function () {
             var cache = createCache();
 
-            var buildingInterface = createBuildingInterface(buildingSpecs, createCollisionDetection(), buildingFactory, {}, cache);
+            var buildingInterface = createBuildingInterface(buildingSpecs, createCollisionDetection(), buildingFactory, {}, cache, {
+                warning: function () {}
+            });
             var otherBuildings = [];
 
             var players = [{
