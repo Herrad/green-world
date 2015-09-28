@@ -1,4 +1,4 @@
-function createUpdate(player, outgoingEvents, draw, controls, buildingInterface, chunkInterpreter) {
+function createUpdate(player, outgoingEvents, draw, controls, buildingInterface, chunkInterpreter, warnings) {
     var screenCoordinates = {
         x: 0,
         y: 0
@@ -37,7 +37,8 @@ function createUpdate(player, outgoingEvents, draw, controls, buildingInterface,
         }
         draw.drawPlayers(ctx, screenCoordinates, players)
         draw.drawRightPanel(ctx, controls)
-        draw.drawMap(ctx, player.coordinates, screenCoordinates, controls)
+        draw.drawMap(ctx, player.coordinates, screenCoordinates, controls);
+        warnings.draw(ctx);
     }
 
     return {

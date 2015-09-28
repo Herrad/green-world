@@ -10,6 +10,7 @@ function init() {
         realWidth: canvas.width,
         height: canvas.height
     };
+    var warnings = createWarningLayer(gameScreenSize);
 
     var collisionDetection = createCollisionDetection();
 
@@ -108,7 +109,7 @@ function init() {
 
     var chunkInterpreter = createChunkInterpreter(chunkCache, collisionDetection);
 
-    var update = createUpdate(player, outgoingEvents, draw, controls, buildingInterface, chunkInterpreter);
+    var update = createUpdate(player, outgoingEvents, draw, controls, buildingInterface, chunkInterpreter, warnings);
 
     incomingEvents.registerEventHandlers(update, function (seed) {
         console.log("new seed: " + seed)
