@@ -42,14 +42,14 @@ function createEventLogLayer(screenDimensions, events) {
                 ctx.fillText(event.message, drawDimensions.textX - Math.floor((event.message.length / 2) * drawDimensions.fontSize / 2), drawDimensions.y + screenDimensions.height * i / 20)
             });
         },
-        info: function (text, milliseconds) {
-            addEvent(text, milliseconds, "rgb(255,255,255)")
+        info: function (text, milliseconds, colours) {
+            addEvent(text, milliseconds, colours || "rgb(120,255,80)")
         },
-        warning: function (text, milliseconds) {
-            addEvent(text, milliseconds, "rgb(255,120,0)")
+        warning: function (text, milliseconds, colours) {
+            addEvent(text, milliseconds, colours || "rgb(255,120,0)")
         },
-        error: function (text, milliseconds) {
-            addEvent(text, milliseconds, "rgb(255,0,0)")
+        error: function (text, milliseconds, colours) {
+            addEvent(text, milliseconds, colours || "rgb(255,0,0)")
         }
     }
 }
