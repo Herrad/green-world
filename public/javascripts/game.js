@@ -11,6 +11,9 @@ function init() {
         height: canvas.height
     };
     var warnings = createWarningLayer(gameScreenSize);
+    setInterval(function () {
+        warnings.add("Hello!", 1000);
+    }, 2000)
 
     var collisionDetection = createCollisionDetection();
 
