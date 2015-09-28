@@ -10,10 +10,7 @@ function init() {
         realWidth: canvas.width,
         height: canvas.height
     };
-    var warnings = createWarningLayer(gameScreenSize);
-    setInterval(function () {
-        warnings.add("Hello!", 1000);
-    }, 2000)
+    var eventLog = createEventLogLayer(gameScreenSize);
 
     var collisionDetection = createCollisionDetection();
 
@@ -41,7 +38,7 @@ function init() {
     });
     player.inventory = inventory;
 
-    var buildingInterface = createBuildingInterface(buildingSpecs, collisionDetection, buildingFactory, player, buildingCache);
+    var buildingInterface = createBuildingInterface(buildingSpecs, collisionDetection, buildingFactory, player, buildingCache, eventLog);
 
     var controls = createControls(player, collisionDetection, gameScreenSize, buildingCache);
 
@@ -112,7 +109,7 @@ function init() {
 
     var chunkInterpreter = createChunkInterpreter(chunkCache, collisionDetection);
 
-    var update = createUpdate(player, outgoingEvents, draw, controls, buildingInterface, chunkInterpreter, warnings);
+    var update = createUpdate(player, outgoingEvents, draw, controls, buildingInterface, chunkInterpreter, eventLog);
 
     incomingEvents.registerEventHandlers(update, function (seed) {
         console.log("new seed: " + seed)

@@ -1,4 +1,4 @@
-function createBuildingInterface(buildingSpecs, collision, buildingFactory, player, buildingCache) {
+function createBuildingInterface(buildingSpecs, collision, buildingFactory, player, buildingCache, eventLog) {
     var selectedBuilding = "chapel"
     var buildingCache = buildingCache;
 
@@ -48,8 +48,10 @@ function createBuildingInterface(buildingSpecs, collision, buildingFactory, play
                 y2: coordinates.y + spec.dimensions.height + spec.buildBorder.y2
             }
             if (collidesWithAnyRectangles(rectangle1, players)) {
+                eventLog.warning("Cannot place over players!", 2000)
                 return;
             } else if (collidesWithAnyRectangles(rectangle1, _.pluck(buildingCache.data, 'border'))) {
+                eventLog.warning("Too close to another building!", 2000)
                 return
             }
             return buildingFactory.createBuilding(coordinates, spec);
