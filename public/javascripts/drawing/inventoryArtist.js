@@ -13,28 +13,26 @@ function createInventoryArtist(screenDimensions, inventory, rightPanelDimensions
         image: getImage('wood')
     }]
 
-    var inventoryInternalX = screenDimensions.realWidth - 458;
-    var middleSegmentDimensions = rightPanelDimensions.middlePanel
     var grid = {
-        cellWidth: Math.floor(middleSegmentDimensions.width / 4),
-        cellHeight: Math.floor(middleSegmentDimensions.height / 6),
+        cellWidth: Math.floor(rightPanelDimensions.middlePanel.width / 6),
+        cellHeight: Math.floor(rightPanelDimensions.middlePanel.height / 8),
         margin: 10
     }
 
     function setupGrid() {
         var lines = [];
-        for (var y = 4; y >= 1; y--) {
+        for (var y = 5; y >= 1; y--) {
             lines.push({
-                x: Math.floor(middleSegmentDimensions.x + grid.cellWidth * y),
-                y: middleSegmentDimensions.inventory.y,
+                x: Math.floor(rightPanelDimensions.middlePanel.x + grid.cellWidth * y),
+                y: rightPanelDimensions.middlePanel.inventory.y,
                 width: 1,
-                height: middleSegmentDimensions.height
+                height: rightPanelDimensions.middlePanel.height
             });
-            for (var x = 6; x >= 0; x--) {
+            for (var x = 7; x >= 1; x--) {
                 lines.push({
-                    x: middleSegmentDimensions.x,
-                    y: Math.floor(middleSegmentDimensions.inventory.y + grid.cellHeight * x),
-                    width: middleSegmentDimensions.width,
+                    x: rightPanelDimensions.middlePanel.x,
+                    y: Math.floor(rightPanelDimensions.middlePanel.inventory.y + grid.cellHeight * x),
+                    width: rightPanelDimensions.middlePanel.width,
                     height: 1
                 });
             };
@@ -52,18 +50,18 @@ function createInventoryArtist(screenDimensions, inventory, rightPanelDimensions
 
     function drawItems(ctx) {
         var topRightCurrentCell = {
-            x: middleSegmentDimensions.x,
-            y: middleSegmentDimensions.inventory.y
+            x: rightPanelDimensions.middlePanel.x,
+            y: rightPanelDimensions.middlePanel.inventory.y
         };
         _.forEach(inventory.allItems, function (item) {
             var image = _.find(images, {
                 name: item.name
             }).image;
             ctx.drawImage(image, topRightCurrentCell.x + grid.margin, topRightCurrentCell.y + grid.margin, grid.cellWidth - grid.margin - grid.margin, grid.cellHeight - grid.margin - grid.margin);
-            ctx.font = middleSegmentDimensions.items.fontSize + "px sans-serif";
-            ctx.fillText('x' + item.quantity, topRightCurrentCell.x + Math.floor(grid.cellWidth / 2), topRightCurrentCell.y + Math.floor(grid.cellHeight / 4 * 3))
+            ctx.font = rightPanelDimensions.middlePanel.items.fontSize + "px sans-serif";
+            ctx.fillText('x' + item.quantity, topRightCurrentCell.x + Math.floor(grid.cellWidth / 3), topRightCurrentCell.y + Math.floor(grid.cellHeight / 4 * 3))
             topRightCurrentCell.x += grid.cellWidth;
-            if (topRightCurrentCell.x >= grid.cellWidth * 4 + middleSegmentDimensions.x) {
+            if (topRightCurrentCell.x >= grid.cellWidth * 4 + rightPanelDimensions.middlePanel.x) {
                 topRightCurrentCell.x = 0;
                 topRightCurrentCell.y += grid.cellHeight;
             }
@@ -74,28 +72,28 @@ function createInventoryArtist(screenDimensions, inventory, rightPanelDimensions
         draw: function (ctx) {
             ctx.fillStyle = "rgb(255,255,255)";
             draw(ctx, {
-                x: middleSegmentDimensions.x,
-                y: middleSegmentDimensions.y,
-                width: middleSegmentDimensions.width,
+                x: rightPanelDimensions.middlePanel.x,
+                y: rightPanelDimensions.middlePanel.y,
+                width: rightPanelDimensions.middlePanel.width,
                 height: 10
             });
             ctx.fillStyle = "rgb(40,40,40)";
             draw(ctx, {
-                x: middleSegmentDimensions.x,
-                y: middleSegmentDimensions.inventory.y,
-                width: middleSegmentDimensions.width,
-                height: middleSegmentDimensions.height
+                x: rightPanelDimensions.middlePanel.x,
+                y: rightPanelDimensions.middlePanel.inventory.y,
+                width: rightPanelDimensions.middlePanel.width,
+                height: rightPanelDimensions.middlePanel.height
             });
             drawGrid(ctx);
             ctx.fillStyle = "rgb(255,255,255)";
             draw(ctx, {
-                x: middleSegmentDimensions.x,
-                y: middleSegmentDimensions.inventory.y - 5,
-                width: middleSegmentDimensions.width,
+                x: rightPanelDimensions.middlePanel.x,
+                y: rightPanelDimensions.middlePanel.inventory.y - 5,
+                width: rightPanelDimensions.middlePanel.width,
                 height: 5
             });
-            ctx.font = middleSegmentDimensions.fontSize + "px sans-serif";
-            ctx.fillText("Inventory", middleSegmentDimensions.title.x, middleSegmentDimensions.title.y);
+            ctx.font = rightPanelDimensions.middlePanel.fontSize + "px sans-serif";
+            ctx.fillText("Inventory", rightPanelDimensions.middlePanel.title.x, rightPanelDimensions.middlePanel.title.y);
             drawItems(ctx)
         }
     }
