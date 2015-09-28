@@ -158,3 +158,5 @@ function init() {
 }
 
 window.onload = init;
+
+window.onbeforeunload = outgoingEvents.disconnect

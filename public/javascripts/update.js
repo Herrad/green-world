@@ -57,6 +57,11 @@ function createUpdate(player, outgoingEvents, draw, controls, buildingInterface,
                 players.push(fullPlayer)
             });
         },
+        removePlayer: function (id) {
+            _.remove(players, {
+                id: id
+            });
+        },
         movePlayer: function (newLocation) {
             player.coordinateChange(newLocation);
         },

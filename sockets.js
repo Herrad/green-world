@@ -80,6 +80,8 @@ module.exports.listen = function (app, playerList) {
         });
 
         socket.on('disconnect', function () {
+            var player = playerList.findByConnection(socket.handshake.user);
+            io.sockets.emit('player-left', player);
             playerList.removeByConnection(socket.handshake.user);
         });
 

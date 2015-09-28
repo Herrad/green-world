@@ -16,6 +16,9 @@ function createOutgoingEvents(screenSize, chunkCache, buildingCache) {
         },
         sendBuildingUpdate: function (building) {
             socket.emit('new-building', building);
+        },
+        disconnect: function () {
+            socket.emit('disconnect');
         }
     }
 }

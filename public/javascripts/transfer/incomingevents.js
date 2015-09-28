@@ -29,8 +29,9 @@ function createIncomingEventHandler(buildingCache, chunkCache, eventLog) {
             socket.on('new-player', function (playerName) {
                 eventLog.info(playerName + " connected", 3000)
             });
-            socket.on('player-left', function (playerName) {
-                eventLog.info(playerName + " disconnected", 3000)
+            socket.on('player-left', function (player) {
+                eventLog.info(player.name + " disconnected", 3000);
+                update.removePlayer(player.id);
             });
         }
     }
