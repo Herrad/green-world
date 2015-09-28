@@ -1,4 +1,4 @@
-function createPlayer(name, inventory, id, coordinates, facing, inventory) {
+function createPlayer(name, inventory, id, coordinates, facing) {
     var imageToDraw;
     if (facing) {
         imageToDraw = new Image

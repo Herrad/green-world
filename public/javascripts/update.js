@@ -53,7 +53,7 @@ function createUpdate(player, outgoingEvents, draw, controls, buildingInterface,
                 if (player.id === newPlayer.id) {
                     return;
                 }
-                var fullPlayer = deserialisePlayer(newPlayer.name, newPlayer.inventory, newPlayer.id, newPlayer.coordinates, newPlayer.facing);
+                var fullPlayer = createPlayer(newPlayer.name, newPlayer.inventory, newPlayer.id, newPlayer.coordinates, newPlayer.facing);
                 players.push(fullPlayer)
             });
         },

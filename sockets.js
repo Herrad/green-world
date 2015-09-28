@@ -42,8 +42,7 @@ module.exports.listen = function (app, playerList) {
             }
             socket.emit('move', player.coordinates);
             playerList.add(player);
-            console.log(player);
-            socket.emit('new-player', player.name);
+            io.sockets.emit('new-player', player.name);
         });
 
         socket.on('location-update', function (player) {
