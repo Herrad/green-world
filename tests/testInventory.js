@@ -14,7 +14,7 @@ describe('test adding and removing items in the inventory', function () {
                     quantity: 10
                 });
 
-                expect(inventory.allItems).to.deep.equal([{
+                expect(inventory.getItems()).to.deep.equal([{
                     name: 'Joe',
                     quantity: 10
                 }]);
@@ -35,12 +35,56 @@ describe('test adding and removing items in the inventory', function () {
                     quantity: 10
                 });
 
-                expect(inventory.allItems).to.deep.equal([{
+                expect(inventory.getItems()).to.deep.equal([{
                     name: 'Joe',
                     quantity: 15
                 }]);
             });
-        });
 
+            it('should create a new stack with quantity of difference when total would be more than 64', function () {
+
+                var inventory = createInventory([{
+                    name: 'Joe',
+                    quantity: 63
+                }]);
+
+                inventory.add({
+                    name: 'Joe',
+                    quantity: 2
+                });
+
+                expect(inventory.getItems()).to.deep.equal([{
+                    name: 'Joe',
+                    quantity: 64
+                }, {
+                    name: 'Joe',
+                    quantity: 1
+                }]);
+            });
+
+            it('should create several new stacks with quantity of 64 each when new item is more than 64', function () {
+                console.log('askjfdk')
+                var inventory = createInventory([{
+                    name: 'Joe',
+                    quantity: 1
+                }]);
+
+                inventory.add({
+                    name: 'Joe',
+                    quantity: 128
+                });
+
+                expect(inventory.getItems()).to.deep.equal([{
+                    name: 'Joe',
+                    quantity: 64
+                }, {
+                    name: 'Joe',
+                    quantity: 64
+                }, {
+                    name: 'Joe',
+                    quantity: 1
+                }]);
+            });
+        });
     });
 });
