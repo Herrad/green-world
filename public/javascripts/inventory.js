@@ -35,9 +35,7 @@ function createInventory(items) {
     }
     return {
         add: function (incoming) {
-            var incomingItems = splitIncomingItemsIntoStacks(incoming);
-            _.forEach(incomingItems, addItemToStack);
-            items = _.sortByOrder(items, ['name', 'quantity'], ['asc', 'desc']);
+            _.forEach(splitIncomingItemsIntoStacks(incoming), addItemToStack);
 
         },
         remove: function (item) {},
