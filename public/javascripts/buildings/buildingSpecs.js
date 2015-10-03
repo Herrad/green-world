@@ -23,7 +23,14 @@ function createBuildingSpecs() {
             x2: 64,
             y1: 64,
             y2: 64
-        }
+        },
+        requirements: [{
+            name: 'stone',
+            quantity: 44
+        }, {
+            name: 'wood',
+            quantity: 106
+        }]
     };
     chapelSpec.impassables = [{
         x1: 0,
