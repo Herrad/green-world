@@ -37,8 +37,8 @@ function createInventory(items) {
     function hasEnough(item) {
         var grandTotal = 0;
         grandTotal = _.chain(items)
-            .where(function (itemInInventory) {
-                item.name === itemInInventory.name
+            .where({
+                name: item.name
             })
             .pluck('quantity')
             .reduce(function (total, quantity) {

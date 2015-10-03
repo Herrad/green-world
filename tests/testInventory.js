@@ -308,5 +308,27 @@ describe('test adding and removing items in the inventory', function () {
 
             expect(result).to.equal(false);
         });
+        it('should return false when requested amount is more than total but total number of items is higher than requested amount', function () {
+            var inventory = createInventory([{
+                name: 'Joe',
+                quantity: 64
+            }, {
+                name: 'Joe',
+                quantity: 64
+            }, {
+                name: 'Joe',
+                quantity: 64
+            }, {
+                name: 'Joes',
+                quantity: 64
+            }]);
+
+            var result = inventory.hasEnough({
+                name: 'Joe',
+                quantity: 256
+            });
+
+            expect(result).to.equal(false);
+        });
     });
 });
