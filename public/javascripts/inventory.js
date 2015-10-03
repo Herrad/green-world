@@ -6,7 +6,12 @@ function createInventory(items) {
             var existing = _.find(items, {
                 name: item.name
             })
-            existing.quantity += item.quantity;
+            if (existing) {
+                existing.quantity += item.quantity;
+            } else {
+                items.push(item)
+            }
+
             console.log('end add')
         },
         remove: function (item) {},
