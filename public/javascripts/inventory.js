@@ -38,8 +38,15 @@ function createInventory(items) {
             _.forEach(splitIncomingItemsIntoStacks(incoming), addItemToStack);
 
         },
-        remove: function (item) {},
-        hasEnough: function (itemName, amount) {},
+        remove: function (item) {
+            var existingItem = _.chain(items)
+                .find({
+                    'name': item.name
+                })
+                .value()
+
+            existingItem.quantity -= item.quantity;
+        },
         getItems: function () {
             items = _.sortByOrder(items, ['name', 'quantity'], ['asc', 'desc']);
             return items

@@ -63,7 +63,6 @@ describe('test adding and removing items in the inventory', function () {
             });
 
             it('should create several new stacks with quantity of 64 each when new item is more than 64', function () {
-                console.log('askjfdk')
                 var inventory = createInventory([{
                     name: 'Joe',
                     quantity: 1
@@ -86,5 +85,28 @@ describe('test adding and removing items in the inventory', function () {
                 }]);
             });
         });
+
+        describe('removing items', function () {
+            describe('removing item from stack', function () {
+
+                it('should reduce quantity from stack', function () {
+                    var inventory = createInventory([{
+                        name: 'Joe',
+                        quantity: 10
+                    }]);
+
+                    inventory.remove({
+                        name: 'Joe',
+                        quantity: 5
+                    });
+
+                    expect(inventory.getItems()).to.deep.equal([{
+                        name: 'Joe',
+                        quantity: 5
+                    }]);
+                });
+            });
+        });
+
     });
 });
