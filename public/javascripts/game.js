@@ -102,13 +102,13 @@ function init() {
     var map = createMap({
         x: Math.floor(gameScreenSize.realWidth / 9.6),
         y: Math.floor(gameScreenSize.realWidth / 9.6)
-    }, rightPanelDimensions);
+    }, rightPanelDimensions, controls);
 
     var inventoryArtist = createInventoryArtist(gameScreenSize, inventory, rightPanelDimensions);
 
     var middlePanelArtist = createMiddlePanelArtist(inventoryArtist, controls);
 
-    var draw = createDraw(gameScreenSize, player, map, collisionDetection, chunkCache, middlePanelArtist, rightPanelDimensions);
+    var draw = createDraw(gameScreenSize, player, map, chunkCache, middlePanelArtist, rightPanelDimensions);
 
     var incomingEvents = createIncomingEventHandler(buildingCache, chunkCache, eventLog);
 

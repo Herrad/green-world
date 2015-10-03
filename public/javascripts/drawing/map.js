@@ -1,4 +1,4 @@
-function createMap(playerOffset, rightPanelDimensions) {
+function createMap(playerOffset, rightPanelDimensions, controls) {
     var mapDimensions = rightPanelDimensions.map
 
     function drawMapChunk(ctx, chunk, playerCoordinates, screenCoordinates) {
@@ -61,17 +61,32 @@ function createMap(playerOffset, rightPanelDimensions) {
         }
     }
 
+    function drawMapControl(ctx, screenCoordinates) {
+        ctx.fillStyle = "rgb(255, 255, 255)"
+        ctx.fillRect(rightPanelDimensions.collapsedMap.x, rightPanelDimensions.collapsedMap.y, rightPanelDimensions.collapsedMap.width, 12);
+        ctx.font = rightPanelDimensions.collapsedMap.text.fontSize + "px sans-serif";
+        ctx.fillText("Press 'M' for the map", rightPanelDimensions.collapsedMap.text.x, rightPanelDimensions.collapsedMap.text.y);
+    }
+
+    function drawMap(ctx, chunks, playerCoordinates, screenCoordinates) {
+        ctx.fillStyle = "rgb(100, 100, 240)"
+        ctx.fillRect(mapDimensions.x, mapDimensions.y, mapDimensions.width, mapDimensions.height);
+
+        ctx.fillStyle = "rgb(255, 255, 255)"
+        ctx.fillRect(mapDimensions.x, mapDimensions.y - 12, mapDimensions.width, 12);
+
+        _.forEach(chunks, function (chunk) {
+            drawMapChunk(ctx, chunk, playerCoordinates, screenCoordinates);
+        });
+    }
+
     return {
         draw: function (ctx, chunks, playerCoordinates, screenCoordinates) {
-            ctx.fillStyle = "rgb(100, 100, 240)"
-            ctx.fillRect(mapDimensions.x, mapDimensions.y, mapDimensions.width, mapDimensions.height);
-
-            ctx.fillStyle = "rgb(255, 255, 255)"
-            ctx.fillRect(mapDimensions.x, mapDimensions.y - 12, mapDimensions.width, 12);
-
-            _.forEach(chunks, function (chunk) {
-                drawMapChunk(ctx, chunk, playerCoordinates, screenCoordinates);
-            });
+            if (controls.drawMap) {
+                drawMap(ctx, chunks, playerCoordinates, screenCoordinates)
+            } else {
+                drawMapControl(ctx, screenCoordinates)
+            }
         }
     }
 }

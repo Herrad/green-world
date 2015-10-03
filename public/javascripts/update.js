@@ -24,20 +24,16 @@ function createUpdate(player, outgoingEvents, draw, controls, buildingInterface,
         y: 0
     };
 
-    function setBlipLocation(blipCoordinates) {
-        buildAt = blipCoordinates;
-    }
-
     function runDraw(canvas, ctx) {
         draw.clearCanvas(canvas, ctx);
-        draw.drawChunks(ctx, screenCoordinates, mousePosition, setBlipLocation);
+        draw.drawChunks(ctx, screenCoordinates);
         buildingInterface.drawBuildings(ctx, screenCoordinates);
         if (controls.buildingMode) {
             buildingInterface.drawBlueprint(ctx, buildAt, screenCoordinates);
         }
         draw.drawPlayers(ctx, screenCoordinates, players)
         draw.drawRightPanel(ctx, controls)
-        draw.drawMap(ctx, player.coordinates, screenCoordinates, controls);
+        draw.drawMap(ctx, player.coordinates, screenCoordinates);
         warnings.draw(ctx);
     }
 

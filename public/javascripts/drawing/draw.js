@@ -1,8 +1,8 @@
-function createDraw(screenDimensions, player, map, collision, chunkCache, middlePanelArtist, rightPanelDimensions) {
+function createDraw(screenDimensions, player, map, chunkCache, middlePanelArtist, rightPanelDimensions) {
 
     var BLIP_SIZE = 0;
 
-    function drawChunk(ctx, chunk, offset, mouseLocation, setBuildLocation) {
+    function drawChunk(ctx, chunk, offset) {
         BLIP_SIZE = BLIP_SIZE || chunk.blipSize;
         for (var i = chunk.blips.length - 1; i >= 0; i--) {
             var blip = chunk.blips[i];
@@ -25,13 +25,6 @@ function createDraw(screenDimensions, player, map, collision, chunkCache, middle
             ctx.lineTo(blipBox.width, blipBox.height);
             ctx.lineTo(blipBox.x, blipBox.height);
             ctx.fill();
-
-            if (collision.pointingAt(mouseLocation, blipBox)) {
-                setBuildLocation({
-                    x: blip.x + chunk.coordinates.x,
-                    y: blip.y + chunk.coordinates.y
-                });
-            }
         }
 
     }
@@ -59,22 +52,15 @@ function createDraw(screenDimensions, player, map, collision, chunkCache, middle
 
     }
 
-    function drawMapControl(ctx, screenCoordinates) {
-        ctx.fillStyle = "rgb(255, 255, 255)"
-        ctx.fillRect(rightPanelDimensions.collapsedMap.x, rightPanelDimensions.collapsedMap.y, rightPanelDimensions.collapsedMap.width, 12);
-        ctx.font = rightPanelDimensions.collapsedMap.text.fontSize + "px sans-serif";
-        ctx.fillText("Press 'M' for the map", rightPanelDimensions.collapsedMap.text.x, rightPanelDimensions.collapsedMap.text.y);
-    }
-
     return {
         clearCanvas: function (canvas, ctx) {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = "rgb(100, 100, 240)"
             ctx.fillRect(0, 0, canvas.width, canvas.height);
         },
-        drawChunks: function (ctx, screenCoordinates, mouseLocation, setBlipLocation) {
+        drawChunks: function (ctx, screenCoordinates) {
             _.forEach(chunkCache.data, function (chunk) {
-                drawChunk(ctx, chunk, screenCoordinates, mouseLocation, setBlipLocation);
+                drawChunk(ctx, chunk, screenCoordinates);
             });
         },
         drawPlayers: function (ctx, screenCoordinates, players) {
@@ -86,12 +72,8 @@ function createDraw(screenDimensions, player, map, collision, chunkCache, middle
             drawRightPanelOutline(ctx);
             middlePanelArtist.draw(ctx, controls);
         },
-        drawMap: function (ctx, playerCoordinates, screenCoordinates, controls) {
-            if (controls.drawMap) {
-                map.draw(ctx, chunkCache.data, playerCoordinates, screenCoordinates);
-            } else {
-                drawMapControl(ctx, screenCoordinates)
-            }
+        drawMap: function (ctx, playerCoordinates, screenCoordinates) {
+            map.draw(ctx, chunkCache.data, playerCoordinates, screenCoordinates);
         }
     }
 }

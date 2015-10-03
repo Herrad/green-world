@@ -1,6 +1,7 @@
 function createBuildingInterface(buildingSpecs, collision, buildingFactory, player, buildingCache, eventLog) {
     var selectedBuilding = "chapel"
     var buildingCache = buildingCache;
+    var lastBlip = {}
 
     function drawBuildings(ctx, building, screenCoordinates) {
         var image = building.image;
@@ -34,10 +35,17 @@ function createBuildingInterface(buildingSpecs, collision, buildingFactory, play
             });
         },
         drawBlueprint: function (ctx, selectedBlip, screenCoordinates) {
-            if (!selectedBlip) return;
+            if (!selectedBlip) {
+                selectedBlip = lastBlip;
+                if (!lastBlip) {
+                    return;
+                }
+            }
+
             var selectedBuilding = player.selectedBuilding;
             var blueprint = buildingSpecs.findImages(selectedBuilding).blueprint;
             ctx.drawImage(blueprint, selectedBlip.x - screenCoordinates.x, selectedBlip.y - screenCoordinates.y);
+            lastBlip = selectedBlip;
         },
         buildFrom: function (buildingName, coordinates, players) {
             var spec = buildingSpecs.getBuilding(buildingName);
