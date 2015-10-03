@@ -45,7 +45,6 @@ function createInventory(items) {
                     'name': item.name
                 })
                 .value();
-            console.log(existingItem)
 
             existingItem.quantity -= item.quantity;
             if (existingItem.quantity === 0) {
