@@ -286,7 +286,7 @@ describe('test adding and removing items in the inventory', function () {
 
             expect(result).to.equal(true);
         });
-        it('should return false when requested amount is less than total', function () {
+        it('should return false when requested amount is more than total', function () {
             var inventory = createInventory([{
                 name: 'Joe',
                 quantity: 64
