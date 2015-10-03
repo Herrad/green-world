@@ -53,7 +53,7 @@ function createInventoryArtist(screenDimensions, inventory, rightPanelDimensions
             x: rightPanelDimensions.middlePanel.x,
             y: rightPanelDimensions.middlePanel.inventory.y
         };
-        _.forEach(inventory.allItems, function (item) {
+        _.forEach(inventory.getItems(), function (item) {
             var image = _.find(images, {
                 name: item.name
             }).image;

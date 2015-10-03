@@ -54,7 +54,19 @@ function createBuildingInterface(buildingSpecs, collision, buildingFactory, play
                 eventLog.warning("Too close to another building!", 2000)
                 return
             }
-            return buildingFactory.createBuilding(coordinates, spec);
+            var hasEnough = true;
+            _.forEach(spec.requirements, function (requirement) {
+                if (!hasEnough || !player.inventory.hasEnough(requirement)) {
+                    eventLog.warning("You need " + requirement.quantity + " " + requirement.name + " to build a " + spec.name, 2000)
+                    hasEnough = false
+                }
+            });
+            if (hasEnough) {
+                _.forEach(spec.requirements, function (requirement) {
+                    player.inventory.remove(requirement)
+                });
+                return buildingFactory.createBuilding(coordinates, spec);
+            }
         }
     }
 }

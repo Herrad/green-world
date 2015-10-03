@@ -30,6 +30,9 @@ function init() {
     }, {
         name: 'wood',
         quantity: 64
+    }, {
+        name: 'wood',
+        quantity: 64
     }]);
     var player = createPlayer($.cookie('character-name'), inventory);
     player.coordinateChange({
