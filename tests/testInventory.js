@@ -86,97 +86,136 @@ describe('test adding and removing items in the inventory', function () {
             });
         });
 
-        describe('removing items', function () {
-            describe('removing item from stack', function () {
+    });
 
-                it('should reduce quantity from stack', function () {
-                    var inventory = createInventory([{
-                        name: 'Joe',
-                        quantity: 10
-                    }]);
+    describe('removing items', function () {
+        describe('removing item from stack', function () {
 
-                    inventory.remove({
-                        name: 'Joe',
-                        quantity: 5
-                    });
+            it('should reduce quantity from stack', function () {
+                var inventory = createInventory([{
+                    name: 'Joe',
+                    quantity: 10
+                }]);
 
-                    expect(inventory.getItems()).to.deep.equal([{
-                        name: 'Joe',
-                        quantity: 5
-                    }]);
+                inventory.remove({
+                    name: 'Joe',
+                    quantity: 5
                 });
 
-                it('should reduce quantity from smallest stack', function () {
-                    var inventory = createInventory([{
-                        name: 'Joe',
-                        quantity: 64
-                    }, {
-                        name: 'Joe',
-                        quantity: 10
-                    }]);
-
-                    inventory.remove({
-                        name: 'Joe',
-                        quantity: 5
-                    });
-
-                    expect(inventory.getItems()).to.deep.equal([{
-                        name: 'Joe',
-                        quantity: 64
-                    }, {
-                        name: 'Joe',
-                        quantity: 5
-                    }]);
-                });
+                expect(inventory.getItems()).to.deep.equal([{
+                    name: 'Joe',
+                    quantity: 5
+                }]);
             });
 
-            describe('removing item spanning multiple stacks', function () {
+            it('should reduce quantity from smallest stack', function () {
+                var inventory = createInventory([{
+                    name: 'Joe',
+                    quantity: 64
+                }, {
+                    name: 'Joe',
+                    quantity: 10
+                }]);
 
-                it('should remove stacks of zero quantity', function () {
-                    var inventory = createInventory([{
-                        name: 'Joe',
-                        quantity: 64
-                    }, {
-                        name: 'Joe',
-                        quantity: 10
-                    }]);
-
-                    inventory.remove({
-                        name: 'Joe',
-                        quantity: 10
-                    });
-
-                    expect(inventory.getItems()).to.deep.equal([{
-                        name: 'Joe',
-                        quantity: 64
-                    }]);
+                inventory.remove({
+                    name: 'Joe',
+                    quantity: 5
                 });
-                it('should not remove duplicate stacks', function () {
-                    var inventory = createInventory([{
-                        name: 'Joe',
-                        quantity: 64
-                    }, {
-                        name: 'Joe',
-                        quantity: 10
-                    }, {
-                        name: 'Joe',
-                        quantity: 10
-                    }]);
 
-                    inventory.remove({
-                        name: 'Joe',
-                        quantity: 10
-                    });
+                expect(inventory.getItems()).to.deep.equal([{
+                    name: 'Joe',
+                    quantity: 64
+                }, {
+                    name: 'Joe',
+                    quantity: 5
+                }]);
+            });
+        });
 
-                    expect(inventory.getItems()).to.deep.equal([{
-                        name: 'Joe',
-                        quantity: 64
-                    }, {
-                        name: 'Joe',
-                        quantity: 10
-                    }]);
+        describe('removing item spanning multiple stacks', function () {
+
+            it('should remove stacks of zero quantity', function () {
+                var inventory = createInventory([{
+                    name: 'Joe',
+                    quantity: 64
+                }, {
+                    name: 'Joe',
+                    quantity: 10
+                }]);
+
+                inventory.remove({
+                    name: 'Joe',
+                    quantity: 10
                 });
-            })
+
+                expect(inventory.getItems()).to.deep.equal([{
+                    name: 'Joe',
+                    quantity: 64
+                }]);
+            });
+            it('should not remove duplicate stacks', function () {
+                var inventory = createInventory([{
+                    name: 'Joe',
+                    quantity: 64
+                }, {
+                    name: 'Joe',
+                    quantity: 10
+                }, {
+                    name: 'Joe',
+                    quantity: 10
+                }]);
+
+                inventory.remove({
+                    name: 'Joe',
+                    quantity: 10
+                });
+
+                expect(inventory.getItems()).to.deep.equal([{
+                    name: 'Joe',
+                    quantity: 64
+                }, {
+                    name: 'Joe',
+                    quantity: 10
+                }]);
+            });
+            it('should reduce quantity of other stack if quantity removed is greater than initial stack', function () {
+                var inventory = createInventory([{
+                    name: 'Joe',
+                    quantity: 64
+                }, {
+                    name: 'Joe',
+                    quantity: 10
+                }]);
+
+                inventory.remove({
+                    name: 'Joe',
+                    quantity: 14
+                });
+
+                expect(inventory.getItems()).to.deep.equal([{
+                    name: 'Joe',
+                    quantity: 60
+                }]);
+            });
+        });
+
+        describe('removing item spanning multiple stacks', function () {
+            it('should not change the items if trying to remove more than is present', function () {
+                var inventory = createInventory([{
+                    name: 'Joe',
+                    quantity: 64
+                }]);
+
+                inventory.remove({
+                    name: 'Joe',
+                    quantity: 80
+                });
+
+                expect(inventory.getItems()).to.deep.equal([{
+                    name: 'Joe',
+                    quantity: 64
+                }]);
+            });
         });
 
     });

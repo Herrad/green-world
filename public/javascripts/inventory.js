@@ -33,23 +33,46 @@ function createInventory(items) {
         incomingItems.push(incoming);
         return incomingItems;
     }
+
+    function hasEnough(item) {
+        var grandTotal = 0;
+        grandTotal = _.chain(items)
+            .where(function (itemInInventory) {
+                item.name === itemInInventory.name
+            })
+            .pluck('quantity')
+            .reduce(function (total, quantity) {
+                return total + quantity;
+            })
+            .value();
+        return grandTotal >= item.quantity;
+    }
     return {
         add: function (incoming) {
             _.forEach(splitIncomingItemsIntoStacks(incoming), addItemToStack);
 
         },
         remove: function (item) {
-            var existingItem = _.chain(items)
-                .sortByOrder(['quantity'], ['asc'])
-                .find({
-                    'name': item.name
-                })
-                .value();
-
-            existingItem.quantity -= item.quantity;
-            if (existingItem.quantity === 0) {
-                _.remove(items, existingItem)
+            if (!hasEnough(item)) return;
+            while (item.quantity > 0) {
+                var lowestStackOfItem = _.chain(items)
+                    .sortByOrder(['quantity'], ['asc'])
+                    .find({
+                        'name': item.name
+                    })
+                    .value();
+                if (lowestStackOfItem.quantity >= item.quantity) {
+                    lowestStackOfItem.quantity -= item.quantity;
+                    item.quantity = 0;
+                } else {
+                    item.quantity -= lowestStackOfItem.quantity;
+                    lowestStackOfItem.quantity = 0;
+                }
+                if (lowestStackOfItem.quantity === 0) {
+                    _.remove(items, lowestStackOfItem)
+                }
             }
+
         },
         getItems: function () {
             items = _.sortByOrder(items, ['name', 'quantity'], ['asc', 'desc']);
