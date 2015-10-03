@@ -129,6 +129,29 @@ describe('test adding and removing items in the inventory', function () {
                     }]);
                 });
             });
+
+            describe('removing item spanning multiple stacks', function () {
+
+                it('should remove stacks of zero quantity', function () {
+                    var inventory = createInventory([{
+                        name: 'Joe',
+                        quantity: 64
+                    }, {
+                        name: 'Joe',
+                        quantity: 10
+                    }]);
+
+                    inventory.remove({
+                        name: 'Joe',
+                        quantity: 10
+                    });
+
+                    expect(inventory.getItems()).to.deep.equal([{
+                        name: 'Joe',
+                        quantity: 64
+                    }]);
+                });
+            })
         });
 
     });

@@ -48,6 +48,9 @@ function createInventory(items) {
             console.log(existingItem)
 
             existingItem.quantity -= item.quantity;
+            if (existingItem.quantity === 0) {
+                _.remove(items, existingItem)
+            }
         },
         getItems: function () {
             items = _.sortByOrder(items, ['name', 'quantity'], ['asc', 'desc']);
