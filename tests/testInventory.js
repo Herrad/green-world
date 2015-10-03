@@ -41,6 +41,30 @@ describe('test adding and removing items in the inventory', function () {
                 }]);
             });
 
+            it('should only modify the stack with the same name', function () {
+
+                var inventory = createInventory([{
+                    name: 'Joe',
+                    quantity: 5
+                }, {
+                    name: 'asd',
+                    quantity: 5
+                }]);
+
+                inventory.add({
+                    name: 'Joe',
+                    quantity: 10
+                });
+
+                expect(inventory.getItems()).to.deep.equal([{
+                    name: 'Joe',
+                    quantity: 15
+                }, {
+                    name: 'asd',
+                    quantity: 5
+                }]);
+            });
+
             it('should create a new stack with quantity of difference when total would be more than 64', function () {
 
                 var inventory = createInventory([{
@@ -128,6 +152,35 @@ describe('test adding and removing items in the inventory', function () {
                 }, {
                     name: 'Joe',
                     quantity: 5
+                }]);
+            });
+
+            it('should only modify stacks of same name', function () {
+                var inventory = createInventory([{
+                    name: 'Joe',
+                    quantity: 64
+                }, {
+                    name: 'Joe',
+                    quantity: 10
+                }, {
+                    name: 'ssdsdasd',
+                    quantity: 10
+                }]);
+
+                inventory.remove({
+                    name: 'Joe',
+                    quantity: 5
+                });
+
+                expect(inventory.getItems()).to.deep.equal([{
+                    name: 'Joe',
+                    quantity: 64
+                }, {
+                    name: 'Joe',
+                    quantity: 5
+                }, {
+                    name: 'ssdsdasd',
+                    quantity: 10
                 }]);
             });
         });
