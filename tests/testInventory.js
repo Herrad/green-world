@@ -272,4 +272,41 @@ describe('test adding and removing items in the inventory', function () {
         });
 
     });
+    describe('checking whether inventory has enough items', function () {
+        it('should return true when requested amount is less than total', function () {
+            var inventory = createInventory([{
+                name: 'Joe',
+                quantity: 64
+            }]);
+
+            var result = inventory.hasEnough({
+                name: 'Joe',
+                quantity: 63
+            });
+
+            expect(result).to.equal(true);
+        });
+        it('should return false when requested amount is less than total', function () {
+            var inventory = createInventory([{
+                name: 'Joe',
+                quantity: 64
+            }, {
+                name: 'Joe',
+                quantity: 64
+            }, {
+                name: 'Joe',
+                quantity: 64
+            }, {
+                name: 'Joe',
+                quantity: 64
+            }]);
+
+            var result = inventory.hasEnough({
+                name: 'Joe',
+                quantity: 512
+            });
+
+            expect(result).to.equal(false);
+        });
+    });
 });

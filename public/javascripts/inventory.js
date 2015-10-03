@@ -74,6 +74,7 @@ function createInventory(items) {
             }
 
         },
+        hasEnough: hasEnough,
         getItems: function () {
             items = _.sortByOrder(items, ['name', 'quantity'], ['asc', 'desc']);
             return items
