@@ -1,4 +1,4 @@
-function createDraw(screenDimensions, player, map, collision, chunkCache, inventoryArtist, rightPanelDimensions) {
+function createDraw(screenDimensions, player, map, collision, chunkCache, middlePanelArtist, rightPanelDimensions) {
 
     var BLIP_SIZE = 0;
 
@@ -46,7 +46,7 @@ function createDraw(screenDimensions, player, map, collision, chunkCache, invent
         ctx.fillText(genericPlayer.name, xToDrawText, yToDraw - 20);
     }
 
-    function drawOutline(ctx) {
+    function drawRightPanelOutline(ctx) {
         ctx.fillStyle = "rgb(255,255,255)";
         draw(ctx, rightPanelDimensions.external);
         ctx.fillStyle = "rgb(0,0,0)";
@@ -83,9 +83,8 @@ function createDraw(screenDimensions, player, map, collision, chunkCache, invent
             });
         },
         drawRightPanel: function (ctx, controls) {
-            drawOutline(ctx);
-            if (!controls.buildingMode)
-                inventoryArtist.draw(ctx);
+            drawRightPanelOutline(ctx);
+            middlePanelArtist.draw(ctx, controls);
         },
         drawMap: function (ctx, playerCoordinates, screenCoordinates, controls) {
             if (controls.drawMap) {
