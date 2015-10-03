@@ -155,6 +155,28 @@ describe('test adding and removing items in the inventory', function () {
                 }]);
             });
 
+            it('should not modify argument', function () {
+                var inventory = createInventory([{
+                    name: 'Joe',
+                    quantity: 64
+                }, {
+                    name: 'Joe',
+                    quantity: 10
+                }]);
+
+                var passedIn = {
+                    name: 'Joe',
+                    quantity: 5
+                }
+
+                inventory.remove(passedIn);
+
+                expect(passedIn).to.deep.equal({
+                    name: 'Joe',
+                    quantity: 5
+                });
+            });
+
             it('should only modify stacks of same name', function () {
                 var inventory = createInventory([{
                     name: 'Joe',

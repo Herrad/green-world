@@ -54,18 +54,19 @@ function createInventory(items) {
         },
         remove: function (item) {
             if (!hasEnough(item)) return;
-            while (item.quantity > 0) {
+            var itemQuantity = item.quantity
+            while (itemQuantity > 0) {
                 var lowestStackOfItem = _.chain(items)
                     .sortByOrder(['quantity'], ['asc'])
                     .find({
                         'name': item.name
                     })
                     .value();
-                if (lowestStackOfItem.quantity >= item.quantity) {
-                    lowestStackOfItem.quantity -= item.quantity;
-                    item.quantity = 0;
+                if (lowestStackOfItem.quantity >= itemQuantity) {
+                    lowestStackOfItem.quantity -= itemQuantity;
+                    itemQuantity = 0;
                 } else {
-                    item.quantity -= lowestStackOfItem.quantity;
+                    itemQuantity -= lowestStackOfItem.quantity;
                     lowestStackOfItem.quantity = 0;
                 }
                 if (lowestStackOfItem.quantity === 0) {
