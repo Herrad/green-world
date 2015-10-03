@@ -105,6 +105,29 @@ describe('test adding and removing items in the inventory', function () {
                         quantity: 5
                     }]);
                 });
+
+                it('should reduce quantity from smallest stack', function () {
+                    var inventory = createInventory([{
+                        name: 'Joe',
+                        quantity: 64
+                    }, {
+                        name: 'Joe',
+                        quantity: 10
+                    }]);
+
+                    inventory.remove({
+                        name: 'Joe',
+                        quantity: 5
+                    });
+
+                    expect(inventory.getItems()).to.deep.equal([{
+                        name: 'Joe',
+                        quantity: 64
+                    }, {
+                        name: 'Joe',
+                        quantity: 5
+                    }]);
+                });
             });
         });
 

@@ -40,10 +40,12 @@ function createInventory(items) {
         },
         remove: function (item) {
             var existingItem = _.chain(items)
+                .sortByOrder(['quantity'], ['asc'])
                 .find({
                     'name': item.name
                 })
-                .value()
+                .value();
+            console.log(existingItem)
 
             existingItem.quantity -= item.quantity;
         },
