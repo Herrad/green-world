@@ -31,7 +31,7 @@ function createChunkInterpreter(chunkCache, collisionDetection) {
         return coordinates;
     }
     return {
-        getBlipClicked: function (clickLocationInWorld) {
+        getBlipAt: function (clickLocationInWorld) {
             return findBlipCoordinatesOfClick(clickLocationInWorld)
         }
     }

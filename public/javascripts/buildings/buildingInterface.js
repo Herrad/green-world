@@ -34,6 +34,7 @@ function createBuildingInterface(buildingSpecs, collision, buildingFactory, play
             });
         },
         drawBlueprint: function (ctx, selectedBlip, screenCoordinates) {
+            if (!selectedBlip) return;
             var selectedBuilding = player.selectedBuilding;
             var blueprint = buildingSpecs.findImages(selectedBuilding).blueprint;
             ctx.drawImage(blueprint, selectedBlip.x - screenCoordinates.x, selectedBlip.y - screenCoordinates.y);

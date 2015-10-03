@@ -66,14 +66,18 @@ function createUpdate(player, outgoingEvents, draw, controls, buildingInterface,
             player.coordinateChange(newLocation);
         },
         setMouseLocation: function (newPosition) {
-            mousePosition = newPosition
+            var worldClickLocation = {
+                x: newPosition.x + screenCoordinates.x,
+                y: newPosition.y + screenCoordinates.y
+            }
+            buildAt = chunkInterpreter.getBlipAt(worldClickLocation);
         },
         tryToBuildAt: function (clickLocation) {
             var worldClickLocation = {
                 x: clickLocation.x + screenCoordinates.x,
                 y: clickLocation.y + screenCoordinates.y
             };
-            var blipCoordinates = chunkInterpreter.getBlipClicked(worldClickLocation);
+            var blipCoordinates = chunkInterpreter.getBlipAt(worldClickLocation);
             var building = buildingInterface.buildFrom('chapel', blipCoordinates, players)
             if (building) {
                 outgoingEvents.sendBuildingUpdate(building);
