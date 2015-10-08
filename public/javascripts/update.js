@@ -24,7 +24,10 @@ function createUpdate(player, outgoingEvents, draw, controls, buildingInterface,
         y: 0
     };
 
-    function runDraw(canvas, ctx) {
+    function runDraw(canvas, ctx, elapsedTime) {
+        var debugInfo = {
+            fps: Math.round(100000/elapsedTime)/100
+        };
         draw.clearCanvas(canvas, ctx);
         draw.drawChunks(ctx, screenCoordinates);
         buildingInterface.drawBuildings(ctx, screenCoordinates);
@@ -32,14 +35,14 @@ function createUpdate(player, outgoingEvents, draw, controls, buildingInterface,
             buildingInterface.drawBlueprint(ctx, buildAt, screenCoordinates);
         }
         draw.drawPlayers(ctx, screenCoordinates, players)
-        draw.drawRightPanel(ctx, controls)
+        draw.drawRightPanel(ctx, controls, debugInfo)
         draw.drawMap(ctx, player.coordinates, screenCoordinates);
         warnings.draw(ctx);
     }
 
     return {
-        mainLoop: function (canvas, ctx, seed) {
-            runDraw(canvas, ctx);
+        mainLoop: function (canvas, ctx, seed, elapsedTime) {
+            runDraw(canvas, ctx, elapsedTime);
             controls.controlIteration(players, screenCoordinates, moveScreenTo);
 
         },
