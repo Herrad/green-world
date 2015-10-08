@@ -3,7 +3,7 @@ function createChunkInterpreter(chunkCache, collisionDetection) {
     function findBlipCoordinatesOfClick(clickLocationInWorld) {
 
         var coordinates;
-        _.forEach(chunkCache.data, function (chunk) {
+        _.forEach(chunkCache.getData(), function (chunk) {
             var chunkRectangle = {
                 x: chunk.coordinates.x,
                 y: chunk.coordinates.y,
@@ -33,6 +33,9 @@ function createChunkInterpreter(chunkCache, collisionDetection) {
     return {
         getBlipAt: function (clickLocationInWorld) {
             return findBlipCoordinatesOfClick(clickLocationInWorld)
+        },
+        evict: function (location) {
+                chunkCache.evict(location)
         }
     }
 }

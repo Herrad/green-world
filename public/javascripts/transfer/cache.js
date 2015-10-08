@@ -4,9 +4,6 @@ function createCache(deserialise) {
 
     function acceptHashable(newHashable, oldHashable) {
         if (!newHashable) return;
-        if (oldHashable.length + newHashable.length > 100) {
-            oldHashable = _.takeRight(oldHashable, 100);
-        }
         for (var i = newHashable.length - 1; i >= 0; i--) {
             _.remove(oldHashable, {
                 hash: newHashable[i].hash
@@ -37,7 +34,18 @@ function createCache(deserialise) {
             this.data = acceptHashable(hashable, data);
             this.hash = buildHash(hashable);
         },
-        hash: hash,
-        data: data
+        evict: function (location) {
+            if (data && data.length < 50) return;
+            data = _.filter(data, function (hashable) {
+                return hashable.coordinates.x < location.x + 10000 &&
+                    hashable.coordinates.x > location.x - 10000 &&
+                    hashable.coordinates.y < location.y + 10000 &&
+                    hashable.coordinates.y > location.y - 10000;
+            });
+        },
+        getData: function () {
+            return data;
+        },
+        hash: hash
     }
 }

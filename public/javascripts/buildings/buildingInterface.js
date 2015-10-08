@@ -30,7 +30,7 @@ function createBuildingInterface(buildingSpecs, collision, buildingFactory, play
 
     return {
         drawBuildings: function (ctx, screenCoordinates) {
-            _.forEach(buildingCache.data, function (building) {
+            _.forEach(buildingCache.getData(), function (building) {
                 drawBuildings(ctx, building, screenCoordinates, player);
             });
         },
@@ -59,7 +59,7 @@ function createBuildingInterface(buildingSpecs, collision, buildingFactory, play
             if (collidesWithAnyRectangles(rectangle1, players)) {
                 eventLog.warning("Cannot place over players!", 2000)
                 return;
-            } else if (collidesWithAnyRectangles(rectangle1, _.pluck(buildingCache.data, 'border'))) {
+            } else if (collidesWithAnyRectangles(rectangle1, _.pluck(buildingCache.getData(), 'border'))) {
                 eventLog.warning("Too close to another building!", 2000)
                 return
             }

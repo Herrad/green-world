@@ -26,7 +26,7 @@ function createUpdate(player, outgoingEvents, draw, controls, buildingInterface,
 
     function runDraw(canvas, ctx, elapsedTime) {
         var debugInfo = {
-            fps: Math.round(100000/elapsedTime)/100
+            fps: Math.round(100000 / elapsedTime) / 100
         };
         draw.clearCanvas(canvas, ctx);
         draw.drawChunks(ctx, screenCoordinates);
@@ -44,7 +44,7 @@ function createUpdate(player, outgoingEvents, draw, controls, buildingInterface,
         mainLoop: function (canvas, ctx, seed, elapsedTime) {
             runDraw(canvas, ctx, elapsedTime);
             controls.controlIteration(players, screenCoordinates, moveScreenTo);
-
+            chunkInterpreter.evict(player.coordinates);
         },
         playerList: function (newList) {
             players = [player];

@@ -13,7 +13,7 @@ function createControls(player, collisionDetection, screenDimensions, buildingCa
             x2: playerCoordinates.x + 64,
             y2: playerCoordinates.y + 64
         }
-        _.forEach(buildingCache.data, function (building) {
+        _.forEach(buildingCache.getData(), function (building) {
             _.forEach(building.impassables, function (impassable) {
                 if (collisionDetected) return;
                 var rectangle2 = translateBy(impassable, building.coordinates)

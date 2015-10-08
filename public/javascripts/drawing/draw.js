@@ -59,7 +59,7 @@ function createDraw(screenDimensions, player, map, chunkCache, middlePanelArtist
             ctx.fillRect(0, 0, canvas.width, canvas.height);
         },
         drawChunks: function (ctx, screenCoordinates) {
-            _.forEach(chunkCache.data, function (chunk) {
+            _.forEach(chunkCache.getData(), function (chunk) {
                 drawChunk(ctx, chunk, screenCoordinates);
             });
         },
@@ -73,7 +73,7 @@ function createDraw(screenDimensions, player, map, chunkCache, middlePanelArtist
             middlePanelArtist.draw(ctx, controls);
         },
         drawMap: function (ctx, playerCoordinates, screenCoordinates) {
-            map.draw(ctx, chunkCache.data, playerCoordinates, screenCoordinates);
+            map.draw(ctx, chunkCache.getData(), playerCoordinates, screenCoordinates);
         }
     }
 }
