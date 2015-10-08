@@ -39,7 +39,7 @@ function createDraw(screenDimensions, player, map, chunkCache, middlePanelArtist
         ctx.fillText(genericPlayer.name, xToDrawText, yToDraw - 20);
     }
 
-    function drawRightPanelOutline(ctx) {
+    function drawRightPanelOutline(ctx, debugInfo) {
         ctx.fillStyle = "rgb(255,255,255)";
         draw(ctx, rightPanelDimensions.external);
         ctx.fillStyle = "rgb(0,0,0)";
@@ -48,7 +48,7 @@ function createDraw(screenDimensions, player, map, chunkCache, middlePanelArtist
         ctx.fillStyle = "rgb(255,255,255)";
         ctx.font = rightPanelDimensions.info.fontSize + "px sans-serif";
         ctx.fillText(player.name, rightPanelDimensions.textX, rightPanelDimensions.info.nameY);
-        ctx.fillText("[x:" + player.coordinates.x + ",y:" + player.coordinates.y + "]", rightPanelDimensions.textX, rightPanelDimensions.info.coordinatesY);
+        ctx.fillText("[x:" + player.coordinates.x + ",y:" + player.coordinates.y + "]" + ' fps: ' + debugInfo.fps, rightPanelDimensions.textX, rightPanelDimensions.info.coordinatesY);
 
     }
 
@@ -68,8 +68,8 @@ function createDraw(screenDimensions, player, map, chunkCache, middlePanelArtist
                 drawPlayer(ctx, genericPlayer, screenCoordinates);
             });
         },
-        drawRightPanel: function (ctx, controls) {
-            drawRightPanelOutline(ctx);
+        drawRightPanel: function (ctx, controls, debugInfo) {
+            drawRightPanelOutline(ctx, debugInfo);
             middlePanelArtist.draw(ctx, controls);
         },
         drawMap: function (ctx, playerCoordinates, screenCoordinates) {

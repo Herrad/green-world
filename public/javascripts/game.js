@@ -154,10 +154,15 @@ function init() {
         }
     });
 
-    setInterval(function () {
+
+    function doFrame (previousTime, timeNow) {
+        requestAnimationFrame(doFrame.bind(null,timeNow));
+        var elapsedTime = timeNow - previousTime;
         if (!gameSeed) return;
-        update.mainLoop(canvas, ctx, gameSeed)
-    }, 1000 / 30);
+
+        update.mainLoop(canvas, ctx, gameSeed, elapsedTime);
+    }
+    doFrame();
     console.log('initialised');
     eventLog.info("Welcome to Green World!", 3000);
     window.onbeforeunload = outgoingEvents.disconnect;
