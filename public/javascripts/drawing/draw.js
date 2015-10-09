@@ -70,28 +70,30 @@ function createDraw(canvas, screenDimensions, map, chunkCache, middlePanelArtist
                 drawPlayer(genericPlayer, screenCoordinates);
             });
         },
-        drawRightPanel: function (game) {
+        drawRightPanel: function (game, screenCoordinates) {
             drawRightPanelOutline(game);
             middlePanelArtist.draw(ctx, game.controls);
+            this.drawMap(game.players[0].coordinates, screenCoordinates);
         },
         drawMap: function (playerCoordinates, screenCoordinates) {
             map.draw(ctx, chunkCache.getData(), playerCoordinates, screenCoordinates);
         },
-        drawAll: function(screenCoordinates, buildingInterface, warnings, game){
-          this.clearCanvas();
-          this.drawChunks(screenCoordinates);
+        drawWorld: function (game, screenCoordinates, buildingInterface) {
+            this.drawChunks(screenCoordinates);
 
-          buildingInterface.drawBuildings(ctx, screenCoordinates);
-          if (game.controls.buildingMode) {
-              console.log('buildAt:',buildingInterface.buildAt);
-              buildingInterface.drawBlueprint(ctx, buildingInterface.buildAt, screenCoordinates);
-          }
+            buildingInterface.drawBuildings(ctx, screenCoordinates);
+            if (game.controls.buildingMode) {
+                console.log('buildAt:', buildingInterface.buildAt);
+                buildingInterface.drawBlueprint(ctx, buildingInterface.buildAt, screenCoordinates);
+            }
 
-          this.drawPlayers(screenCoordinates, game.players)
-          this.drawRightPanel(game);
-          this.drawMap(game.players[0].coordinates, screenCoordinates);
-
-          warnings.draw(ctx);
+            this.drawPlayers(screenCoordinates, game.players)
+        },
+        drawAll: function (screenCoordinates, buildingInterface, warnings, game) {
+            this.clearCanvas();
+            this.drawWorld(game, screenCoordinates, buildingInterface);
+            this.drawRightPanel(game, screenCoordinates);
+            warnings.draw(ctx);
         }
     }
 }
