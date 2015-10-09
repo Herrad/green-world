@@ -1,8 +1,8 @@
-function createDraw(screenDimensions, player, map, chunkCache, middlePanelArtist, rightPanelDimensions) {
-
+function createDraw(canvas, screenDimensions, map, chunkCache, middlePanelArtist, rightPanelArtist, rightPanelDimensions) {
+    var ctx = canvas.getContext('2d');
     var BLIP_SIZE = 0;
 
-    function drawChunk(ctx, chunk, offset) {
+    function drawChunk(chunk, offset) {
         BLIP_SIZE = BLIP_SIZE || chunk.blipSize;
         for (var i = chunk.blips.length - 1; i >= 0; i--) {
             var blip = chunk.blips[i];
@@ -29,7 +29,7 @@ function createDraw(screenDimensions, player, map, chunkCache, middlePanelArtist
 
     }
 
-    function drawPlayer(ctx, genericPlayer, screenCoordinates) {
+    function drawPlayer(genericPlayer, screenCoordinates) {
         var xToDraw = genericPlayer.coordinates.x - screenCoordinates.x;
         var yToDraw = genericPlayer.coordinates.y - screenCoordinates.y;
         ctx.drawImage(genericPlayer.imageToDraw, xToDraw, yToDraw);
@@ -39,41 +39,43 @@ function createDraw(screenDimensions, player, map, chunkCache, middlePanelArtist
         ctx.fillText(genericPlayer.name, xToDrawText, yToDraw - 20);
     }
 
-    function drawRightPanelOutline(ctx, debugInfo) {
-        ctx.fillStyle = "rgb(255,255,255)";
-        draw(ctx, rightPanelDimensions.external);
-        ctx.fillStyle = "rgb(0,0,0)";
-        draw(ctx, rightPanelDimensions.internal);
 
-        ctx.fillStyle = "rgb(255,255,255)";
-        ctx.font = rightPanelDimensions.info.fontSize + "px sans-serif";
-        ctx.fillText(player.name, rightPanelDimensions.textX, rightPanelDimensions.info.nameY);
-        ctx.fillText("[x:" + player.coordinates.x + ",y:" + player.coordinates.y + "]" + ' fps: ' + debugInfo.fps, rightPanelDimensions.textX, rightPanelDimensions.info.coordinatesY);
+    function drawChunks(screenCoordinates) {
+        _.forEach(chunkCache.getData(), function (chunk) {
+            drawChunk(chunk, screenCoordinates);
+        });
+    }
 
+    function clearCanvas() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "rgb(100, 100, 240)"
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function drawWorld(game, screenCoordinates, buildingInterface) {
+        drawChunks(screenCoordinates);
+
+        buildingInterface.drawBuildings(ctx, screenCoordinates);
+        if (game.controls.buildingMode) {
+            console.log('buildAt:', buildingInterface.buildAt);
+            buildingInterface.drawBlueprint(ctx, buildingInterface.buildAt, screenCoordinates);
+        }
+
+        drawPlayers(screenCoordinates, game.players)
+    }
+
+    function drawPlayers(screenCoordinates, players) {
+        _.forEach(players, function (genericPlayer) {
+            drawPlayer(genericPlayer, screenCoordinates);
+        });
     }
 
     return {
-        clearCanvas: function (canvas, ctx) {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "rgb(100, 100, 240)"
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-        },
-        drawChunks: function (ctx, screenCoordinates) {
-            _.forEach(chunkCache.getData(), function (chunk) {
-                drawChunk(ctx, chunk, screenCoordinates);
-            });
-        },
-        drawPlayers: function (ctx, screenCoordinates, players) {
-            _.forEach(players, function (genericPlayer) {
-                drawPlayer(ctx, genericPlayer, screenCoordinates);
-            });
-        },
-        drawRightPanel: function (ctx, controls, debugInfo) {
-            drawRightPanelOutline(ctx, debugInfo);
-            middlePanelArtist.draw(ctx, controls);
-        },
-        drawMap: function (ctx, playerCoordinates, screenCoordinates) {
-            map.draw(ctx, chunkCache.getData(), playerCoordinates, screenCoordinates);
+        drawAll: function (screenCoordinates, buildingInterface, warnings, game) {
+            clearCanvas();
+            drawWorld(game, screenCoordinates, buildingInterface);
+            rightPanelArtist.draw(game, screenCoordinates);
+            warnings.draw(ctx);
         }
     }
 }
