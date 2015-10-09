@@ -1,8 +1,8 @@
-function createDraw(screenDimensions, player, map, chunkCache, middlePanelArtist, rightPanelDimensions) {
-
+function createDraw(canvas, screenDimensions, player, map, chunkCache, middlePanelArtist, rightPanelDimensions) {
+    var ctx = canvas.getContext('2d');
     var BLIP_SIZE = 0;
 
-    function drawChunk(ctx, chunk, offset) {
+    function drawChunk(chunk, offset) {
         BLIP_SIZE = BLIP_SIZE || chunk.blipSize;
         for (var i = chunk.blips.length - 1; i >= 0; i--) {
             var blip = chunk.blips[i];
@@ -29,7 +29,7 @@ function createDraw(screenDimensions, player, map, chunkCache, middlePanelArtist
 
     }
 
-    function drawPlayer(ctx, genericPlayer, screenCoordinates) {
+    function drawPlayer(genericPlayer, screenCoordinates) {
         var xToDraw = genericPlayer.coordinates.x - screenCoordinates.x;
         var yToDraw = genericPlayer.coordinates.y - screenCoordinates.y;
         ctx.drawImage(genericPlayer.imageToDraw, xToDraw, yToDraw);
@@ -39,7 +39,7 @@ function createDraw(screenDimensions, player, map, chunkCache, middlePanelArtist
         ctx.fillText(genericPlayer.name, xToDrawText, yToDraw - 20);
     }
 
-    function drawRightPanelOutline(ctx, debugInfo) {
+    function drawRightPanelOutline(debugInfo) {
         ctx.fillStyle = "rgb(255,255,255)";
         draw(ctx, rightPanelDimensions.external);
         ctx.fillStyle = "rgb(0,0,0)";
@@ -53,26 +53,26 @@ function createDraw(screenDimensions, player, map, chunkCache, middlePanelArtist
     }
 
     return {
-        clearCanvas: function (canvas, ctx) {
+        clearCanvas: function () {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = "rgb(100, 100, 240)"
             ctx.fillRect(0, 0, canvas.width, canvas.height);
         },
-        drawChunks: function (ctx, screenCoordinates) {
+        drawChunks: function (screenCoordinates) {
             _.forEach(chunkCache.getData(), function (chunk) {
-                drawChunk(ctx, chunk, screenCoordinates);
+                drawChunk(chunk, screenCoordinates);
             });
         },
-        drawPlayers: function (ctx, screenCoordinates, players) {
+        drawPlayers: function (screenCoordinates, players) {
             _.forEach(players, function (genericPlayer) {
-                drawPlayer(ctx, genericPlayer, screenCoordinates);
+                drawPlayer(genericPlayer, screenCoordinates);
             });
         },
-        drawRightPanel: function (ctx, controls, debugInfo) {
-            drawRightPanelOutline(ctx, debugInfo);
+        drawRightPanel: function (controls, debugInfo) {
+            drawRightPanelOutline(debugInfo);
             middlePanelArtist.draw(ctx, controls);
         },
-        drawMap: function (ctx, playerCoordinates, screenCoordinates) {
+        drawMap: function (playerCoordinates, screenCoordinates) {
             map.draw(ctx, chunkCache.getData(), playerCoordinates, screenCoordinates);
         }
     }

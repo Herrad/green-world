@@ -28,15 +28,15 @@ function createUpdate(player, outgoingEvents, draw, controls, buildingInterface,
         var debugInfo = {
             fps: Math.round(100000 / elapsedTime) / 100
         };
-        draw.clearCanvas(canvas, ctx);
-        draw.drawChunks(ctx, screenCoordinates);
-        buildingInterface.drawBuildings(ctx, screenCoordinates);
+        draw.clearCanvas();
+        draw.drawChunks(screenCoordinates);
+        buildingInterface.drawBuildings(screenCoordinates);
         if (controls.buildingMode) {
             buildingInterface.drawBlueprint(ctx, buildAt, screenCoordinates);
         }
-        draw.drawPlayers(ctx, screenCoordinates, players)
-        draw.drawRightPanel(ctx, controls, debugInfo)
-        draw.drawMap(ctx, player.coordinates, screenCoordinates);
+        draw.drawPlayers(screenCoordinates, players)
+        draw.drawRightPanel(controls, debugInfo)
+        draw.drawMap(player.coordinates, screenCoordinates);
         warnings.draw(ctx);
     }
 

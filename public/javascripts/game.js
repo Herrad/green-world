@@ -108,7 +108,7 @@ function init() {
 
     var middlePanelArtist = createMiddlePanelArtist(inventoryArtist, controls);
 
-    var draw = createDraw(gameScreenSize, player, map, chunkCache, middlePanelArtist, rightPanelDimensions);
+    var draw = createDraw(canvas, gameScreenSize, player, map, chunkCache, middlePanelArtist, rightPanelDimensions);
 
     var incomingEvents = createIncomingEventHandler(buildingCache, chunkCache, eventLog);
 
