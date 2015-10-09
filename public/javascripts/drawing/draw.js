@@ -1,4 +1,4 @@
-function createDraw(canvas, screenDimensions, player, map, chunkCache, middlePanelArtist, rightPanelDimensions) {
+function createDraw(canvas, screenDimensions, map, chunkCache, middlePanelArtist, rightPanelDimensions) {
     var ctx = canvas.getContext('2d');
     var BLIP_SIZE = 0;
 
@@ -39,7 +39,9 @@ function createDraw(canvas, screenDimensions, player, map, chunkCache, middlePan
         ctx.fillText(genericPlayer.name, xToDrawText, yToDraw - 20);
     }
 
-    function drawRightPanelOutline(debugInfo) {
+    function drawRightPanelOutline(game) {
+        var player = game.players[0];
+        var debugInfo = game.debugInfo;
         ctx.fillStyle = "rgb(255,255,255)";
         draw(ctx, rightPanelDimensions.external);
         ctx.fillStyle = "rgb(0,0,0)";
@@ -68,23 +70,28 @@ function createDraw(canvas, screenDimensions, player, map, chunkCache, middlePan
                 drawPlayer(genericPlayer, screenCoordinates);
             });
         },
-        drawRightPanel: function (controls, debugInfo) {
-            drawRightPanelOutline(debugInfo);
-            middlePanelArtist.draw(ctx, controls);
+        drawRightPanel: function (game) {
+            drawRightPanelOutline(game);
+            middlePanelArtist.draw(ctx, game.controls);
         },
         drawMap: function (playerCoordinates, screenCoordinates) {
             map.draw(ctx, chunkCache.getData(), playerCoordinates, screenCoordinates);
         },
-        drawAll: function(screenCoordinates, buildingInterface){
+        drawAll: function(screenCoordinates, buildingInterface, warnings, game){
           this.clearCanvas();
           this.drawChunks(screenCoordinates);
 
           buildingInterface.drawBuildings(ctx, screenCoordinates);
-          if (buildingInterface.inBuildingMode) {
+          if (game.controls.buildingMode) {
               console.log('buildAt:',buildingInterface.buildAt);
               buildingInterface.drawBlueprint(ctx, buildingInterface.buildAt, screenCoordinates);
           }
->>>>>>> began gathering drawing into a single top level function
+
+          this.drawPlayers(screenCoordinates, game.players)
+          this.drawRightPanel(game);
+          this.drawMap(game.players[0].coordinates, screenCoordinates);
+
+          warnings.draw(ctx);
         }
     }
 }
