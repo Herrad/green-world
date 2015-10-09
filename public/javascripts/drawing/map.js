@@ -1,4 +1,4 @@
-function createMap(playerOffset, rightPanelDimensions, controls) {
+function createMap(playerOffset, rightPanelDimensions, controls, chunkCache) {
     var mapDimensions = rightPanelDimensions.map
 
     function drawMapChunk(ctx, chunk, playerCoordinates, screenCoordinates) {
@@ -81,7 +81,8 @@ function createMap(playerOffset, rightPanelDimensions, controls) {
     }
 
     return {
-        draw: function (ctx, chunks, playerCoordinates, screenCoordinates) {
+        draw: function (ctx, playerCoordinates, screenCoordinates) {
+            var chunks = chunkCache.getData();
             if (controls.drawMap) {
                 drawMap(ctx, chunks, playerCoordinates, screenCoordinates)
             } else {

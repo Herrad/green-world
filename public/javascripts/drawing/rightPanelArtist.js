@@ -1,4 +1,4 @@
-function createRightPanelArtist(ctx, rightPanelDimensions, middlePanelArtist, map, chunkCache) {
+function createRightPanelArtist(ctx, rightPanelDimensions, middlePanelArtist, map) {
 
     function drawRightPanelOutline(game) {
         var player = game.players[0];
@@ -19,7 +19,7 @@ function createRightPanelArtist(ctx, rightPanelDimensions, middlePanelArtist, ma
             drawRightPanelOutline(game);
             middlePanelArtist.draw(ctx, game.controls);
 
-            map.draw(ctx, chunkCache.getData(), game.players[0].coordinates, screenCoordinates);
+            map.draw(ctx, game.players[0].coordinates, screenCoordinates);
         }
     }
 }
