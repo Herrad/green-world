@@ -74,6 +74,17 @@ function createDraw(canvas, screenDimensions, player, map, chunkCache, middlePan
         },
         drawMap: function (playerCoordinates, screenCoordinates) {
             map.draw(ctx, chunkCache.getData(), playerCoordinates, screenCoordinates);
+        },
+        drawAll: function(screenCoordinates, buildingInterface){
+          this.clearCanvas();
+          this.drawChunks(screenCoordinates);
+
+          buildingInterface.drawBuildings(ctx, screenCoordinates);
+          if (buildingInterface.inBuildingMode) {
+              console.log('buildAt:',buildingInterface.buildAt);
+              buildingInterface.drawBlueprint(ctx, buildingInterface.buildAt, screenCoordinates);
+          }
+>>>>>>> began gathering drawing into a single top level function
         }
     }
 }
