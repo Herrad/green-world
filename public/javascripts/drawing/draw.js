@@ -40,37 +40,40 @@ function createDraw(canvas, screenDimensions, map, chunkCache, middlePanelArtist
     }
 
 
+    function drawChunks(screenCoordinates) {
+        _.forEach(chunkCache.getData(), function (chunk) {
+            drawChunk(chunk, screenCoordinates);
+        });
+    }
+
+    function clearCanvas() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "rgb(100, 100, 240)"
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function drawWorld(game, screenCoordinates, buildingInterface) {
+        drawChunks(screenCoordinates);
+
+        buildingInterface.drawBuildings(ctx, screenCoordinates);
+        if (game.controls.buildingMode) {
+            console.log('buildAt:', buildingInterface.buildAt);
+            buildingInterface.drawBlueprint(ctx, buildingInterface.buildAt, screenCoordinates);
+        }
+
+        drawPlayers(screenCoordinates, game.players)
+    }
+
+    function drawPlayers(screenCoordinates, players) {
+        _.forEach(players, function (genericPlayer) {
+            drawPlayer(genericPlayer, screenCoordinates);
+        });
+    }
 
     return {
-        clearCanvas: function () {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "rgb(100, 100, 240)"
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-        },
-        drawChunks: function (screenCoordinates) {
-            _.forEach(chunkCache.getData(), function (chunk) {
-                drawChunk(chunk, screenCoordinates);
-            });
-        },
-        drawPlayers: function (screenCoordinates, players) {
-            _.forEach(players, function (genericPlayer) {
-                drawPlayer(genericPlayer, screenCoordinates);
-            });
-        },
-        drawWorld: function (game, screenCoordinates, buildingInterface) {
-            this.drawChunks(screenCoordinates);
-
-            buildingInterface.drawBuildings(ctx, screenCoordinates);
-            if (game.controls.buildingMode) {
-                console.log('buildAt:', buildingInterface.buildAt);
-                buildingInterface.drawBlueprint(ctx, buildingInterface.buildAt, screenCoordinates);
-            }
-
-            this.drawPlayers(screenCoordinates, game.players)
-        },
         drawAll: function (screenCoordinates, buildingInterface, warnings, game) {
-            this.clearCanvas();
-            this.drawWorld(game, screenCoordinates, buildingInterface);
+            clearCanvas();
+            drawWorld(game, screenCoordinates, buildingInterface);
             rightPanelArtist.draw(game, screenCoordinates);
             warnings.draw(ctx);
         }
