@@ -1,3 +1,0 @@
-function hashRandom(coordinates, seed) {
-
-}
