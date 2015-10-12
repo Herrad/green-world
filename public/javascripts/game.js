@@ -108,8 +108,9 @@ function init() {
 
     var middlePanelArtist = createMiddlePanelArtist(inventoryArtist, controls);
     var rightPanelArtist = createRightPanelArtist(ctx, rightPanelDimensions, middlePanelArtist, map);
-
-    var draw = createDraw(canvas, gameScreenSize, map, chunkCache, middlePanelArtist, rightPanelArtist, rightPanelDimensions);
+    var flowerArtist = createFlowerArtist(createChunker(),gameScreenSize);
+    var renderLayers = [flowerArtist];
+    var draw = createDraw(canvas, gameScreenSize, map, chunkCache, middlePanelArtist, rightPanelArtist, rightPanelDimensions, renderLayers);
 
     var incomingEvents = createIncomingEventHandler(buildingCache, chunkCache, eventLog);
 
@@ -119,6 +120,7 @@ function init() {
 
     incomingEvents.registerEventHandlers(update, function (seed) {
         console.log("new seed: " + seed)
+        md5.seed = seed;
         gameSeed = seed
     }, eventLog);
 

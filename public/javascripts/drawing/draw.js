@@ -1,4 +1,4 @@
-function createDraw(canvas, screenDimensions, map, chunkCache, middlePanelArtist, rightPanelArtist, rightPanelDimensions) {
+function createDraw(canvas, screenDimensions, map, chunkCache, middlePanelArtist, rightPanelArtist, rightPanelDimensions, renderLayers) {
     var ctx = canvas.getContext('2d');
     var BLIP_SIZE = 0;
 
@@ -53,8 +53,11 @@ function createDraw(canvas, screenDimensions, map, chunkCache, middlePanelArtist
     }
 
     function drawWorld(game, screenCoordinates, buildingInterface) {
+        var debug = false;
         drawChunks(screenCoordinates);
-
+        renderLayers.forEach(function(layer){
+          layer.draw(ctx,screenCoordinates, debug);
+        });
         buildingInterface.drawBuildings(ctx, screenCoordinates);
         if (game.controls.buildingMode) {
             console.log('buildAt:', buildingInterface.buildAt);
