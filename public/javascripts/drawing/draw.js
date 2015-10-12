@@ -53,9 +53,10 @@ function createDraw(canvas, screenDimensions, map, chunkCache, middlePanelArtist
     }
 
     function drawWorld(game, screenCoordinates, buildingInterface) {
+        var debug = false;
         drawChunks(screenCoordinates);
         renderLayers.forEach(function(layer){
-          layer.draw(ctx,screenCoordinates);
+          layer.draw(ctx,screenCoordinates, debug);
         });
         buildingInterface.drawBuildings(ctx, screenCoordinates);
         if (game.controls.buildingMode) {

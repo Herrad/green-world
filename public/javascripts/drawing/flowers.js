@@ -34,43 +34,45 @@ function drawFlower(context, options) {
     context.restore();
 }
 
-function drawFlowerChunk(drawFlower, position, chunkSize, ctx) {
-    function generateInitialState(position, chunkSize) {
-        var state = {};
+function generateStateForChunk(position, chunkSize) {
+    var state = {};
 
-        var numberOfFlowers = Math.round(hashRandom(position.x, position.y, 'numberOfFlowers') * 3);
-        state.flowers = [];
-        for (var i = 0; i < numberOfFlowers; i++) {
-            state.flowers.push(i);
-        }
-        state.flowers = state.flowers.map(function (flowerNumber) {
-            var flower = {};
-            var flowerSize = hashRandom(position.x, position.y, flowerNumber, 'flower size') * 10 + 5;
-
-            var radius = flowerSize / 3;
-            var baseFlowerColor = hashRandom(position.x, position.y, flowerNumber, 'flower color') > 0.98 ? '#FFFF00' : '#FF0000';
-            // var colorOp = hashRandom(position.x, position.y, flowerNumber, 'lighten or darken') > 0.5 ? 'lighten' : 'darken';
-            // var flowerColor = tinycolor(baseFlowerColor)[colorOp](hashRandom(position.x, position.y, flowerNumber, 'flower darken') * 30).toHexString();
-            flowerColor = baseFlowerColor;
-
-            flower.color = flowerColor;
-            flower.radius = radius;
-            flower.position = {
-                x: hashRandom(position.x, position.y, flowerNumber, 'flower-x') * chunkSize,
-                y: hashRandom(position.x, position.y, flowerNumber, 'flower-y') * chunkSize
-            }
-            return flower;
-        });
-
-        return state;
+    var numberOfFlowers = Math.round(hashRandom(position.x, position.y, 'numberOfFlowers') * 3);
+    state.flowers = [];
+    for (var i = 0; i < numberOfFlowers; i++) {
+        state.flowers.push(i);
     }
-    ctx.save();
-    ctx.fillStyle = 'white';
-    ctx.strokeRect(0, 0, chunkSize, chunkSize);
-    // ctx.translate(-chunkSize/2,-chunkSize/2)
-    ctx.fillText('chunk: ' + position.x + ',' + position.y, chunkSize / 2, chunkSize / 2);
-    ctx.restore();
-    generateInitialState(position, chunkSize).flowers.forEach(function (flower) {
+    state.flowers = state.flowers.map(function (flowerNumber) {
+        var flower = {};
+        var flowerSize = hashRandom(position.x, position.y, flowerNumber, 'flower size') * 10 + 5;
+
+        var radius = flowerSize / 3;
+        var baseFlowerColor = hashRandom(position.x, position.y, flowerNumber, 'flower color') > 0.98 ? '#FFFF00' : '#FF0000';
+        // var colorOp = hashRandom(position.x, position.y, flowerNumber, 'lighten or darken') > 0.5 ? 'lighten' : 'darken';
+        // var flowerColor = tinycolor(baseFlowerColor)[colorOp](hashRandom(position.x, position.y, flowerNumber, 'flower darken') * 30).toHexString();
+        flowerColor = baseFlowerColor;
+
+        flower.color = flowerColor;
+        flower.radius = radius;
+        flower.position = {
+            x: hashRandom(position.x, position.y, flowerNumber, 'flower-x') * chunkSize,
+            y: hashRandom(position.x, position.y, flowerNumber, 'flower-y') * chunkSize
+        }
+        return flower;
+    });
+
+    return state;
+}
+
+function drawFlowerChunk(drawFlower, position, chunkSize, ctx, debug) {
+    if (debug) {
+        ctx.save();
+        ctx.fillStyle = 'white';
+        ctx.strokeRect(0, 0, chunkSize, chunkSize);
+        ctx.fillText('chunk: ' + position.x + ',' + position.y, chunkSize / 2, chunkSize / 2);
+        ctx.restore();
+    }
+    generateStateForChunk(position, chunkSize).flowers.forEach(function (flower) {
         drawFlower(ctx, flower);
     })
 }
@@ -85,7 +87,7 @@ function makeFlowerChunk(position, chunkSize) {
 (function (exports) {
     exports.createFlowerArtist = function (chunker, screenDimensions) {
         return {
-            draw: function (ctx, screenCoordinates) {
+            draw: function (ctx, screenCoordinates, debug) {
                 var viewPort = {
                     centre: {
                         x: screenCoordinates.x + screenDimensions.gameWindowWidth / 2,
@@ -104,7 +106,7 @@ function makeFlowerChunk(position, chunkSize) {
                 chunks.forEach(function (chunk) {
                     ctx.save();
                     ctx.translate(chunk.position.x, chunk.position.y);
-                    chunk.draw(ctx);
+                    chunk.draw(ctx, debug);
                     ctx.restore();
                 })
                 ctx.restore();
