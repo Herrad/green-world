@@ -177,6 +177,7 @@ function createControls(player, collisionDetection, screenDimensions, buildingCa
             });
         },
         drawMap: false,
-        buildingMode: false
+        buildingMode: false,
+        blipContainingPointer: 0
     }
 }

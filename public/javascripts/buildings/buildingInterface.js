@@ -34,9 +34,9 @@ function createBuildingInterface(buildingSpecs, collision, buildingFactory, play
                 drawBuilding(ctx, building, screenCoordinates, player);
             });
         },
-        drawBlueprint: function (ctx, screenCoordinates) {
-            if (!this.buildAt) {
-                this.buildAt = lastBlip;
+        drawBlueprint: function (ctx, startingBlipCoordinates, screenCoordinates) {
+            if (!startingBlipCoordinates) {
+                startingBlipCoordinates = lastBlip;
                 if (!lastBlip) {
                     return;
                 }
@@ -44,8 +44,8 @@ function createBuildingInterface(buildingSpecs, collision, buildingFactory, play
 
             var selectedBuilding = player.selectedBuilding;
             var blueprint = buildingSpecs.findImages(selectedBuilding).blueprint;
-            ctx.drawImage(blueprint, this.buildAt.x - screenCoordinates.x, this.buildAt.y - screenCoordinates.y);
-            lastBlip = this.buildAt;
+            ctx.drawImage(blueprint, startingBlipCoordinates.x - screenCoordinates.x, startingBlipCoordinates.y - screenCoordinates.y);
+            lastBlip = startingBlipCoordinates;
         },
         buildFrom: function (buildingName, coordinates, players) {
             var spec = buildingSpecs.getBuilding(buildingName);
@@ -76,7 +76,6 @@ function createBuildingInterface(buildingSpecs, collision, buildingFactory, play
                 });
                 return buildingFactory.createBuilding(coordinates, spec);
             }
-        },
-        buildAt: {}
+        }
     }
 }

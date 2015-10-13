@@ -2,10 +2,6 @@ function createUpdate(player, outgoingEvents, draw, controls, buildingInterface,
     var screenCoordinates = {
         x: 0,
         y: 0
-    }
-    var buildAt = {
-        x: 0,
-        y: 0
     };
 
     function moveScreenTo(newCoordinates) {
@@ -64,7 +60,7 @@ function createUpdate(player, outgoingEvents, draw, controls, buildingInterface,
                 x: newPosition.x + screenCoordinates.x,
                 y: newPosition.y + screenCoordinates.y
             }
-            buildingInterface.buildAt = chunkInterpreter.getBlipAt(worldClickLocation);
+            controls.blipContainingPointer = chunkInterpreter.getBlipAt(worldClickLocation);
         },
         tryToBuildAt: function (clickLocation) {
             var worldClickLocation = {

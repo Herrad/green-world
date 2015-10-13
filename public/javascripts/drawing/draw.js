@@ -2,7 +2,7 @@ function createDraw(canvas, screenDimensions, map, chunkCache, middlePanelArtist
     var ctx = canvas.getContext('2d');
     var BLIP_SIZE = 0;
 
-    function drawChunk(chunk, offset) {
+    function drawChunk(chunk, game, offset) {
         BLIP_SIZE = BLIP_SIZE || chunk.blipSize;
         for (var i = chunk.blips.length - 1; i >= 0; i--) {
             var blip = chunk.blips[i];
@@ -25,6 +25,17 @@ function createDraw(canvas, screenDimensions, map, chunkCache, middlePanelArtist
             ctx.lineTo(blipBox.width, blipBox.height);
             ctx.lineTo(blipBox.x, blipBox.height);
             ctx.fill();
+
+            var blipContainingPointer = game.controls.blipContainingPointer;
+            if (blipContainingPointer && blipContainingPointer.x - chunk.coordinates.x === blip.x && blipContainingPointer.y - chunk.coordinates.y === blip.y) {
+                ctx.beginPath()
+                ctx.moveTo(blipBox.x + 1, blipBox.y + 1)
+                ctx.lineTo(blipBox.width, blipBox.y + 1);
+                ctx.lineTo(blipBox.width, blipBox.height);
+                ctx.lineTo(blipBox.x + 1, blipBox.height);
+                ctx.lineTo(blipBox.x + 1, blipBox.y + 1);
+                ctx.stroke();
+            }
         }
 
     }
@@ -39,9 +50,9 @@ function createDraw(canvas, screenDimensions, map, chunkCache, middlePanelArtist
         ctx.fillText(genericPlayer.name, xToDrawText, yToDraw - 20);
     }
 
-    function drawChunks(screenCoordinates) {
+    function drawChunks(game, screenCoordinates) {
         _.forEach(chunkCache.getData(), function (chunk) {
-            drawChunk(chunk, screenCoordinates);
+            drawChunk(chunk, game, screenCoordinates);
         });
     }
 
@@ -53,13 +64,13 @@ function createDraw(canvas, screenDimensions, map, chunkCache, middlePanelArtist
 
     function drawWorld(game, screenCoordinates, buildingInterface) {
         var debug = false;
-        drawChunks(screenCoordinates);
+        drawChunks(game, screenCoordinates);
         renderLayers.forEach(function (layer) {
             layer.draw(ctx, screenCoordinates, debug);
         });
         buildingInterface.drawBuildings(ctx, screenCoordinates);
         if (game.controls.buildingMode) {
-            buildingInterface.drawBlueprint(ctx, screenCoordinates);
+            buildingInterface.drawBlueprint(ctx, game.controls.blipContainingPointer, screenCoordinates);
         }
 
         drawPlayers(screenCoordinates, game.players)
