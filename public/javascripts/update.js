@@ -27,12 +27,11 @@ function createUpdate(player, outgoingEvents, draw, controls, buildingInterface,
     function runDraw(canvas, ctx, elapsedTime) {
         var game = {
             debugInfo: {
-              fps: Math.round(100000/elapsedTime)/100
-          },
-          players:players,
-          controls:controls
+                fps: Math.round(100000 / elapsedTime) / 100
+            },
+            players: players,
+            controls: controls
         };
-        buildingInterface.buildAt = buildAt;
         draw.drawAll(screenCoordinates, buildingInterface, warnings, game);
     }
 
@@ -65,7 +64,7 @@ function createUpdate(player, outgoingEvents, draw, controls, buildingInterface,
                 x: newPosition.x + screenCoordinates.x,
                 y: newPosition.y + screenCoordinates.y
             }
-            buildAt = chunkInterpreter.getBlipAt(worldClickLocation);
+            buildingInterface.buildAt = chunkInterpreter.getBlipAt(worldClickLocation);
         },
         tryToBuildAt: function (clickLocation) {
             var worldClickLocation = {

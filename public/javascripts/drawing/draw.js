@@ -39,7 +39,6 @@ function createDraw(canvas, screenDimensions, map, chunkCache, middlePanelArtist
         ctx.fillText(genericPlayer.name, xToDrawText, yToDraw - 20);
     }
 
-
     function drawChunks(screenCoordinates) {
         _.forEach(chunkCache.getData(), function (chunk) {
             drawChunk(chunk, screenCoordinates);
@@ -55,13 +54,12 @@ function createDraw(canvas, screenDimensions, map, chunkCache, middlePanelArtist
     function drawWorld(game, screenCoordinates, buildingInterface) {
         var debug = false;
         drawChunks(screenCoordinates);
-        renderLayers.forEach(function(layer){
-          layer.draw(ctx,screenCoordinates, debug);
+        renderLayers.forEach(function (layer) {
+            layer.draw(ctx, screenCoordinates, debug);
         });
         buildingInterface.drawBuildings(ctx, screenCoordinates);
         if (game.controls.buildingMode) {
-            console.log('buildAt:', buildingInterface.buildAt);
-            buildingInterface.drawBlueprint(ctx, buildingInterface.buildAt, screenCoordinates);
+            buildingInterface.drawBlueprint(ctx, screenCoordinates);
         }
 
         drawPlayers(screenCoordinates, game.players)

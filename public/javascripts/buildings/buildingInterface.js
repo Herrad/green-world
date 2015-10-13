@@ -3,7 +3,7 @@ function createBuildingInterface(buildingSpecs, collision, buildingFactory, play
     var buildingCache = buildingCache;
     var lastBlip = {}
 
-    function drawBuildings(ctx, building, screenCoordinates) {
+    function drawBuilding(ctx, building, screenCoordinates) {
         var image = building.image;
         ctx.drawImage(image, building.coordinates.x - screenCoordinates.x, building.coordinates.y - screenCoordinates.y);
     }
@@ -31,12 +31,12 @@ function createBuildingInterface(buildingSpecs, collision, buildingFactory, play
     return {
         drawBuildings: function (ctx, screenCoordinates) {
             _.forEach(buildingCache.getData(), function (building) {
-                drawBuildings(ctx, building, screenCoordinates, player);
+                drawBuilding(ctx, building, screenCoordinates, player);
             });
         },
-        drawBlueprint: function (ctx, selectedBlip, screenCoordinates) {
-            if (!selectedBlip) {
-                selectedBlip = lastBlip;
+        drawBlueprint: function (ctx, screenCoordinates) {
+            if (!this.buildAt) {
+                this.buildAt = lastBlip;
                 if (!lastBlip) {
                     return;
                 }
@@ -44,8 +44,8 @@ function createBuildingInterface(buildingSpecs, collision, buildingFactory, play
 
             var selectedBuilding = player.selectedBuilding;
             var blueprint = buildingSpecs.findImages(selectedBuilding).blueprint;
-            ctx.drawImage(blueprint, selectedBlip.x - screenCoordinates.x, selectedBlip.y - screenCoordinates.y);
-            lastBlip = selectedBlip;
+            ctx.drawImage(blueprint, this.buildAt.x - screenCoordinates.x, this.buildAt.y - screenCoordinates.y);
+            lastBlip = this.buildAt;
         },
         buildFrom: function (buildingName, coordinates, players) {
             var spec = buildingSpecs.getBuilding(buildingName);
@@ -76,6 +76,7 @@ function createBuildingInterface(buildingSpecs, collision, buildingFactory, play
                 });
                 return buildingFactory.createBuilding(coordinates, spec);
             }
-        }
+        },
+        buildAt: {}
     }
 }
