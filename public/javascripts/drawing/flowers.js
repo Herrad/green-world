@@ -64,7 +64,7 @@ function generateStateForChunk(position, chunkSize) {
     return state;
 }
 
-function drawFlowerChunk(drawFlower, position, chunkSize, ctx, debug) {
+function drawFlowerChunk(drawFlower, position, chunkSize, chunkState, ctx, debug) {
     if (debug) {
         ctx.save();
         ctx.fillStyle = 'white';
@@ -72,20 +72,22 @@ function drawFlowerChunk(drawFlower, position, chunkSize, ctx, debug) {
         ctx.fillText('chunk: ' + position.x + ',' + position.y, chunkSize / 2, chunkSize / 2);
         ctx.restore();
     }
-    generateStateForChunk(position, chunkSize).flowers.forEach(function (flower) {
+    chunkState.flowers.forEach(function (flower) {
         drawFlower(ctx, flower);
     })
 }
 
 function makeFlowerChunk(position, chunkSize) {
+    var chunkState = generateStateForChunk(position, chunkSize);
     return {
         position: position,
-        draw: drawFlowerChunk.bind(null, drawFlower, position, chunkSize)
+        draw: drawFlowerChunk.bind(null, drawFlower, position, chunkSize, chunkState)
     }
 }
 
 (function (exports) {
-    exports.createFlowerArtist = function (chunker, screenDimensions) {
+    exports.createFlowerArtist = function (chunker, screenDimensions,createCache) {
+        var cache = createCache(50);
         return {
             draw: function (ctx, screenCoordinates, debug) {
                 var viewPort = {
@@ -99,7 +101,10 @@ function makeFlowerChunk(position, chunkSize) {
                     }
                 };
 
-                var chunks = chunker.getVisibleChunks(viewPort, makeFlowerChunk, 400);
+                var chunks = chunker.getVisibleChunks(viewPort, function(position, chunkSize){
+                  var cacheKey = 'flowers:' + position.x + ',' +position.y;
+                  return cache.get(cacheKey,makeFlowerChunk.bind(null,position,chunkSize));
+                }, 400);
 
                 ctx.save();
                 ctx.translate(-screenCoordinates.x, -screenCoordinates.y);

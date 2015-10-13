@@ -108,7 +108,7 @@ function init() {
 
     var middlePanelArtist = createMiddlePanelArtist(inventoryArtist, controls);
     var rightPanelArtist = createRightPanelArtist(ctx, rightPanelDimensions, middlePanelArtist, map);
-    var flowerArtist = createFlowerArtist(createChunker(),gameScreenSize);
+    var flowerArtist = createFlowerArtist(createChunker(),gameScreenSize,createGeneratedContentCache);
     var renderLayers = [flowerArtist];
     var draw = createDraw(canvas, gameScreenSize, map, chunkCache, middlePanelArtist, rightPanelArtist, rightPanelDimensions, renderLayers);
 
