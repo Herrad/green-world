@@ -109,7 +109,8 @@ function init() {
     var middlePanelArtist = createMiddlePanelArtist(inventoryArtist, controls);
     var rightPanelArtist = createRightPanelArtist(ctx, rightPanelDimensions, middlePanelArtist, map);
     var flowerArtist = createFlowerArtist(createChunker(),gameScreenSize,createGeneratedContentCache);
-    var renderLayers = [flowerArtist];
+    var treeArtist = createTreeArtist(createChunker(),gameScreenSize,createGeneratedContentCache);
+    var renderLayers = [flowerArtist, treeArtist];
     var draw = createDraw(canvas, gameScreenSize, map, chunkCache, middlePanelArtist, rightPanelArtist, rightPanelDimensions, renderLayers);
 
     var incomingEvents = createIncomingEventHandler(buildingCache, chunkCache, eventLog);
