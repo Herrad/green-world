@@ -1,7 +1,7 @@
 (function (exports) {
     exports.createTreeArtist = function (chunker, screenDimensions, createCache) {
         function drawTree(context, options) {
-            
+
             context.save();
             context.drawImage(treeImage, options.position.x, options.position.y)
             context.restore();
@@ -10,7 +10,7 @@
         function generateStateForChunk(position, chunkSize) {
             var state = {};
 
-            var numberOfTrees = Math.round(hashRandom(position.x, position.y, 'numberOfTrees')*3);
+            var numberOfTrees = Math.round(hashRandom(position.x, position.y, 'numberOfTrees') * 3);
             state.trees = [];
             for (var i = 0; i < numberOfTrees; i++) {
                 state.trees.push(i);
@@ -66,9 +66,9 @@
                     }
                 };
 
-                var chunks = chunker.getVisibleChunks(viewPort, function(position, chunkSize){
-                    var cacheKey = 'trees:' + position.x + ',' +position.y;
-                    return cache.get(cacheKey,makeTreeChunk.bind(null,position,chunkSize));
+                var chunks = chunker.getVisibleChunks(viewPort, function (position, chunkSize) {
+                    var cacheKey = 'trees:' + position.x + ',' + position.y;
+                    return cache.get(cacheKey, makeTreeChunk.bind(null, position, chunkSize));
                 }, 400);
 
                 ctx.save();
